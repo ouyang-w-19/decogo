@@ -1,0 +1,34 @@
+===============
+Decogo CHANGELOG
+===============
+
+-------------------------------------------------------------------------------
+Decogo 1.0   23 Nov 2020
+-------------------------------------------------------------------------------
+
+CG Algorithm:
+- Sub-problem: removed the feature that adds integral penalty term in 
+    the objection function of sub-problems; deleted pyomo model that has integral 
+    penalty terms in objective; removed adding compact pricing cut whn solving
+    MINLP sub-problem; removed convex hull projection sub-problems
+- IA master problem: removed the feature of fixing columns 
+    in certain blocks; deleted pseudo z and columns that were used for column 
+    fixation; removed the feature for setting perturbed objective function in 
+    IA problem.
+- NLP projection master problem: removed the features such as 
+    trust region, solution with perturbation, multi-objective terms.
+- MIP project master problem: removed the features such as 
+    partial block integer fixation before solving, multi-objective terms.
+- Removed heuristic Outer Approximation master problem and related methods
+    for computing convex hull cuts and their update.
+
+Removed DIOR algorithm (partition-based heuristic):
+- Removed algorithm class which stands for DIOR
+- Removed cells and related containers
+
+
+Removed implementation of OA algorithm for nonconvex problems using DC 
+(difference of convex functions) decomposition
+
+Removed saved logs of classical OA (without decomposition) and SCIP
+Removed very simple example of energy model with sub-blocks
