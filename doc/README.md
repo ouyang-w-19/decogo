@@ -15,10 +15,8 @@ GETTING STARTED
     
     ```cd doc```
      
-3.  Change/update documentation: include all modules which have to be 
-documented with ```:autosummary::``` directive in file ```sources/modules.rst```
     
-4.  Build the documentation
+3.  Build the documentation
     
     ```make html```
     
@@ -26,7 +24,7 @@ documented with ```:autosummary::``` directive in file ```sources/modules.rst```
     
     ```make clean```
     
-5.  Admire your work
+4.  Admire your work
 
     ```
     cd _build/html
@@ -34,6 +32,3 @@ documented with ```:autosummary::``` directive in file ```sources/modules.rst```
     open index.html
     ```
     
-6.  Repeat
-    
-    GOTO STEP 3
