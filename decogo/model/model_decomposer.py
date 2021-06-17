@@ -6,8 +6,8 @@ import os
 
 import networkx as nx
 from pyomo.core.base.constraint import Constraint, IndexedConstraint, \
-    SimpleConstraint
-from pyomo.core.base.var import Var, SimpleVar, IndexedVar
+    ScalarConstraint
+from pyomo.core.base.var import Var, IndexedVar, ScalarVar
 from pyomo.core.expr.numeric_expr import ProductExpression, SumExpression, \
     UnaryFunctionExpression, PowExpression, \
     DivisionExpression, NegationExpression, AbsExpression, \
@@ -91,7 +91,7 @@ class PyomoModelDecomposer:
         nonlinear_vars = set()
 
         for object_name, object in self.model.component_map(
-                [Objective, Constraint], active=True).iteritems():
+                [Objective, Constraint], active=True).items():
             if isinstance(object, Objective):
                 expr = object.expr
             else:
@@ -168,7 +168,7 @@ class PyomoModelDecomposer:
         else:
             nvars = 0
             for var_obj in self.model.component_objects(Var, active=True):
-                if var_obj.__class__ is SimpleVar:
+                if var_obj.__class__ is ScalarVar:
                     nvars += 1
                 elif var_obj.__class__ is IndexedVar:
                     nvars += len(var_obj)
@@ -176,7 +176,7 @@ class PyomoModelDecomposer:
             nconstraints = 0
             for con_obj in self.model.component_objects(Constraint,
                                                         active=True):
-                if con_obj.__class__ is SimpleConstraint:
+                if con_obj.__class__ is ScalarConstraint:
                     nconstraints += 1
                 elif con_obj.__class__ is IndexedConstraint:
                     nconstraints += len(con_obj)
@@ -204,8 +204,8 @@ class PyomoModelDecomposer:
         if self.number_defined_blocks == 1:
             # we don't proceed with it, if we don't do the reformulation
             for block_obj in self.model.block_data_objects():
-                for var_name, var_obj in block_obj.component_map(Var,
-                                                                 active=True).iteritems():
+                for var_name, var_obj in \
+                        block_obj.component_map(Var, active=True).items():
                     if 'new' in var_name:
                         raise Exception(
                             'Modelling issue: some of the variables contain '
@@ -214,14 +214,14 @@ class PyomoModelDecomposer:
         # delete trivial constraints and check if no constraints have the name
         # 'new' in their names
         for block_obj in self.model.block_data_objects():
-            for con_name, con_obj in block_obj.component_map(Constraint,
-                                                             active=True).iteritems():
+            for con_name, con_obj in \
+                    block_obj.component_map(Constraint, active=True).items():
                 if self.number_defined_blocks == 1:  # we don't check it, since we don't do reformulation
                     if 'new' in con_name:
                         raise Exception(
                             'Modelling issue: some of the constraints contain \ '
                             'word "new", rename these constraints')
-                if con_obj.__class__ is SimpleConstraint:
+                if con_obj.__class__ is ScalarConstraint:
                     if isinstance(con_obj.body, Var):
                         var_obj = con_obj.body
                         if con_obj.equality:
@@ -252,7 +252,7 @@ class PyomoModelDecomposer:
 
         # if objective sense is max, then max obj(x) = min -obj(x)
         obj_name, obj = next(
-            self.model.component_map(Objective, active=True).iteritems())
+            self.model.component_map(Objective, active=True).items())
         if obj.sense == -1:  # if obj sense is max
             obj.sense = 1  # set to min
             obj.expr = -obj.expr
@@ -266,12 +266,15 @@ class PyomoModelDecomposer:
         for block_obj in self.model.component_data_objects(Block):
             var_names_list = []
             for var_name, var_obj in \
-                    block_obj.component_map(Var, active=True).iteritems():
-                if var_obj.__class__ is SimpleVar:
+                    block_obj.component_map(Var, active=True).items():
+                if var_obj.__class__ is ScalarVar:
                     var_names_list.append(var_obj.name)
                 elif var_obj.__class__ is IndexedVar:
                     for index in var_obj:
                         var_names_list.append(var_obj[index].name)
+                else:
+                    raise ValueError(
+                        'Dev: Found var object type which was not considered')
 
             if len(var_names_list) != 0:
                 self.blocks.append(var_names_list)
@@ -293,7 +296,7 @@ class PyomoModelDecomposer:
         # contain this variable
         variables_constraints_dict = {}
         for con_obj in self.model.component_objects(Constraint, active=True):
-            if con_obj.__class__ is SimpleConstraint:
+            if con_obj.__class__ is ScalarConstraint:
                 degree = con_obj.expr.polynomial_degree()
                 if degree is None or degree > 1:
                     blocks_vars_dict = self._determine_block_expr(con_obj.expr)
@@ -421,7 +424,7 @@ class PyomoModelDecomposer:
         linear_blocks_list = [True] * len(self.blocks)
 
         for con_obj in self.model.component_objects(Constraint, active=True):
-            if con_obj.__class__ is SimpleConstraint:
+            if con_obj.__class__ is ScalarConstraint:
                 degree = con_obj.expr.polynomial_degree()
                 if degree is None or degree > 1:
                     blocks_vars_dict = self._determine_block_expr(con_obj.expr)
@@ -507,12 +510,12 @@ class PyomoModelDecomposer:
         """
 
         # handle objective
-        obj_name, obj = next(self.model.component_map(Objective).iteritems())
+        obj_name, obj = next(self.model.component_map(Objective).items())
         self._find_separable_sub_expr_and_replace(obj.expr)
 
         # handle constraints
         for con_name, con_obj in self.model.component_map(
-                Constraint).iteritems():
+                Constraint).items():
             # avoid checking already reformulated constraints
             if 'new' not in con_name:
                 # if all variables belong to the same block, then we don't do
@@ -545,7 +548,7 @@ class PyomoModelDecomposer:
                     indices_to_remove.append(i)
 
             # reformulation
-            if len(indices_to_remove) is not 0:
+            if len(indices_to_remove) != 0:
                 expr._args_ = [item for idx, item in enumerate(expr._args_) if
                                idx not in indices_to_remove]
                 for k in local_expr:
@@ -574,7 +577,8 @@ class PyomoModelDecomposer:
                 expr._args_ = (self.model.__getattribute__(new_variable_name),)
         elif expr.__class__ is MonomialTermExpression:
             return None
-        elif expr.__class__ is DivisionExpression or expr.__class__ is PowExpression \
+        elif expr.__class__ is DivisionExpression or \
+                expr.__class__ is PowExpression \
                 or expr.__class__ is UnaryFunctionExpression:
             blocks_vars_dict = self._determine_block_expr(expr)
             # it is expected that dictionary will have one key, and we need
@@ -690,7 +694,7 @@ class PyomoModelDecomposer:
 
         # save objective
         obj_name, obj_old = next(
-            self.model.component_map(Objective).iteritems())
+            self.model.component_map(Objective).items())
         self.model.del_component(obj_name)
 
         # set settings for scip with root node and aggressive heuristics
@@ -714,8 +718,8 @@ class PyomoModelDecomposer:
         opt = SolverFactory('scip')
 
         for block_obj in self.model.block_data_objects():
-            for var_name, var_obj in block_obj.component_map(Var).iteritems():
-                if var_obj.__class__ is SimpleVar:
+            for var_name, var_obj in block_obj.component_map(Var).items():
+                if var_obj.__class__ is ScalarVar:
                     if var_obj.lb is None or var_obj.ub is None:
                         self.model.obj = Objective(expr=var_obj)
 

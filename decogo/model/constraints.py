@@ -1,9 +1,9 @@
 """Stores constraint data"""
 
 import numpy as np
-from pyomo.core.base.constraint import SimpleConstraint, IndexedConstraint, \
-    Constraint
-from pyomo.core.base.var import _GeneralVarData, SimpleVar, Var
+from pyomo.core.base.constraint import IndexedConstraint, \
+    Constraint, ScalarConstraint
+from pyomo.core.base.var import _GeneralVarData, Var, ScalarVar
 from pyomo.core.expr.calculus.derivatives import differentiate, Modes
 from pyomo.core.expr.logical_expr import EqualityExpression
 from pyomo.core.expr.numeric_expr import NegationExpression, \
@@ -319,7 +319,7 @@ class CutPool:
         self.blocks = blocks
 
         # region objective reading and initialization
-        obj_name, objective = next(model.component_map(Objective).iteritems())
+        obj_name, objective = next(model.component_map(Objective).items())
         obj_expr = objective.expr
         degree = obj_expr.polynomial_degree()
         if degree is None or degree > 1:
@@ -338,13 +338,16 @@ class CutPool:
         for block_obj in model.block_data_objects():
             for con_name, con_obj in \
                     block_obj.component_map(Constraint,
-                                            active=True).iteritems():
-                if con_obj.__class__ is SimpleConstraint:
+                                            active=True).items():
+                if con_obj.__class__ is ScalarConstraint:
                     self._read_constraint_object(con_obj)
                 elif con_obj.__class__ is IndexedConstraint:
                     for index in con_obj:
                         self._read_constraint_object(con_obj[index])
-
+                else:
+                    raise ValueError(
+                         'Dev: Found constraints object type which '
+                         'was not considered')
         # copy constraints
         self.copy_constraints = []
         self.blocks_copy_constraints = {}
@@ -439,7 +442,7 @@ class CutPool:
                 k, i = self._get_variable_index_by_name(var_name)
                 coef.append((k, i, val))
         elif expr.__class__ is Var or expr.__class__ is _GeneralVarData or \
-                expr.__class__ is SimpleVar:
+                expr.__class__ is ScalarVar:
             k, i = self._get_variable_index_by_name(expr.name)
             coef.append((k, i, 1))
         elif isinstance(expr, (int, float)):

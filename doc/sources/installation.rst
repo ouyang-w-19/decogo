@@ -9,7 +9,7 @@ Dependencies
 
 Pyomo
 -----
-Decogo uses `Pyomo <http://www.pyomo.org/>`_ of version >= 5.7.1.
+Decogo uses `Pyomo <http://www.pyomo.org/>`_ of version >= 6.0 (tested up to 6.0.1)
 
 Solvers
 -------
@@ -38,7 +38,7 @@ Installation for development in Windows
 =======================================
 
 * Install `Git <https://gitforwindows.org/>`_
-* Install Python 3.7 with `Anaconda distribution <https://www.anaconda.com/products/individual#windows>`_
+* Install Python 3.8 with `Anaconda distribution <https://www.anaconda.com/products/individual#windows>`_
 * Python IDE: `PyCharm <https://www.jetbrains.com/pycharm/>`_ (full version with institution email is free) is recommended, however you are free to use any IDE you prefer
 * Download SCIP, IPOPT executables that support AMPL interface. Put executables either into system folder (C:\\Windows\\System32) or add executable location to PATH variable
 * Install Gurobi with ``conda``
