@@ -764,7 +764,7 @@ class PyomoSubProblems(SubProblemsBase):
         self.resource_proj_sub_problem = \
             PyomoResourceProjectionSubProblem(sub_models, cuts, block_id)
 
-    def global_solve(self, result, direction, start_point=None):
+    def global_solve_off(self, result, direction, start_point=None):
 
         solver_name = self.settings.minlp_solver
         solver_options = self.settings.get_minlp_solver_options()
@@ -774,6 +774,36 @@ class PyomoSubProblems(SubProblemsBase):
                              start_point=start_point, direction=direction)
 
         return y_new, primal_bound, dual_bound, sol_is_feasible
+
+    def global_solve(self, result, direction, start_point=None):
+
+        solver_options = self.settings.get_nlp_solver_options()
+        # in order to solve NLP relaxation of MINLP problem it is not
+        # necessary explicitly to relax integer variables
+        # the NLP solver simply treats them as continuous variables
+        unfixed_tilde_y, new_point_obj_val, dual_bound, sol_is_feasible = \
+            self.minlp_solve(
+                self.settings.nlp_solver, direction=direction,
+                solver_options=solver_options, start_point=start_point)
+
+        if self.integer is True:
+            result.cg_num_fixed_nlp_problems += 1
+
+            rounded_point = \
+                self.minlp_sub_problem.sub_model.round(
+                    unfixed_tilde_y)
+            # start_point is used for fixing the integers
+            tilde_y, new_point_obj_val, dual_bound, sol_is_feasible = \
+                self.fixed_minlp_solve(
+                    self.settings.nlp_solver,
+                    start_point=rounded_point,
+                    direction=direction,
+                    solver_options=solver_options)
+
+        else:
+            tilde_y = unfixed_tilde_y
+
+        return tilde_y, new_point_obj_val, dual_bound, sol_is_feasible
 
     def local_solve(self, result, direction, start_point=None):
 
