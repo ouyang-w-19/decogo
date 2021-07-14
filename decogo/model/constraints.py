@@ -339,9 +339,9 @@ class CutPool:
             for con_name, con_obj in \
                     block_obj.component_map(Constraint,
                                             active=True).items():
-                if con_obj.__class__ is ScalarConstraint:
+                if isinstance(con_obj, ScalarConstraint):
                     self._read_constraint_object(con_obj)
-                elif con_obj.__class__ is IndexedConstraint:
+                elif isinstance(con_obj, IndexedConstraint):
                     for index in con_obj:
                         self._read_constraint_object(con_obj[index])
                 else:

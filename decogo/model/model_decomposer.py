@@ -94,9 +94,14 @@ class PyomoModelDecomposer:
                 [Objective, Constraint], active=True).items():
             if isinstance(object, Objective):
                 expr = object.expr
+                self._add_edges_to_graph(G, expr, nonlinear_vars)
+            elif isinstance(object, IndexedConstraint):
+                for index in object:
+                    expr = object[index].body
+                    self._add_edges_to_graph(G, expr, nonlinear_vars)
             else:
                 expr = object.body
-            self._add_edges_to_graph(G, expr, nonlinear_vars)
+                self._add_edges_to_graph(G, expr, nonlinear_vars)
 
         # block that contains only linear variables, i.e. variables that are
         # contained only linear expressions
@@ -520,9 +525,17 @@ class PyomoModelDecomposer:
             if 'new' not in con_name:
                 # if all variables belong to the same block, then we don't do
                 # the reformulation
-                blocks_var_dict = self._determine_block_expr(con_obj.body)
-                if len(blocks_var_dict) > 1:
-                    self._find_separable_sub_expr_and_replace(con_obj.body)
+                if isinstance(con_obj, IndexedConstraint):
+                    for index in con_obj:
+                        blocks_var_dict = self._determine_block_expr(
+                            con_obj[index].body)
+                        if len(blocks_var_dict) > 1:
+                            self._find_separable_sub_expr_and_replace(
+                                con_obj[index].body)
+                else:
+                    blocks_var_dict = self._determine_block_expr(con_obj.body)
+                    if len(blocks_var_dict) > 1:
+                        self._find_separable_sub_expr_and_replace(con_obj.body)
 
     def _find_separable_sub_expr_and_replace(self, expr):
         """Recursive function for walking through the expression trees and
