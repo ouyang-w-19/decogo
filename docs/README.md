@@ -13,7 +13,7 @@ GETTING STARTED
     
 2.  Navigate to documentation directory
     
-    ```cd doc```
+    ```cd docs```
      
     
 3.  Build the documentation
