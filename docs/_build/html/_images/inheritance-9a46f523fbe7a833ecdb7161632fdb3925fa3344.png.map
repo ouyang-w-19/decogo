@@ -1,8 +1,0 @@
-<map id="inheritance7024b57025" name="inheritance7024b57025">
-<area shape="rect" id="node1" href="generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem" target="_top" title="Class for defining compact outer master problem" alt="" coords="5,80,184,105"/>
-<area shape="rect" id="node2" href="generated/decogo.pyomo_problem.master_problem_base.html#decogo.pyomo_problem.master_problem_base.MasterProblemBase" target="_top" title="Base class for master problems in original space" alt="" coords="25,31,165,56"/>
-<area shape="rect" id="node4" href="generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.OaMasterProblem" target="_top" title="Class for defining an outer master problem" alt="" coords="232,31,359,56"/>
-<area shape="rect" id="node3" href="generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.MipOaMasterProblem" target="_top" title="Class for defining MIP Outer Approximation master problem" alt="" coords="407,5,555,31"/>
-<area shape="rect" id="node6" href="generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.SlackMipOaMasterProblem" target="_top" title="Class for MIP Outer Approximation problem with slacks" alt="" coords="603,5,784,31"/>
-<area shape="rect" id="node5" href="generated/decogo.pyomo_problem.nlp_master_problem.html#decogo.pyomo_problem.nlp_master_problem.NlpProblem" target="_top" title="Class for defining the NLP master problem. Used for obtaining solution" alt="" coords="436,55,525,80"/>
-</map>
