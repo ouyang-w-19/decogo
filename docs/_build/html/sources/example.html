@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Example &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settings" href="settings.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Example</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sources/example.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="example">
+<h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
+<p>Here we present one simple example of executing the solver with
+<a class="reference external" href="http://www.minlplib.org/alan.html">model</a> from MINLPlib:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pyomo.environ</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># add Decogo source files to path</span>
+<span class="c1"># very important to do it before importing Decogo</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;decogo&#39;</span><span class="p">:</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">solver.decogo</span> <span class="kn">import</span> <span class="n">Decogo</span>
+
+<span class="c1"># define Pyomo model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">m</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Reals</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mf">0.302884615384618</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Reals</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mf">0.0865384615384593</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">x3</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Reals</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mf">0.504807692307693</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">x4</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Reals</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mf">0.10576923076923</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">b6</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Binary</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">b7</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Binary</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">b8</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Binary</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">b9</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">Binary</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">x3</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x3</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x3</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x3</span><span class="p">)</span>
+                       <span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">minimize</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">c1</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span>   <span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x3</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x4</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">c2</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span>   <span class="mi">8</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">9</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">+</span> <span class="mi">12</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x3</span> <span class="o">+</span> <span class="mi">7</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x4</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">c4</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span>   <span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">b6</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">c5</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span>   <span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">b7</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">c6</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span>   <span class="n">m</span><span class="o">.</span><span class="n">x3</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">b8</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">c7</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span>   <span class="n">m</span><span class="o">.</span><span class="n">x4</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">b9</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">c8</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span>   <span class="n">m</span><span class="o">.</span><span class="n">b6</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">b7</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">b8</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">b9</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># overwrite solver default settings and put the file in the working directory</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;decogo.set&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+   <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;strategy = OA</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+   <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;decomp_estimate_var_bounds = True&#39;</span><span class="p">)</span>
+   <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># create solver instance</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">Decogo</span><span class="p">()</span>
+
+<span class="c1"># solve the model</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">input_model</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.solver.decogo &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.solver.decogo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.solver.decogo</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Main module for running the solution process&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Pipe</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="kn">import</span> <span class="nn">psutil</span>
+<span class="kn">import</span> <span class="nn">pyutilib.subprocess.GlobalData</span>
+<span class="kn">from</span> <span class="nn">pyomo.environ</span> <span class="kn">import</span> <span class="n">Objective</span><span class="p">,</span> <span class="n">Constraint</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Param</span><span class="p">,</span> <span class="n">Block</span>
+<span class="kn">from</span> <span class="nn">pyomo.network</span> <span class="kn">import</span> <span class="n">Port</span><span class="p">,</span> <span class="n">Arc</span>
+
+<span class="kn">from</span> <span class="nn">decogo.model.block_model</span> <span class="kn">import</span> <span class="n">PyomoBlockModel</span><span class="p">,</span> <span class="n">BlockModel</span>
+<span class="kn">from</span> <span class="nn">decogo.model.model_decomposer</span> <span class="kn">import</span> <span class="n">PyomoModelDecomposer</span>
+<span class="kn">from</span> <span class="nn">decogo.pyomo_problem.pyomo_decomposed_problem</span> <span class="kn">import</span> <span class="n">PyomoDecomposedProblem</span>
+<span class="kn">from</span> <span class="nn">decogo.problem.decomposed_problem</span> <span class="kn">import</span> \
+    <span class="n">DecomposedProblem</span>
+<span class="kn">from</span> <span class="nn">decogo.solver.colgen</span> <span class="kn">import</span> <span class="n">ColGen</span>
+<span class="kn">from</span> <span class="nn">decogo.solver.refactory_colgen</span> <span class="kn">import</span> <span class="n">RefactoryColGen</span>
+<span class="kn">from</span> <span class="nn">decogo.solver.oa</span> <span class="kn">import</span> <span class="n">OaSolver</span>
+<span class="kn">from</span> <span class="nn">decogo.solver.results</span> <span class="kn">import</span> <span class="n">Results</span>
+<span class="kn">from</span> <span class="nn">decogo.solver.settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+
+<span class="n">pyutilib</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">GlobalData</span><span class="o">.</span><span class="n">DEFINE_SIGNAL_HANDLERS_DEFAULT</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;decogo&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DecogoSolver"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolver">[docs]</a><span class="k">class</span> <span class="nc">DecogoSolver</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class which starts the solution process</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DecogoSolver._remove_unpicklable_objects_pyomo_model"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolver._remove_unpicklable_objects_pyomo_model">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_remove_unpicklable_objects_pyomo_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removes unpicklable objects from Pyomo model object. This is because</span>
+<span class="sd">        multiprocessing is based on serialization and some objects cannot be</span>
+<span class="sd">        serialized (pickled).</span>
+<span class="sd">        This method does the following:</span>
+
+<span class="sd">        * removes objects Port and Arcs, since they contain weakref objects</span>
+
+<span class="sd">        * sets to None the &#39;rule&#39; property for Constraint, Objective and Param, \</span>
+<span class="sd">        since it might contain lambda function</span>
+
+<span class="sd">        * sets to None property &#39;initialize&#39; and &#39;_init_values._init&#39; for Set, \</span>
+<span class="sd">        since it might contain lambda function</span>
+
+<span class="sd">        :param model: Pyomo model</span>
+<span class="sd">        :type model: ConcreteModel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">block_obj</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">block_data_objects</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">block_obj</span><span class="o">.</span><span class="n">component_objects</span><span class="p">(</span><span class="n">Port</span><span class="p">):</span>
+                    <span class="n">block_obj</span><span class="o">.</span><span class="n">del_component</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">arc</span> <span class="ow">in</span> <span class="n">block_obj</span><span class="o">.</span><span class="n">component_objects</span><span class="p">(</span><span class="n">Arc</span><span class="p">):</span>
+                    <span class="n">block_obj</span><span class="o">.</span><span class="n">del_component</span><span class="p">(</span><span class="n">arc</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">component_objects</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">Objective</span><span class="p">,</span> <span class="n">Constraint</span><span class="p">,</span> <span class="n">Param</span><span class="p">,</span> <span class="n">Block</span><span class="p">]):</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">_rule</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">rule</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># if here some exceptions occur, then check whether attributes still</span>
+            <span class="c1"># exist</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">component_objects</span><span class="p">([</span><span class="n">Set</span><span class="p">]):</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">_init_values</span><span class="o">.</span><span class="n">_init</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">initialize</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="DecogoSolver.optimize"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolver.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_model</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Main driver method which starts the process of solving</span>
+
+<span class="sd">        :param input_model: Pyomo model</span>
+<span class="sd">        :type input_model: ConcreteModel</span>
+<span class="sd">        :param file_name: Name of the file where the logging information written</span>
+<span class="sd">        :type file_name: str or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_unpicklable_objects_pyomo_model</span><span class="p">(</span><span class="n">input_model</span><span class="p">)</span>
+
+        <span class="c1"># sharing pyomo model to the process using Pipe or Queue is a bad idea,</span>
+        <span class="c1"># since it is very slow. This could help return the solution in a</span>
+        <span class="c1"># nice way (with pyomo model).</span>
+        <span class="c1"># The only possibility is to transform the lifted solution point into</span>
+        <span class="c1"># original formulation and assign this values to original pyomo model.</span>
+        <span class="c1"># This must be much faster, since we need to return relatively simple</span>
+        <span class="c1"># object after finishing the process.</span>
+        <span class="c1"># For that we could use Pipe or Queue</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">DecogoProcess</span><span class="p">(</span><span class="n">input_model</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+
+        <span class="c1"># get maximum time for running the solver</span>
+        <span class="n">max_time</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_max_time</span><span class="p">()</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="c1"># set max time for process to run</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">max_time</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+        <span class="c1"># remove files that are left by pyomo after interrupting the process</span>
+        <span class="n">directory_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory_name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.nl&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.sol&#39;</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="n">item</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.log&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.lp&#39;</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_name</span><span class="p">,</span> <span class="n">item</span><span class="p">)))</span></div></div>
+
+
+<div class="viewcode-block" id="DecogoProcess"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoProcess">[docs]</a><span class="k">class</span> <span class="nc">DecogoProcess</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class which is responsible for solver process. The main idea of this</span>
+<span class="sd">    class is reliable way to set maximum executation time of the whole solver.</span>
+
+<span class="sd">    :param input_model: Pyomo model</span>
+<span class="sd">    :type input_model: ConcreteModel</span>
+<span class="sd">    :param file_name: Name of the file where the log info should be written</span>
+<span class="sd">    :type file_name: str or None</span>
+<span class="sd">    :param solver: Solver manager</span>
+<span class="sd">    :type solver: DecogoSolverManager</span>
+<span class="sd">    :param solver_thread: solver single thread which runs the solver</span>
+<span class="sd">    :type solver_thread: Thread</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DecogoProcess.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoProcess.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_model</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_model</span> <span class="o">=</span> <span class="n">input_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">DecogoSolverManager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver_thread</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent_conn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_child_conn</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DecogoProcess.run"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoProcess.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method for running the solver&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">,</span>
+                                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_child_conn</span><span class="o">.</span><span class="n">poll</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">EXIT: timeout&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">solver_thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># heartbeat for checking</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DecogoProcess._exit"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoProcess._exit">[docs]</a>    <span class="k">def</span> <span class="nf">_exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Finishes the process and all sub-processes and exits&quot;&quot;&quot;</span>
+
+        <span class="c1"># terminate all child processes. The purpose of this to stop processes</span>
+        <span class="c1"># of other solvers</span>
+        <span class="c1"># (SCIP, bonmin etc)</span>
+        <span class="n">current_process</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">current_process</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_child_conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DecogoProcess.close"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoProcess.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Closes process&quot;&quot;&quot;</span>
+        <span class="c1"># The actual value we are sending to child does not matter because</span>
+        <span class="c1"># the while loop in `run` will break upon receipt of any object.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent_conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;STOP&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DecogoProcess.get_max_time"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoProcess.get_max_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_max_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets max time for running the solver process&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">maxtime</span></div></div>
+
+
+<div class="viewcode-block" id="DecogoSolverManager"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolverManager">[docs]</a><span class="k">class</span> <span class="nc">DecogoSolverManager</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class which manages algorithms of the solver. It performs the</span>
+<span class="sd">    decomposition, creates the settings, calls the algorithms and stores</span>
+<span class="sd">    the results</span>
+
+<span class="sd">    :param decomposer: Instance of the class which performs the decomposition</span>
+<span class="sd">    :type decomposer: PyomoModelDecomposer</span>
+<span class="sd">    :param problem: Decomposed problem</span>
+<span class="sd">    :type problem: PyomoDecomposedProblem or DecomposedProblem</span>
+<span class="sd">    :param logger_handler: Logger instance</span>
+<span class="sd">    :type logger_handler: DecogoLogger</span>
+<span class="sd">    :param settings: Instance of solver settings</span>
+<span class="sd">    :type settings: Settings</span>
+<span class="sd">    :param results: Instance of solver results</span>
+<span class="sd">    :type results: Results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DecogoSolverManager.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolverManager.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># is created within automatic decomposition</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger_handler</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">Results</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;decogo.set&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DecogoSolverManager.solve"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolverManager.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_model</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performs basic operations of the solver: decomposition,</span>
+<span class="sd">        algorithm execution and showing the results</span>
+
+<span class="sd">        :param input_model: Input Pyomo model</span>
+<span class="sd">        :type input_model: ConcreteModel</span>
+<span class="sd">        :param file_name: Name of the file where the logs should be stored</span>
+<span class="sd">        :type file_name: str or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger_handler</span> <span class="o">=</span> <span class="n">DecogoLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">logger_level</span><span class="p">,</span>
+                                           <span class="n">file_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">start_clock_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">strategy</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_automatic_decomposition</span><span class="p">(</span>
+                <span class="n">input_model</span><span class="p">,</span> <span class="n">user_defined_model</span><span class="o">=</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">user_defined_input_model</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;-----------------------------------------------------&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Used time: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">current_used_time</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;-----------------------------------------------------&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;OA&#39;</span><span class="p">:</span>
+                <span class="n">solver</span> <span class="o">=</span> <span class="n">OaSolver</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;CG&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">user_defined_input_model</span><span class="p">:</span>
+                    <span class="n">solver</span> <span class="o">=</span> <span class="n">RefactoryColGen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">solver</span> <span class="o">=</span> <span class="n">ColGen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
+            <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>  <span class="c1"># it&#39;s ok, the solver strategy is always provided</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">EXIT: Some exception&#39;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger_handler</span><span class="o">.</span><span class="n">clean_up</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DecogoSolverManager._automatic_decomposition"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolverManager._automatic_decomposition">[docs]</a>    <span class="k">def</span> <span class="nf">_automatic_decomposition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_model</span><span class="p">,</span> <span class="n">user_defined_model</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Peforms automatic decomposition of the input model</span>
+
+<span class="sd">        :param input_model: Input Pyomo model</span>
+<span class="sd">        :type input_model: ConcreteModel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_defined_model</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decomposer</span> <span class="o">=</span> <span class="n">PyomoModelDecomposer</span><span class="p">(</span><span class="n">input_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">decomp_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">model_sense</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposer</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">decomp_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">decomp_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">current_used_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">decomp_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">sense</span> <span class="o">=</span> <span class="n">model_sense</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">containers_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">block_model</span> <span class="o">=</span> <span class="n">PyomoBlockModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">model_sense</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="n">PyomoDecomposedProblem</span><span class="p">(</span><span class="n">block_model</span><span class="p">,</span>
+                                                  <span class="n">strategy</span><span class="o">=</span>
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">strategy</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">containers_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">containers_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">current_used_time</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">containers_time</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">sense</span> <span class="o">=</span> <span class="n">input_model</span><span class="o">.</span><span class="n">sense</span>
+            <span class="n">block_model</span> <span class="o">=</span> <span class="n">BlockModel</span><span class="p">(</span><span class="n">input_model</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="n">DecomposedProblem</span><span class="p">(</span><span class="n">block_model</span><span class="p">,</span>
+                                             <span class="n">input_model</span><span class="o">.</span><span class="n">sub_problems</span><span class="p">,</span>
+                                             <span class="n">input_model</span><span class="o">.</span><span class="n">original_problem</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DecogoLogger"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoLogger">[docs]</a><span class="k">class</span> <span class="nc">DecogoLogger</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class which is responsible for the logging of the solver. It sets up</span>
+<span class="sd">    the logs of the solver</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DecogoLogger.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoLogger.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;debug&#39;</span><span class="p">:</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;info&#39;</span><span class="p">:</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+
+        <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_up_into_console</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_up_into_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DecogoLogger._set_up_into_file"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoLogger._set_up_into_file">[docs]</a>    <span class="k">def</span> <span class="nf">_set_up_into_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets up the logger into file</span>
+
+<span class="sd">        :param file_name: Name of the file</span>
+<span class="sd">        :type file_name: str</span>
+<span class="sd">        :param level: logger level</span>
+<span class="sd">        :type level: logging.DEBUG, logging.INFO etc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+        <span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DecogoLogger._set_up_into_console"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoLogger._set_up_into_console">[docs]</a>    <span class="k">def</span> <span class="nf">_set_up_into_console</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets up the logger into console</span>
+
+<span class="sd">        :param level: logger level</span>
+<span class="sd">        :type level: logging.DEBUG, logging.INFO etc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+        <span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+        <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DecogoLogger.clean_up"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoLogger.clean_up">[docs]</a>    <span class="k">def</span> <span class="nf">clean_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cleans all logger handlers&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">handler</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">removeHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Settings &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tests" href="tests.html" />
+    <link rel="prev" title="Example" href="example.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Settings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sources/settings.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="settings">
+<h1>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h1>
+<p>The settings names are defined with their default values at the beginning of the
+file <code class="docutils literal notranslate"><span class="pre">decogo/solver/settings.py</span></code>. The settings are grouped by usage:</p>
+<ul class="simple">
+<li><p>Solver names and their settings</p></li>
+<li><p>General settings</p></li>
+<li><p>OA algorithm</p></li>
+<li><p>CG settings</p></li>
+</ul>
+<p>In order to add/modify/remove the settings, simply modify the declaration of dictionary
+<code class="docutils literal notranslate"><span class="pre">_setting_names_default_val</span></code> in <code class="docutils literal notranslate"><span class="pre">solver/settings.py</span></code>.</p>
+<p>In order to overwrite the default settings, it is necessary to provide the settings
+file <code class="docutils literal notranslate"><span class="pre">decogo.set</span></code> which should be located in the working directory. The example
+of settings file definition:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">strategy</span> <span class="o">=</span> <span class="n">OA</span>
+<span class="n">maxtime</span> <span class="o">=</span> <span class="mi">300</span>
+</pre></div>
+</div>
+<p>In the example above, we set the solver strategy to OA and set maximum running time 300 sec.</p>
+<p>Here is the list of settings defined settings and their default values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">_setting_names_default_val</span> <span class="o">=</span> \
+    <span class="p">{</span><span class="s1">&#39;lp_solver&#39;</span><span class="p">:</span> <span class="s1">&#39;gurobi&#39;</span><span class="p">,</span>  <span class="c1"># LP solver name</span>
+     <span class="s1">&#39;nlp_solver&#39;</span><span class="p">:</span> <span class="s1">&#39;ipopt&#39;</span><span class="p">,</span>  <span class="c1"># NLP solver name</span>
+     <span class="s1">&#39;minlp_solver&#39;</span><span class="p">:</span> <span class="s1">&#39;scip&#39;</span><span class="p">,</span>  <span class="c1"># MINLP solver</span>
+
+     <span class="s1">&#39;mip_solver&#39;</span><span class="p">:</span> <span class="s1">&#39;gurobi&#39;</span><span class="p">,</span>  <span class="c1"># MIP solver name &#39;gurobi&#39;, change MIP solver to</span>
+     <span class="c1"># &#39;gurobi_persistent&#39; for more solution points</span>
+
+     <span class="s1">&#39;scip_settings&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;limits/stallnodes&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;limits/gap&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s1">&#39;limits/restarts&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)],</span>
+     <span class="s1">&#39;ipopt_settings&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;tol&#39;</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;dual_inf_tol&#39;</span><span class="p">,</span> <span class="mf">1e1</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s1">&#39;constr_viol_tol&#39;</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;compl_inf_tol&#39;</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">)],</span>
+     <span class="s1">&#39;gurobi_settings&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;NumericFocus&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Method&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+
+     <span class="c1"># general</span>
+     <span class="s1">&#39;strategy&#39;</span><span class="p">:</span> <span class="s1">&#39;CG&#39;</span><span class="p">,</span>  <span class="c1"># strategy for solver; can be &#39;OA&#39; or &#39;CG&#39; or</span>
+     <span class="c1"># &#39;ADAPTCG&#39; or &#39;DynCG&#39;</span>
+     <span class="s1">&#39;maxtime&#39;</span><span class="p">:</span> <span class="mf">1e10</span><span class="p">,</span>  <span class="c1"># maximum running time for the solver in seconds</span>
+     <span class="s1">&#39;logger_level&#39;</span><span class="p">:</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span>  <span class="c1"># &#39;debug&#39; - detailed info about solution</span>
+     <span class="c1"># process, &#39;info&#39; - only important information</span>
+
+     <span class="c1"># Decomposition</span>
+     <span class="c1"># estimate the bounds for unbounded variables during the decomposition</span>
+     <span class="s1">&#39;decomp_estimate_var_bounds&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+
+     <span class="c1"># OA</span>
+     <span class="s1">&#39;oa_eps_active_constraint&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>  <span class="c1"># accuracy for active constraint</span>
+     <span class="s1">&#39;oa_eps_rel_obj_val&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>  <span class="c1"># relative accuracy for stopping the OA</span>
+     <span class="c1"># algorithm, i.e. c(x_star) - c(x_oa) &lt; eps</span>
+     <span class="s1">&#39;oa_max_iter&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="c1"># max number of iterations for main OA algorithm</span>
+     <span class="s1">&#39;oa_eps_start&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>  <span class="c1"># accuracy of LP solution improvement during OA start</span>
+     <span class="s1">&#39;oa_line_search&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># switch on/off line search</span>
+     <span class="s1">&#39;oa_fix_and_refine&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># switch on/off fix-and-refine</span>
+
+     <span class="c1"># CG</span>
+     <span class="s1">&#39;cg_min_inner_point_distance&#39;</span><span class="p">:</span> <span class="mf">1e-5</span><span class="p">,</span>  <span class="c1"># minimum distance to inner points</span>
+     <span class="s1">&#39;cg_generate_columns_with_nlp&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># True - try to generate columns</span>
+     <span class="c1"># with NLP solver, False - with MINLP solver</span>
+     <span class="s1">&#39;cg_max_iter&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>  <span class="c1"># maximum number of iteration during CG</span>
+     <span class="s1">&#39;cg_add_local_cut&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># indicates if to add a local cut when solving</span>
+     <span class="c1"># CG subproblem</span>
+     <span class="s1">&#39;cg_sub_gradient_max_iter&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>  <span class="c1"># maximum number of subgradient iterations</span>
+     <span class="s1">&#39;cg_fast_fw_max_iter&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># maximum number of iteration during FW CG</span>
+     <span class="s1">&#39;cg_check_convergence&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="c1"># indicates whether in the end of</span>
+     <span class="c1"># the algorithm subproblems are solved exactly for convergence check</span>
+     <span class="s1">&#39;cg_max_main_iter&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="c1"># maximum iteration number for</span>
+     <span class="c1"># the main iteration</span>
+     <span class="s1">&#39;cg_fast_fw&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># to use fast fw cg instead of approx cg in start</span>
+     <span class="s1">&#39;cg_fast_approx&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># to use approx subproblem solving in fast cg</span>
+     <span class="s1">&#39;cg_find_solution&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># switch on or off find solution heuristics</span>
+     <span class="s1">&#39;cg_find_sol_mip_pool&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>  <span class="c1"># to set num of solution pool in</span>
+     <span class="c1"># solving mip proj prob</span>
+     <span class="s1">&#39;cg_find_sol_mip_pool_tau&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># to set value of tau for local</span>
+     <span class="c1"># search of projection point</span>
+     <span class="s1">&#39;cg_find_sol_mip_pool_max_round&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>  <span class="c1"># to set max iteration of</span>
+     <span class="c1"># local search</span>
+
+     <span class="c1"># Refactory for FW/CG</span>
+     <span class="s1">&#39;user_defined_input_model&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># switch on/off user-defined input</span>
+     <span class="c1"># model</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="tests.html" class="btn btn-neutral float-right" title="Tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="example.html" class="btn btn-neutral float-left" title="Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

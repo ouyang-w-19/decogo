@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.pyomo_problem.oa_master_problem &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.pyomo_problem.oa_master_problem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.pyomo_problem.oa_master_problem</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Implements OA master problems&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyomo.environ</span> <span class="kn">import</span> <span class="n">ConstraintList</span><span class="p">,</span> <span class="n">Objective</span><span class="p">,</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">Var</span><span class="p">,</span> <span class="n">RangeSet</span><span class="p">,</span> \
+    <span class="n">Reals</span><span class="p">,</span> <span class="n">SolverFactory</span><span class="p">,</span> <span class="n">ConcreteModel</span><span class="p">,</span> <span class="n">Block</span><span class="p">,</span> <span class="n">Suffix</span><span class="p">,</span> <span class="n">SolverStatus</span><span class="p">,</span> \
+    <span class="n">TerminationCondition</span>
+
+<span class="kn">from</span> <span class="nn">decogo.pyomo_problem.master_problem_base</span> <span class="kn">import</span> <span class="n">MasterProblemBase</span>
+<span class="kn">from</span> <span class="nn">decogo.util.block_vector</span> <span class="kn">import</span> <span class="n">BlockVector</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;decogo&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="OaMasterProblem"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.OaMasterProblem">[docs]</a><span class="k">class</span> <span class="nc">OaMasterProblem</span><span class="p">(</span><span class="n">MasterProblemBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for defining an outer master problem</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">        \\begin{split}</span>
+<span class="sd">            \\min \\ &amp;c^Tx,\\newline</span>
+<span class="sd">            &amp;x \\in P \\cap Y</span>
+<span class="sd">        \\end{split}</span>
+<span class="sd">        \\end{equation}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OaMasterProblem.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.OaMasterProblem.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_model</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">block_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Outer master problem&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_default_objective</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="OaMasterProblem.set_default_objective"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.OaMasterProblem.set_default_objective">[docs]</a>    <span class="k">def</span> <span class="nf">set_default_objective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets a linear objective function with the costs given from the</span>
+<span class="sd">        original formulation&quot;&quot;&quot;</span>
+        <span class="n">expr</span> <span class="o">=</span> \
+            <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">*</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span> <span class="o">+</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">const</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">del_component</span><span class="p">(</span><span class="s1">&#39;obj&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MipOaMasterProblem"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.MipOaMasterProblem">[docs]</a><span class="k">class</span> <span class="nc">MipOaMasterProblem</span><span class="p">(</span><span class="n">OaMasterProblem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for defining MIP Outer Approximation master problem</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">        \\begin{split}</span>
+<span class="sd">            \\min \\ &amp;c^Tx,\\newline</span>
+<span class="sd">            &amp;x \\in P \\cap Y \\cap \\hat{G}</span>
+<span class="sd">        \\end{split}</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">    where :math:`\\hat{G}` is an Outer Approximation of nonlinear feasible</span>
+<span class="sd">    set :math:`G`</span>
+
+<span class="sd">    :param approx_data: Object where the linearization cuts are stored</span>
+<span class="sd">    :type approx_data: ApproxData</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MipOaMasterProblem.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.MipOaMasterProblem.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_model</span><span class="p">,</span> <span class="n">approx_data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">block_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;MIP OA problem&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span> <span class="o">=</span> <span class="n">approx_data</span>
+
+        <span class="c1"># add linearization cuts</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">linearization_cuts</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MipOaMasterProblem.add_linearization_cuts"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.MipOaMasterProblem.add_linearization_cuts">[docs]</a>    <span class="k">def</span> <span class="nf">add_linearization_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_cuts</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds linearization cuts</span>
+
+<span class="sd">        :param n: Number of cuts to be added</span>
+<span class="sd">        :type n: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">get_expr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lhs</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">*</span>
+                       <span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                       <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="o">.</span><span class="n">num_cuts</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">-</span>
+                           <span class="n">number_of_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="o">.</span><span class="n">num_cuts</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                        <span class="n">expr</span><span class="o">=</span><span class="n">get_expr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="o">&lt;=</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                        <span class="n">expr</span><span class="o">=</span><span class="n">get_expr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="o">&gt;=</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">linearization_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span></div></div>
+                <span class="c1"># equality constraint does not exist in this case</span>
+
+
+<div class="viewcode-block" id="SlackMipOaMasterProblem"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.SlackMipOaMasterProblem">[docs]</a><span class="k">class</span> <span class="nc">SlackMipOaMasterProblem</span><span class="p">(</span><span class="n">MipOaMasterProblem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for MIP Outer Approximation problem with slacks</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">        \\begin{split}</span>
+<span class="sd">            \\min \\ &amp;c_k^Tx + \\gamma\\sum\\limits_{j \\in [m]}s_j,\\newline</span>
+<span class="sd">            &amp;x_k \\in Y_k \\cap \\hat{G}, \\newline</span>
+<span class="sd">            &amp; a_{kj}^Tx \\leq b_j + s_j, j \\in [m], \\newline</span>
+<span class="sd">            &amp; x_{\ell} \\text{ is fixed}, \\ell \\in K\\setminus{k}, \\gamma &gt; 0</span>
+<span class="sd">        \\end{split}</span>
+<span class="sd">        \\end{equation}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SlackMipOaMasterProblem.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.SlackMipOaMasterProblem.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_model</span><span class="p">,</span> <span class="n">approx_data</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">block_model</span><span class="p">,</span> <span class="n">approx_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;OA problem with slacks&#39;</span>
+
+        <span class="c1"># unfix slacks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slack_pos</span><span class="o">.</span><span class="n">unfix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slack_neg</span><span class="o">.</span><span class="n">unfix</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">slack_pos</span><span class="o">.</span><span class="n">unfix</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">slack_neg</span><span class="o">.</span><span class="n">unfix</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SlackMipOaMasterProblem.set_objective"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.SlackMipOaMasterProblem.set_objective">[docs]</a>    <span class="k">def</span> <span class="nf">set_objective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets objective function</span>
+
+<span class="sd">        :param block_id: Block identifier</span>
+<span class="sd">        :type block_id: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">block_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gamma</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">block_id</span><span class="p">))</span>
+
+        <span class="c1"># set weights for slacks of global constraints</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">gamma_pos</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">gamma</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">gamma_neg</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">gamma</span>
+
+        <span class="n">expr</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="n">block_id</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">*</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                   <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">[</span><span class="n">block_id</span><span class="p">]))</span>
+
+        <span class="c1"># sum of slacks for global constraints</span>
+        <span class="n">expr</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">gamma_pos</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slack_pos</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">gamma_neg</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slack_neg</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">))</span>
+
+        <span class="c1"># set weights for slacks of linear local constraints</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_local_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">gamma_pos</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">gamma</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">gamma_neg</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">gamma</span>
+
+        <span class="n">expr</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">gamma_pos</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">slack_pos</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">gamma_neg</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">slack_neg</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_local_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">del_component</span><span class="p">(</span><span class="s1">&#39;obj&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">minimize</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SlackMipOaMasterProblem.solve"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.SlackMipOaMasterProblem.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver_name</span><span class="p">,</span> <span class="n">start_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solver_options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calls the base method</span>
+<span class="sd">        :meth:`~problem.oa_problem_base.OaMasterProblemBase.solve` and</span>
+<span class="sd">        additionally returns the flag if slacks are zeros</span>
+
+<span class="sd">        .. Note::</span>
+<span class="sd">            If the solution is reported by the solver to be infeasible, then</span>
+<span class="sd">            the variable bounds are too small</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">x_sol</span><span class="p">,</span> <span class="n">obj_val</span><span class="p">,</span> <span class="n">duals</span><span class="p">,</span> <span class="n">sol_is_feasible</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+            <span class="n">solver_name</span><span class="o">=</span><span class="n">solver_name</span><span class="p">,</span> <span class="n">start_point</span><span class="o">=</span><span class="n">start_point</span><span class="p">,</span>
+            <span class="n">solver_options</span><span class="o">=</span><span class="n">solver_options</span><span class="p">)</span>
+        <span class="c1"># if the solution is infeasible, then the variable bounds are too small</span>
+
+        <span class="c1"># check if slacks are zeros</span>
+        <span class="n">slacks_are_zero</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slack_pos</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mf">0.0001</span><span class="p">:</span>
+                <span class="n">slacks_are_zero</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">slack_neg</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mf">0.0001</span><span class="p">:</span>
+                <span class="n">slacks_are_zero</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">x_sol</span><span class="p">,</span> <span class="n">obj_val</span><span class="p">,</span> <span class="n">duals</span><span class="p">,</span> <span class="n">sol_is_feasible</span><span class="p">,</span> <span class="n">slacks_are_zero</span></div></div>
+
+
+<div class="viewcode-block" id="CompactOaMasterProblem"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem">[docs]</a><span class="k">class</span> <span class="nc">CompactOaMasterProblem</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for defining compact outer master problem</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">        \\begin{split}</span>
+<span class="sd">            \\min &amp;\\sum\\limits_{k \\in K} w_{k0}, \\newline</span>
+<span class="sd">                &amp;\\sum\\limits_{k \\in K} w_k \\leq b, \\newline</span>
+<span class="sd">                &amp;w_k \\in D_k \\subset \\mathbb{R}^{m + 1}, k \\in K</span>
+<span class="sd">        \\end{split}</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">    where :math:`D_k` is an Outer Approximation</span>
+
+<span class="sd">    :param block_model: Block model</span>
+<span class="sd">    :type block_model: BlockModel</span>
+<span class="sd">    :param approx_data: Class that stores compact linear constraints, \</span>
+<span class="sd">    generated during solving the sub-problems</span>
+<span class="sd">    :type approx_data: ApproxData</span>
+<span class="sd">    :param model: Pyomo model</span>
+<span class="sd">    :type model: ConcreteModel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CompactOaMasterProblem.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_model</span><span class="p">,</span> <span class="n">approx_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span> <span class="o">=</span> <span class="n">block_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span> <span class="o">=</span> <span class="n">approx_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">num_blocks</span> <span class="o">=</span> <span class="n">RangeSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Compact OA&#39;</span>
+
+        <span class="k">def</span> <span class="nf">block_rule</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+            <span class="c1"># by default all bound are equal 0, later they are redefined</span>
+            <span class="n">component</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span>
+                <span class="n">RangeSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">Reals</span><span class="p">,</span>
+                <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="c1"># valid linear constraints got from block model or after solving</span>
+            <span class="c1"># subproblems</span>
+            <span class="n">component</span><span class="o">.</span><span class="n">lin_con</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">Block</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">block_rule</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">lin_global_con_rule</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+                       <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lin_con</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lin_con</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="n">expr</span><span class="o">=</span><span class="n">lin_global_con_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">&lt;=</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;=&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lin_con</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="n">expr</span><span class="o">=</span><span class="n">lin_global_con_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">==</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lin_con</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="n">expr</span><span class="o">=</span><span class="n">lin_global_con_rule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">&gt;=</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_default_objective</span><span class="p">()</span>
+
+        <span class="c1"># suffix-object to store duals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">dual</span> <span class="o">=</span> <span class="n">Suffix</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="n">Suffix</span><span class="o">.</span><span class="n">IMPORT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CompactOaMasterProblem.set_default_objective"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem.set_default_objective">[docs]</a>    <span class="k">def</span> <span class="nf">set_default_objective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets objective&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">del_component</span><span class="p">(</span><span class="s1">&#39;obj&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">))</span>
+                                        <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">const</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CompactOaMasterProblem.add_compact_lin_local_const"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem.add_compact_lin_local_const">[docs]</a>    <span class="k">def</span> <span class="nf">add_compact_lin_local_const</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span>
+                                    <span class="n">added_compact_cut</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds compact linear constraints</span>
+
+<span class="sd">        :param block_id: Block identifier</span>
+<span class="sd">        :type block_id: int</span>
+<span class="sd">        :param lhs: Left hand side of the constraint</span>
+<span class="sd">        :type lhs: ndarray</span>
+<span class="sd">        :param relation: Relation of the constraint</span>
+<span class="sd">        :type relation: str</span>
+<span class="sd">        :param rhs: Right hand side of the constraint</span>
+<span class="sd">        :type rhs: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">expr</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lin_con</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">expr</span> <span class="o">&gt;=</span> <span class="n">rhs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;=&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lin_con</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">expr</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lin_con</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">expr</span> <span class="o">&lt;=</span> <span class="n">rhs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">added_compact_cut</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;added compact cut in compact oa problem: </span><span class="si">{0}</span><span class="s1">&#39;</span>
+                        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="o">+</span> <span class="n">relation</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rhs</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CompactOaMasterProblem.set_new_objective"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem.set_new_objective">[docs]</a>    <span class="k">def</span> <span class="nf">set_new_objective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets new linear objective</span>
+
+<span class="sd">        :param direction: Given direction</span>
+<span class="sd">        :type direction: ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># remove the objective</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">del_component</span><span class="p">(</span><span class="s1">&#39;obj&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span>
+            <span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">direction</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span>
+                     <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CompactOaMasterProblem.set_bounds"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem.set_bounds">[docs]</a>    <span class="k">def</span> <span class="nf">set_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lb_w</span><span class="p">,</span> <span class="n">ub_w</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets bounds on the variables</span>
+
+<span class="sd">        :param lb_w: Lower bounds vector</span>
+<span class="sd">        :type lb_w: BlockVector</span>
+<span class="sd">        :param ub_w: Upper bounds vector</span>
+<span class="sd">        :type ub_w: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">setlb</span><span class="p">(</span><span class="n">lb_w</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">setub</span><span class="p">(</span><span class="n">ub_w</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="CompactOaMasterProblem.remove_bounds"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem.remove_bounds">[docs]</a>    <span class="k">def</span> <span class="nf">remove_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resets the bounds of all variables&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">setlb</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">setub</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CompactOaMasterProblem.solve"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.CompactOaMasterProblem.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver_name</span><span class="p">,</span> <span class="n">solver_options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solves the problem by calling an external solver</span>
+
+<span class="sd">        :param solver_name: External solver name</span>
+<span class="sd">        :type solver_name: str</span>
+<span class="sd">        :param solver_options: Options for external solver</span>
+<span class="sd">        :type solver_options: list</span>
+<span class="sd">        :return: Solution point, dual solution and objective value</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">opt</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="n">solver_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">solver_options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">solver_options</span><span class="p">:</span>
+                <span class="n">opt</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">SolverStatus</span><span class="o">.</span><span class="n">warning</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span> <span class="o">==</span> <span class="n">TerminationCondition</span><span class="o">.</span><span class="n">infeasibleOrUnbounded</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39; is infeasible or unbounded&#39;</span><span class="p">)</span>
+
+        <span class="c1"># get duals</span>
+        <span class="n">duals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">):</span>
+            <span class="c1"># see inner master problem why &#39;-&#39; is here</span>
+            <span class="n">duals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">dual</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lin_con</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+
+        <span class="c1"># get solution point (resources)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">BlockVector</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">num_of_global_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="n">obj_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">expr</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">duals</span><span class="p">,</span> <span class="n">obj_val</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+<map id="inheritance2fcf9c9ab9" name="inheritance2fcf9c9ab9">
+<area shape="rect" id="node1" href="generated/decogo.util.block_vector.html#decogo.util.block_vector.BlockVector" target="_top" title="This class stores dense vector with the respect to blocks" alt="" coords="26,55,119,80"/>
+<area shape="rect" id="node2" href="generated/decogo.util.block_vector.html#decogo.util.block_vector.SparseBlockVector" target="_top" title="Class for storing the values in sparse format blockwise." alt="" coords="5,5,140,31"/>
+</map>

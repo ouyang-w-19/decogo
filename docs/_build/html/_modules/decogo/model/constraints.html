@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.model.constraints &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.model.constraints</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.model.constraints</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Stores constraint data&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyomo.core.base.constraint</span> <span class="kn">import</span> <span class="n">IndexedConstraint</span><span class="p">,</span> \
+    <span class="n">Constraint</span><span class="p">,</span> <span class="n">ScalarConstraint</span>
+<span class="kn">from</span> <span class="nn">pyomo.core.base.var</span> <span class="kn">import</span> <span class="n">_GeneralVarData</span><span class="p">,</span> <span class="n">Var</span><span class="p">,</span> <span class="n">ScalarVar</span>
+<span class="kn">from</span> <span class="nn">pyomo.core.expr.calculus.derivatives</span> <span class="kn">import</span> <span class="n">differentiate</span><span class="p">,</span> <span class="n">Modes</span>
+<span class="kn">from</span> <span class="nn">pyomo.core.expr.logical_expr</span> <span class="kn">import</span> <span class="n">EqualityExpression</span>
+<span class="kn">from</span> <span class="nn">pyomo.core.expr.numeric_expr</span> <span class="kn">import</span> <span class="n">NegationExpression</span><span class="p">,</span> \
+    <span class="n">MonomialTermExpression</span><span class="p">,</span> <span class="n">ProductExpression</span><span class="p">,</span> <span class="n">SumExpression</span><span class="p">,</span> \
+    <span class="n">ExpressionBase</span><span class="p">,</span> <span class="n">LinearExpression</span>
+<span class="kn">from</span> <span class="nn">pyomo.core.expr.visitor</span> <span class="kn">import</span> <span class="n">identify_variables</span>
+<span class="kn">from</span> <span class="nn">pyomo.environ</span> <span class="kn">import</span> <span class="n">Objective</span>
+
+<span class="kn">from</span> <span class="nn">decogo.util.block_vector</span> <span class="kn">import</span> <span class="n">SparseBlockVector</span>
+
+
+<div class="viewcode-block" id="VarDomain"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.VarDomain">[docs]</a><span class="k">class</span> <span class="nc">VarDomain</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This class stores the variable data.</span>
+
+<span class="sd">    :param _upper_bound: Upper bound of the variable</span>
+<span class="sd">    :type _upper_bound: float</span>
+<span class="sd">    :param _lower_bound: Lower bound of the variable</span>
+<span class="sd">    :type _lower_bound: float</span>
+<span class="sd">    :param _type: Type of the variable, i.e. real, integer, binary</span>
+<span class="sd">    :type _type: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="VarDomain.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.VarDomain.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">upper_bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">lower_bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="nb">type</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the upper bound of the variable&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span>
+
+    <span class="nd">@upper_bound</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the upper bound of the variable&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the lower bound of the variable&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span>
+
+    <span class="nd">@lower_bound</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the lower bound of the variable&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the type of the variable&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span></div>
+
+
+<div class="viewcode-block" id="LinearConstraint"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.LinearConstraint">[docs]</a><span class="k">class</span> <span class="nc">LinearConstraint</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing the linear constraint</span>
+
+<span class="sd">    :param lhs: Coefficients of right hand side of constraint</span>
+<span class="sd">    :type lhs: SparseBlockVector</span>
+<span class="sd">    :param relation: Constraint relation</span>
+<span class="sd">    :type relation: str</span>
+<span class="sd">    :param rhs: Right hand side value of constraint</span>
+<span class="sd">    :type rhs: float</span>
+<span class="sd">    :param is_local: Indicates of constraint is local, i.e. non zero values \</span>
+<span class="sd">    of right hand are within the same block</span>
+<span class="sd">    :type is_local: bool</span>
+<span class="sd">    :param block_id: If constraint is local, then block is is assigned, \</span>
+<span class="sd">    otherwise it is None</span>
+<span class="sd">    :type block_id: int or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LinearConstraint.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.LinearConstraint.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span> <span class="o">=</span> <span class="n">SparseBlockVector</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">const</span> <span class="o">=</span> <span class="n">const</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">=</span> <span class="n">relation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span>
+
+        <span class="k">if</span> <span class="n">block_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">block_id</span> <span class="o">=</span> <span class="n">block_id</span>
+
+        <span class="c1"># by default constraint is global</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_local</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># check if constr is local</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_local</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="LinearConstraint._is_local"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.LinearConstraint._is_local">[docs]</a>    <span class="k">def</span> <span class="nf">_is_local</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if constraint is local&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">blocks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_local</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">block_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="LinearConstraint.eval"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.LinearConstraint.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes violation of constraint</span>
+
+<span class="sd">        :param x: Given point to evaluate</span>
+<span class="sd">        :type x: BlockVector</span>
+<span class="sd">        :return: Violation of the constraint</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">viol</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">lhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">scalar_prod</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">lhs</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">viol</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;=&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">viol</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">viol</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">viol</span></div></div>
+
+
+<div class="viewcode-block" id="NonLinearConstraint"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.NonLinearConstraint">[docs]</a><span class="k">class</span> <span class="nc">NonLinearConstraint</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for nonlinear constraint. This class stores original nonlinear</span>
+<span class="sd">    Pyomo expression</span>
+
+<span class="sd">    :param expr: Original Pyomo expression of nonlinear constraint</span>
+<span class="sd">    :type expr: Expression</span>
+<span class="sd">    :param orig_var_names_in_block: Original variable names from the input \</span>
+<span class="sd">    Pyomo model</span>
+<span class="sd">    :type orig_var_names_in_block: list</span>
+<span class="sd">    :param _fun: Function :math:`f(x)`, where :math:`f(x)` is the function \</span>
+<span class="sd">    from the constraint :math:`f(x) \\leq b`</span>
+<span class="sd">    :type _fun: Expression</span>
+<span class="sd">    :param relation: Relation of the constraint, i.e equality or inequality</span>
+<span class="sd">    :type relation: str or None</span>
+<span class="sd">    :param _vars_objects: Pyomo variable objects from the parameter expr and \</span>
+<span class="sd">    is used only for OA solver</span>
+<span class="sd">    :type _vars_objects: list or None</span>
+<span class="sd">    :param gradient: Gradient computed symbolically and is used only in OA \</span>
+<span class="sd">    solver</span>
+<span class="sd">    :type gradient: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NonLinearConstraint.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.NonLinearConstraint.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">,</span> <span class="n">orig_var_names_in_block</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span>
+
+        <span class="c1"># this list also preserves the order of the variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_var_names_in_block</span> <span class="o">=</span> <span class="n">orig_var_names_in_block</span>
+
+        <span class="c1"># the following attributes are necessary for computing gradients and</span>
+        <span class="c1"># evaluation of constraints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fun</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rhs</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># right hand side</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># relation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_decompose</span><span class="p">()</span>
+
+        <span class="c1"># only is needed for convex OA, and computed only for OA solver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vars_objects</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="NonLinearConstraint._decompose"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.NonLinearConstraint._decompose">[docs]</a>    <span class="k">def</span> <span class="nf">_decompose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decomposes the nonlinear constraint :math:`f(x) \\leq b`, into</span>
+<span class="sd">        function (left hand side), relation and right hand side. If :math:`f(</span>
+<span class="sd">        x) \\geq b`, then the expression is reverted and represented</span>
+<span class="sd">        as :math:`b \\leq f(x)`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">EqualityExpression</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">=</span> <span class="s1">&#39;=&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ExpressionBase</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">=</span> <span class="s1">&#39;&lt;=&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">=</span> <span class="s1">&#39;&gt;=&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="NonLinearConstraint.eval"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.NonLinearConstraint.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates violation of the constraint</span>
+
+<span class="sd">        :param x: Given point to evaluate</span>
+<span class="sd">        :type x: list</span>
+<span class="sd">        :return: Violation and value of the constraint</span>
+<span class="sd">        :rtype: (float, float)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">violation</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assign_values_to_vars</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fun</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rhs</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;=&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-3</span><span class="p">:</span>
+                <span class="n">violation</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mf">1e-3</span><span class="p">:</span>
+                <span class="n">violation</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">1e-3</span><span class="p">:</span>
+                <span class="n">violation</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">violation</span><span class="p">,</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="NonLinearConstraint.compute_gradient"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.NonLinearConstraint.compute_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes just a gradient symbolically with sympy&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vars_objects</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">identify_variables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">))</span>
+        <span class="n">gradient_list</span> <span class="o">=</span> <span class="n">differentiate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fun</span><span class="p">,</span> <span class="n">wrt_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vars_objects</span><span class="p">,</span>
+                                      <span class="n">mode</span><span class="o">=</span><span class="n">Modes</span><span class="o">.</span><span class="n">sympy</span><span class="p">)</span>
+
+        <span class="c1"># create a map var_name -&gt; partial derivative</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vars_objects</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">gradient_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="NonLinearConstraint.compute_gradient_at_point"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.NonLinearConstraint.compute_gradient_at_point">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradient_at_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates already computed gradient at given point</span>
+
+<span class="sd">        :param x: Given point to evaluate</span>
+<span class="sd">        :type x: list</span>
+<span class="sd">        :return: Gradient with the respect to variables</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grad_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">ExpressionBase</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">Var</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_assign_values_to_vars</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">grad_map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="p">[</span><span class="n">key</span><span class="p">]()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">grad_map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">grad_map</span></div>
+
+<div class="viewcode-block" id="NonLinearConstraint._assign_values_to_vars"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.NonLinearConstraint._assign_values_to_vars">[docs]</a>    <span class="k">def</span> <span class="nf">_assign_values_to_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal method used for evaluation of nonlinear function</span>
+<span class="sd">        represented with Pyomo variables. This method exploits the property</span>
+<span class="sd">        that Var objects are mutable objects, one has to be careful with that.</span>
+<span class="sd">        It uses the list of variable objects in the attributes. Since these</span>
+<span class="sd">        objects are mutable objects, any changes of variable value will be</span>
+<span class="sd">        also effective in all expressions where these variables are contained.</span>
+<span class="sd">        So it is enough to assign the value of variable in one place. However</span>
+<span class="sd">        this looks very dangerous.</span>
+
+<span class="sd">        :param x: Given evaluation point</span>
+<span class="sd">        :type x: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="c1"># get variable name from original variable names</span>
+            <span class="n">var_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_var_names_in_block</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">var_obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vars_objects</span><span class="p">:</span>
+                <span class="c1"># find the variable object with the same name and assign the</span>
+                <span class="c1"># value</span>
+                <span class="k">if</span> <span class="n">var_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">var_name</span><span class="p">:</span>
+                    <span class="n">var_obj</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">val</span>
+                    <span class="k">break</span></div></div>
+
+
+<div class="viewcode-block" id="ObjectiveFunction"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.ObjectiveFunction">[docs]</a><span class="k">class</span> <span class="nc">ObjectiveFunction</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This class stores the linear objective function.</span>
+
+<span class="sd">    :param c: Linear objective function, stores the coefficients in sparse \</span>
+<span class="sd">    format</span>
+<span class="sd">    :type c: SparseBlockVector</span>
+<span class="sd">    :param const: Constant value of objective value</span>
+<span class="sd">    :type const: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ObjectiveFunction.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.ObjectiveFunction.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">,</span> <span class="n">const</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">SparseBlockVector</span><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">const</span> <span class="o">=</span> <span class="n">const</span></div>
+
+<div class="viewcode-block" id="ObjectiveFunction.eval"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.ObjectiveFunction.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates the objective function \</span>
+<span class="sd">         :math:`\\sum_\\limits{k \\in K} c_k x_k`</span>
+
+<span class="sd">        :param x: Given point for evaluation</span>
+<span class="sd">        :type x: BlockVector</span>
+<span class="sd">        :return: the value of the objective function for :math:`x`</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">scalar_prod</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CutPool"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool">[docs]</a><span class="k">class</span> <span class="nc">CutPool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Container class for linear constraints. It contains both local and \</span>
+<span class="sd">     global linear constraints.</span>
+
+<span class="sd">    :param block_sizes: Number of variables in block</span>
+<span class="sd">    :type block_sizes: list</span>
+<span class="sd">    :param blocks: List of original variable names blockwise</span>
+<span class="sd">    :type blocks: list</span>
+<span class="sd">    :param obj: Objective function</span>
+<span class="sd">    :type obj: ObjectiveFunction</span>
+<span class="sd">    :param global_cuts: List of global constraints</span>
+<span class="sd">    :type global_cuts: list</span>
+<span class="sd">    :param local_cuts: Stores the list of local cuts blockwise</span>
+<span class="sd">    :type local_cuts: dict</span>
+<span class="sd">    :param copy_constraints: Stores the list of copy_constraints</span>
+<span class="sd">    :type copy_constraints: list</span>
+<span class="sd">    :param blocks_copy_constraints: Stores num of copy_constraints in each pair of blocks</span>
+<span class="sd">    :type blocks_copy_constraints: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CutPool.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">blocks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method</span>
+
+<span class="sd">        :raise ValueError: If objective function is not linear</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">blocks</span>
+
+        <span class="c1"># region objective reading and initialization</span>
+        <span class="n">obj_name</span><span class="p">,</span> <span class="n">objective</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">component_map</span><span class="p">(</span><span class="n">Objective</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">obj_expr</span> <span class="o">=</span> <span class="n">objective</span><span class="o">.</span><span class="n">expr</span>
+        <span class="n">degree</span> <span class="o">=</span> <span class="n">obj_expr</span><span class="o">.</span><span class="n">polynomial_degree</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">degree</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">degree</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Dev: Objective is not linear, check the reformulation&#39;</span><span class="p">)</span>
+        <span class="n">coef</span><span class="p">,</span> <span class="n">obj_const</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_linear_term_data</span><span class="p">(</span><span class="n">obj_expr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">ObjectiveFunction</span><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">,</span> <span class="n">obj_const</span><span class="p">)</span>
+        <span class="c1"># endregion</span>
+
+        <span class="c1"># region linear constraints reading and initialization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">block_obj</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">block_data_objects</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">con_name</span><span class="p">,</span> <span class="n">con_obj</span> <span class="ow">in</span> \
+                    <span class="n">block_obj</span><span class="o">.</span><span class="n">component_map</span><span class="p">(</span><span class="n">Constraint</span><span class="p">,</span>
+                                            <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">con_obj</span><span class="p">,</span> <span class="n">ScalarConstraint</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_read_constraint_object</span><span class="p">(</span><span class="n">con_obj</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">con_obj</span><span class="p">,</span> <span class="n">IndexedConstraint</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">con_obj</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_read_constraint_object</span><span class="p">(</span><span class="n">con_obj</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                         <span class="s1">&#39;Dev: Found constraints object type which &#39;</span>
+                         <span class="s1">&#39;was not considered&#39;</span><span class="p">)</span>
+        <span class="c1"># copy constraints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copy_constraints</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocks_copy_constraints</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">cut_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_copy_constraint</span><span class="p">(</span><span class="n">cut_index</span><span class="p">)</span></div>
+        <span class="c1"># endregion</span>
+
+<div class="viewcode-block" id="CutPool._read_constraint_object"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool._read_constraint_object">[docs]</a>    <span class="k">def</span> <span class="nf">_read_constraint_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">con_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reads Pyomo constraints, detects if the constraint is linear.</span>
+<span class="sd">        If yes, then it creates the linear constraint</span>
+
+<span class="sd">        :param con_obj: Pyomo constraint object</span>
+<span class="sd">        :type con_obj: Constraint</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">con_expr</span> <span class="o">=</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">body</span>
+        <span class="k">if</span> <span class="n">con_expr</span><span class="o">.</span><span class="n">polynomial_degree</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">coef</span><span class="p">,</span> <span class="n">const</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_linear_term_data</span><span class="p">(</span><span class="n">con_expr</span><span class="p">)</span>
+
+            <span class="n">rhs</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">relation</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">equality</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">relation</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+                <span class="n">rhs</span> <span class="o">=</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">upper</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">elif</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">upper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">strict_upper</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">relation</span> <span class="o">=</span> <span class="s2">&quot;&lt;=&quot;</span>
+                <span class="n">rhs</span> <span class="o">=</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">upper</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">elif</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">upper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">strict_upper</span><span class="p">:</span>
+                <span class="n">relation</span> <span class="o">=</span> <span class="s2">&quot;&lt;&quot;</span>
+                <span class="n">rhs</span> <span class="o">=</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">upper</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">elif</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">lower</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">strict_lower</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">relation</span> <span class="o">=</span> <span class="s2">&quot;&gt;=&quot;</span>
+                <span class="n">rhs</span> <span class="o">=</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">lower</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">elif</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">lower</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">strict_lower</span><span class="p">:</span>
+                <span class="n">relation</span> <span class="o">=</span> <span class="s2">&quot;&gt;&quot;</span>
+                <span class="n">rhs</span> <span class="o">=</span> <span class="n">con_obj</span><span class="o">.</span><span class="n">lower</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="n">rhs</span> <span class="o">-=</span> <span class="n">const</span>
+            <span class="n">lin_con</span> <span class="o">=</span> <span class="n">LinearConstraint</span><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">lin_con</span><span class="o">.</span><span class="n">is_local</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">lin_con</span><span class="o">.</span><span class="n">block_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lin_con</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lin_con</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CutPool._get_linear_term_data"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool._get_linear_term_data">[docs]</a>    <span class="k">def</span> <span class="nf">_get_linear_term_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Recursive function for reading and getting data for linear terms</span>
+
+<span class="sd">        :param expr: Linear expression to parse</span>
+<span class="sd">        :type expr: Expression</span>
+<span class="sd">        :return: List of coefficients and constant</span>
+<span class="sd">        :rtype: (list, int)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coef</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">const</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">SumExpression</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+                <span class="n">new_coef</span><span class="p">,</span> <span class="n">new_const</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_linear_term_data</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">new_coef</span><span class="p">:</span>
+                    <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">block_id</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+                <span class="n">const</span> <span class="o">+=</span> <span class="n">new_const</span>
+        <span class="k">elif</span> <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">MonomialTermExpression</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">coef_val</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">var_name</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var_name</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">coef_val</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_variable_index_by_name</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+            <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">coef_val</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">NegationExpression</span><span class="p">:</span>
+            <span class="n">new_coef</span><span class="p">,</span> <span class="n">new_const</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_linear_term_data</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># multiply by -1, since it is negation expression</span>
+            <span class="k">for</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">new_coef</span><span class="p">:</span>
+                <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">block_id</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="o">-</span><span class="n">val</span><span class="p">))</span>
+            <span class="n">const</span> <span class="o">-=</span> <span class="n">new_const</span>
+        <span class="k">elif</span> <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">ProductExpression</span><span class="p">:</span>
+            <span class="c1"># if ProductExpression is here, than it is should be that one</span>
+            <span class="c1"># argument is a number and the other is SumExpression</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">new_coef</span><span class="p">,</span> <span class="n">new_const</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_linear_term_data</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">multiplier</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_coef</span><span class="p">,</span> <span class="n">new_const</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_linear_term_data</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">multiplier</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">new_coef</span><span class="p">:</span>
+                <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">block_id</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">multiplier</span> <span class="o">*</span> <span class="n">val</span><span class="p">))</span>
+            <span class="n">const</span> <span class="o">+=</span> <span class="n">multiplier</span> <span class="o">*</span> <span class="n">new_const</span>
+        <span class="k">elif</span> <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">LinearExpression</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">linear_coefs</span><span class="p">):</span>
+                <span class="n">var_name</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">linear_vars</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_variable_index_by_name</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+                <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">Var</span> <span class="ow">or</span> <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">_GeneralVarData</span> <span class="ow">or</span> \
+                <span class="n">expr</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">ScalarVar</span><span class="p">:</span>
+            <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_variable_index_by_name</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">const</span> <span class="o">=</span> <span class="n">expr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Dev: Found expression object type which was not considered&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">coef</span><span class="p">,</span> <span class="n">const</span></div>
+
+<div class="viewcode-block" id="CutPool._get_variable_index_by_name"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool._get_variable_index_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">_get_variable_index_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get variable index from the list of blocks for sparse vector</span>
+<span class="sd">        initialization</span>
+
+<span class="sd">        :param var_name: Original variable name</span>
+<span class="sd">        :type var_name: str</span>
+<span class="sd">        :return: Pair of indices: block id and index in the block</span>
+<span class="sd">        :rtype: (int, int)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># index for iteration over the blocks</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span></div>
+
+<div class="viewcode-block" id="CutPool.add_lin_local_constr"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool.add_lin_local_constr">[docs]</a>    <span class="k">def</span> <span class="nf">add_lin_local_constr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coeff</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds linear local constraint</span>
+
+<span class="sd">        :param coeff: Coefficients of left hand side</span>
+<span class="sd">        :type coeff: list</span>
+<span class="sd">        :param relation: Constraint relation</span>
+<span class="sd">        :type relation: str</span>
+<span class="sd">        :param b: Right hand side of the constraint</span>
+<span class="sd">        :type b: float</span>
+<span class="sd">        :param block_sizes: Number of variables blockwise</span>
+<span class="sd">        :type block_sizes: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lin_con</span> <span class="o">=</span> <span class="n">LinearConstraint</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">lin_con</span><span class="o">.</span><span class="n">block_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lin_con</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_of_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets total number of all linear constraints</span>
+
+<span class="sd">        :return: Number of all linear constraint</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_cuts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">num_cuts</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">num_cuts</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_of_global_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the number of linear global constraints</span>
+
+<span class="sd">        :return: Number of global constraints only</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_of_local_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the number of linear local constraints blockwise</span>
+
+<span class="sd">        :return: Number of local constraints blockwise</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">))]</span>
+
+<div class="viewcode-block" id="CutPool.evaluate_violation_global_constraints"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool.evaluate_violation_global_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_violation_global_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates violation of all global constraints</span>
+
+<span class="sd">        :param point: Given point to evaluate</span>
+<span class="sd">        :type point: BlockVector</span>
+<span class="sd">        :return: Violation vector, which corresponds to violation of each \</span>
+<span class="sd">        global constraint</span>
+<span class="sd">        :rtype: ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">violation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cut</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">):</span>
+            <span class="n">viol</span> <span class="o">=</span> <span class="n">cut</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="n">violation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">viol</span>
+
+        <span class="k">return</span> <span class="n">violation</span></div>
+
+<div class="viewcode-block" id="CutPool._add_copy_constraint"><a class="viewcode-back" href="../../../sources/generated/decogo.model.constraints.html#decogo.model.constraints.CutPool._add_copy_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">_add_copy_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cut_index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Evaluate and add a global cut if it is a copy constraint</span>
+<span class="sd">        :param cut_index: index of a global cut in global_cuts</span>
+<span class="sd">        :type cut_index: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cut</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">[</span><span class="n">cut_index</span><span class="p">]</span>
+        <span class="n">copy_constraint_coeff_sum</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">cut</span><span class="o">.</span><span class="n">relation</span> <span class="o">!=</span> <span class="s1">&#39;=&#39;</span><span class="p">:</span>
+            <span class="n">copy_constraint_coeff_sum</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cut</span><span class="o">.</span><span class="n">rhs</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">copy_constraint_coeff_sum</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cut</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">num_blocks</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">copy_constraint_coeff_sum</span> <span class="o">=</span> <span class="mi">100</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">cut</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">cut</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">copy_constraint_coeff_sum</span> <span class="o">=</span> <span class="mi">100</span>
+                            <span class="k">break</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">copy_constraint_coeff_sum</span> <span class="o">+=</span> <span class="n">cut</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">copy_constraint_coeff_sum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cut</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">k1</span> <span class="o">&gt;</span> <span class="n">k2</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">k2</span><span class="p">,</span> <span class="n">k1</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks_copy_constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">blocks_copy_constraints</span><span class="p">[</span><span class="n">k2</span><span class="p">,</span> <span class="n">k1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">blocks_copy_constraints</span><span class="p">[</span><span class="n">k2</span><span class="p">,</span> <span class="n">k1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks_copy_constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">blocks_copy_constraints</span><span class="p">[</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">blocks_copy_constraints</span><span class="p">[</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">copy_constraints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

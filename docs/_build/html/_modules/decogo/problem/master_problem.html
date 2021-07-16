@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.problem.master_problem &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.problem.master_problem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.problem.master_problem</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Manages inner master problems&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">decogo.problem.inner_master_problem</span> <span class="kn">import</span> <span class="n">InnerMasterProblem</span><span class="p">,</span> \
+    <span class="n">MiniInnerMasterProblem</span><span class="p">,</span> <span class="n">ExtendedInnerMasterProblem</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;decogo&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MasterProblems"><a class="viewcode-back" href="../../../sources/generated/decogo.problem.master_problem.html#decogo.problem.master_problem.MasterProblems">[docs]</a><span class="k">class</span> <span class="nc">MasterProblems</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Container class for managing all master problems</span>
+
+<span class="sd">    :param inner_master_problem: Inner Approximation master problem</span>
+<span class="sd">    :type inner_problem: InnerMasterProblem</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MasterProblems.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.problem.master_problem.html#decogo.problem.master_problem.MasterProblems.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_model</span><span class="p">,</span> <span class="n">approx_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="c1"># CG master problems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_problem</span> <span class="o">=</span> <span class="n">InnerMasterProblem</span><span class="p">(</span><span class="n">block_model</span><span class="p">,</span> <span class="n">approx_data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MasterProblems.solve_ia"><a class="viewcode-back" href="../../../sources/generated/decogo.problem.master_problem.html#decogo.problem.master_problem.MasterProblems.solve_ia">[docs]</a>    <span class="k">def</span> <span class="nf">solve_ia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver_name</span><span class="p">,</span> <span class="n">slack_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solves :class:`~problem.inner_master_problem.InnerMasterProblem`</span>
+
+<span class="sd">        :param solver_name: External solver name</span>
+<span class="sd">        :type solver_name: str</span>
+<span class="sd">        :param slack_weights: Slack weights, defaults to ``None``</span>
+<span class="sd">        :type slack_weights: ndarray</span>
+<span class="sd">        :return: Active (selected) cells, weights for inner points, solution \</span>
+<span class="sd">        point in original space, solution in image space, slack values, \</span>
+<span class="sd">        dual solution, objective value</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">slack_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inner_problem</span><span class="o">.</span><span class="n">set_slack_weights</span><span class="p">(</span><span class="n">slack_weights</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># compute and set slack weights with default method</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inner_problem</span><span class="o">.</span><span class="n">compute_and_set_default_slack_weights</span><span class="p">()</span>
+
+        <span class="n">z_output</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">slacks</span><span class="p">,</span> <span class="n">duals</span><span class="p">,</span> <span class="n">obj_value</span> \
+            <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">slacks</span><span class="p">,</span> <span class="n">duals</span><span class="p">,</span> <span class="n">obj_value</span></div>
+
+<div class="viewcode-block" id="MasterProblems.solve_mini_ia"><a class="viewcode-back" href="../../../sources/generated/decogo.problem.master_problem.html#decogo.problem.master_problem.MasterProblems.solve_mini_ia">[docs]</a>    <span class="k">def</span> <span class="nf">solve_mini_ia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver_name</span><span class="p">,</span> <span class="n">hyper_block</span><span class="p">,</span> <span class="n">dir_im_space</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_inner_problem</span><span class="o">.</span><span class="n">set_objective</span><span class="p">(</span><span class="n">dir_im_space</span><span class="p">)</span>
+        <span class="n">global_con_indices</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">mini_inner_problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">global_con_hyper_block</span><span class="p">(</span>
+                <span class="n">hyper_block</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_inner_problem</span><span class="o">.</span><span class="n">deactivate_global_constraints</span><span class="p">(</span>
+            <span class="n">global_con_indices</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_inner_problem</span><span class="o">.</span><span class="n">deactivate_blocks</span><span class="p">(</span><span class="n">hyper_block</span><span class="p">)</span>
+
+        <span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">slacks</span><span class="p">,</span> <span class="n">duals</span><span class="p">,</span> <span class="n">obj_value</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">mini_inner_problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver_name</span><span class="p">)</span>
+
+        <span class="c1"># activate back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_inner_problem</span><span class="o">.</span><span class="n">activate_blocks</span><span class="p">(</span><span class="n">hyper_block</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_inner_problem</span><span class="o">.</span><span class="n">activate_global_constraints</span><span class="p">(</span><span class="n">global_con_indices</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">global_con_indices</span><span class="p">,</span> <span class="n">slacks</span></div>
+
+<div class="viewcode-block" id="MasterProblems.add_inner_point"><a class="viewcode-back" href="../../../sources/generated/decogo.problem.master_problem.html#decogo.problem.master_problem.MasterProblems.add_inner_point">[docs]</a>    <span class="k">def</span> <span class="nf">add_inner_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds inner point to the</span>
+<span class="sd">        :class:`~problem.inner_master_problem.InnerMasterProblem` by calling</span>
+<span class="sd">        :meth:`~problem.inner_master_problem.InnerMasterProblem.add_column`</span>
+
+<span class="sd">        :param block_id: Block identifier</span>
+<span class="sd">        :type block_id: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_problem</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="n">block_id</span><span class="p">)</span></div></div>
+
+        <span class="c1"># # for mini_inner_problem</span>
+        <span class="c1"># if self.dyn_cg is True:</span>
+        <span class="c1">#     if block_id in \</span>
+        <span class="c1">#             range(self.mini_inner_problem.block_model.num_blocks):</span>
+        <span class="c1">#         self.mini_inner_problem.add_column(block_id)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

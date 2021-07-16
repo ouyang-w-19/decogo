@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.model.model_decomposer &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="decogo.model.input_model_base" href="decogo.model.input_model_base.html" />
+    <link rel="prev" title="decogo.model.constraints" href="decogo.model.constraints.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.block_model.html">decogo.model.block_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.constraints.html">decogo.model.constraints</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">decogo.model.model_decomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.input_model_base.html">decogo.model.input_model_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.input_model.html">decogo.pyomo_minlp_model.input_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.subproblem.html">decogo.pyomo_minlp_model.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.master_problem_base.html">decogo.pyomo_minlp_model.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.nlp_master_problem.html">decogo.pyomo_minlp_model.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.projection_master_problem.html">decogo.pyomo_minlp_model.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.approx_data.html">decogo.problem.approx_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.decomposed_problem.html">decogo.problem.decomposed_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.inner_master_problem.html">decogo.problem.inner_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.master_problem.html">decogo.problem.master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.master_problem_base.html">decogo.pyomo_problem.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.oa_master_problem.html">decogo.pyomo_problem.oa_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.nlp_master_problem.html">decogo.pyomo_problem.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.projection_master_problem.html">decogo.pyomo_problem.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.pyomo_master_problem.html">decogo.pyomo_problem.pyomo_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.pyomo_decomposed_problem.html">decogo.pyomo_problem.pyomo_decomposed_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.subproblem.html">decogo.pyomo_problem.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.decogo.html">decogo.solver.decogo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.colgen.html">decogo.solver.colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.refactory_colgen.html">decogo.solver.refactory_colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.oa.html">decogo.solver.oa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.results.html">decogo.solver.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.settings.html">decogo.solver.settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.util.block_vector.html">decogo.util.block_vector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">Reference</a> &raquo;</li>
+        
+      <li>decogo.model.model_decomposer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/sources/generated/decogo.model.model_decomposer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-decogo.model.model_decomposer">
+<span id="decogo-model-model-decomposer"></span><h1>decogo.model.model_decomposer<a class="headerlink" href="#module-decogo.model.model_decomposer" title="Permalink to this headline">¶</a></h1>
+<p>Performs automatic reformulation of the Pyomo model</p>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.model.model_decomposer.PyomoModelDecomposer" title="decogo.model.model_decomposer.PyomoModelDecomposer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoModelDecomposer</span></code></a>(model, settings)</p></td>
+<td><p>This class performs the decomposition of the Pyomo model based on the defined blocks.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.model.model_decomposer.</code><code class="sig-name descname">PyomoModelDecomposer</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">settings</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class performs the decomposition of the Pyomo model based on the
+defined blocks. If for definition of Pyomo model keyword Block was used
+explicitly, then the reformulation is not performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>ConcreteModel</em>) – Input pyomo model</p></li>
+<li><p><strong>settings</strong> (<a class="reference internal" href="decogo.solver.settings.html#decogo.solver.settings.Settings" title="decogo.solver.settings.Settings"><em>Settings</em></a>) – Settings</p></li>
+<li><p><strong>blocks</strong> (<em>list</em>) – List of original names (strings) of variables collected     blockwise</p></li>
+<li><p><strong>original_obj_sense</strong> (<em>int</em>) – Indicates the sense of the objective     (maximization or minimization)</p></li>
+<li><p><strong>number_defined_blocks</strong> (<em>int</em>) – Number of defined blocks of the original     model, defaults to 1</p></li>
+<li><p><strong>nconstraints</strong> – Overall number of the constraints of the input model     :type nconstraints: int</p></li>
+<li><p><strong>nvars</strong> (<em>int</em>) – Number of variables of the input model</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">settings</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer.decompose">
+<code class="sig-name descname">decompose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer.decompose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer.decompose" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function which calls other functions for block detection and
+reformulation. Reformulates Pyomo model as block-separable with
+linear objective, with nonlinear local constraints and linear global
+constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reformulated model, variables (string names) collected         blockwise, original objective sense</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(ConcreteModel, list, int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._find_connected_components">
+<code class="sig-name descname">_find_connected_components</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._find_connected_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._find_connected_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct the graph which describes the sparsity pattern of the
+Hessian of the Lagrangian. Two nodes are connected if the
+corresponding variables are contained in the same nonlinear expression.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._add_edges_to_graph">
+<code class="sig-name descname">_add_edges_to_graph</code><span class="sig-paren">(</span><em class="sig-param">g</em>, <em class="sig-param">expr</em>, <em class="sig-param">nonlinear_vars</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._add_edges_to_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._add_edges_to_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursive function for construction of the sparsity graph.
+The two nodes are connected if respective variables contained in the
+same nonlinear expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<em>Graph</em>) – Graph</p></li>
+<li><p><strong>expr</strong> (<em>Expression</em>) – Expression which is currently processed</p></li>
+<li><p><strong>nonlinear_vars</strong> (<em>set</em>) – List of nonlinear variables</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._compute_initial_statistics">
+<code class="sig-name descname">_compute_initial_statistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._compute_initial_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._compute_initial_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute initial statistics such as number of variables and
+constraints</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._preprocessing">
+<code class="sig-name descname">_preprocessing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._preprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._preprocessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the following preprocessing steps:</p>
+<ul class="simple">
+<li><p>deletes trivial constraints (i.e. <span class="math notranslate nohighlight">\(x \leq a\)</span>) and updates the         variables bounds;</p></li>
+<li><p>checks if objective sense is <span class="math notranslate nohighlight">\(\max\)</span>; if so, then         <span class="math notranslate nohighlight">\(\max f(x) = \min -f(x)\)</span></p></li>
+<li><p>estimates bounds of unbounded variables, if the respective setting         is set to <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._get_blocks">
+<code class="sig-name descname">_get_blocks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._get_blocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._get_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifies the blocks if the there are more defined blocks than one
+(by default in Pyomo each model has at least one block always),
+i.e. it is used explicitly keyword Block. The variables which appear
+only in linear blocks are merged into one block.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._add_copy_constraints">
+<code class="sig-name descname">_add_copy_constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._add_copy_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._add_copy_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds copy constraints in the following case:</p>
+<p>If some nonlinear constraints have not all variables in the same block,
+then the common variable for these constraints is identified. For
+this variable, a new variable and corresponding copy constraint is
+created.In the expression trees of the nonlinear constraints, a common
+variable is replaced by the new variable</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._merge_linear_blocks">
+<code class="sig-name descname">_merge_linear_blocks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._merge_linear_blocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._merge_linear_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges linear blocks into one block, nonlinear are left as they are</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If variable of nonlinear constraint belongs to         different blocks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._compute_blocks">
+<code class="sig-name descname">_compute_blocks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._compute_blocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._compute_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls functions depending on the number of defined blocks. If there
+is only one block detected, then is constructs the sparsity graph
+depending on the expressions. If there are more than one block, then it
+simply reads the blocks as defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._determine_block_expr">
+<code class="sig-name descname">_determine_block_expr</code><span class="sig-paren">(</span><em class="sig-param">expr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._determine_block_expr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._determine_block_expr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns the block identifier to the given expression. If the
+variables in the expression are contained in other blocks, it returns
+also this blocks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<em>Expression</em>) – Expression which needs to be assigned to the blocks</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Block identifier -&gt; variable names dictionary. If length of         dictionary is greater than 1, it means that variables of the         expression are contained in the several blocks</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._reformulate">
+<code class="sig-name descname">_reformulate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._reformulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._reformulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs block-separable reformulation for the case if one block
+is identified. For that case it computes the blocks based on the
+nonlinear expressions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._find_separable_sub_expr_and_replace">
+<code class="sig-name descname">_find_separable_sub_expr_and_replace</code><span class="sig-paren">(</span><em class="sig-param">expr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._find_separable_sub_expr_and_replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._find_separable_sub_expr_and_replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursive function for walking through the expression trees and
+substituting the nonlinear expressions which belong to the one block
+by a new variable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<em>ProductExpression</em><em>, </em><em>SumExpression</em><em>,         </em><em>UnaryFunctionExpression</em><em>, </em><em>PowExpression</em><em>, </em><em>DivisionExpression</em><em>,         </em><em>NegationExpression</em><em>, </em><em>AbsExpression</em><em>, </em><em>MonomialTermExpression</em><em>, </em><em>Var</em>) – Expression which is processed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Block id to which this expression belongs. For some         subexpressions that should not be substituted None is returned.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int, None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._compute_number_of_defined_blocks">
+<code class="sig-name descname">_compute_number_of_defined_blocks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._compute_number_of_defined_blocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._compute_number_of_defined_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of blocks in the model. This includes also root block
+(any Pyomo model has at least one block).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._comp_bounds_new_vars">
+<em class="property">static </em><code class="sig-name descname">_comp_bounds_new_vars</code><span class="sig-paren">(</span><em class="sig-param">expr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._comp_bounds_new_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._comp_bounds_new_vars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes bounds of new variables based on expression</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<em>Expression</em>) – Expression for which the bounds are computed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Upper and lower bound of the expression</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(int, int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._create_new_var">
+<code class="sig-name descname">_create_new_var</code><span class="sig-paren">(</span><em class="sig-param">lower</em>, <em class="sig-param">upper</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._create_new_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._create_new_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new variable and adds it to the block list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._create_local_nonlin_constraint">
+<code class="sig-name descname">_create_local_nonlin_constraint</code><span class="sig-paren">(</span><em class="sig-param">lhs_expr</em>, <em class="sig-param">rhs_var_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._create_local_nonlin_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._create_local_nonlin_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates local nonlinear constraints</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.model_decomposer.PyomoModelDecomposer._estimate_var_bounds">
+<code class="sig-name descname">_estimate_var_bounds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/model_decomposer.html#PyomoModelDecomposer._estimate_var_bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.model_decomposer.PyomoModelDecomposer._estimate_var_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the bounds of the unbounded variables:</p>
+<ul class="simple">
+<li><p>if <span class="math notranslate nohighlight">\(x_i\)</span> has no lower bound,          then <span class="math notranslate nohighlight">\(\underline{x}_i = \min x_i, x \in P \cap X\)</span></p></li>
+<li><p>if <span class="math notranslate nohighlight">\(x_i\)</span> has no upper bound, then         <span class="math notranslate nohighlight">\(\overline{x}_i = \max x_i, x \in P \cap X\)</span></p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="decogo.model.input_model_base.html" class="btn btn-neutral float-right" title="decogo.model.input_model_base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="decogo.model.constraints.html" class="btn btn-neutral float-left" title="decogo.model.constraints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

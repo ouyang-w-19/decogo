@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.model.constraints &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="decogo.model.model_decomposer" href="decogo.model.model_decomposer.html" />
+    <link rel="prev" title="decogo.model.block_model" href="decogo.model.block_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.block_model.html">decogo.model.block_model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">decogo.model.constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.model_decomposer.html">decogo.model.model_decomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.input_model_base.html">decogo.model.input_model_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.input_model.html">decogo.pyomo_minlp_model.input_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.subproblem.html">decogo.pyomo_minlp_model.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.master_problem_base.html">decogo.pyomo_minlp_model.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.nlp_master_problem.html">decogo.pyomo_minlp_model.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.projection_master_problem.html">decogo.pyomo_minlp_model.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.approx_data.html">decogo.problem.approx_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.decomposed_problem.html">decogo.problem.decomposed_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.inner_master_problem.html">decogo.problem.inner_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.master_problem.html">decogo.problem.master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.master_problem_base.html">decogo.pyomo_problem.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.oa_master_problem.html">decogo.pyomo_problem.oa_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.nlp_master_problem.html">decogo.pyomo_problem.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.projection_master_problem.html">decogo.pyomo_problem.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.pyomo_master_problem.html">decogo.pyomo_problem.pyomo_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.pyomo_decomposed_problem.html">decogo.pyomo_problem.pyomo_decomposed_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.subproblem.html">decogo.pyomo_problem.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.decogo.html">decogo.solver.decogo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.colgen.html">decogo.solver.colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.refactory_colgen.html">decogo.solver.refactory_colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.oa.html">decogo.solver.oa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.results.html">decogo.solver.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.settings.html">decogo.solver.settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.util.block_vector.html">decogo.util.block_vector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">Reference</a> &raquo;</li>
+        
+      <li>decogo.model.constraints</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/sources/generated/decogo.model.constraints.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-decogo.model.constraints">
+<span id="decogo-model-constraints"></span><h1>decogo.model.constraints<a class="headerlink" href="#module-decogo.model.constraints" title="Permalink to this headline">¶</a></h1>
+<p>Stores constraint data</p>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.model.constraints.CutPool" title="decogo.model.constraints.CutPool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CutPool</span></code></a>(model, blocks)</p></td>
+<td><p>Container class for linear constraints.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decogo.model.constraints.LinearConstraint" title="decogo.model.constraints.LinearConstraint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LinearConstraint</span></code></a>(lhs, relation, rhs, block_sizes)</p></td>
+<td><p>Class for storing the linear constraint</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.model.constraints.NonLinearConstraint" title="decogo.model.constraints.NonLinearConstraint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NonLinearConstraint</span></code></a>(expr, …)</p></td>
+<td><p>Class for nonlinear constraint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decogo.model.constraints.ObjectiveFunction" title="decogo.model.constraints.ObjectiveFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectiveFunction</span></code></a>(coef, block_sizes, const)</p></td>
+<td><p>This class stores the linear objective function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.model.constraints.VarDomain" title="decogo.model.constraints.VarDomain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VarDomain</span></code></a>(upper_bound, lower_bound, type)</p></td>
+<td><p>This class stores the variable data.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="decogo.model.constraints.VarDomain">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.model.constraints.</code><code class="sig-name descname">VarDomain</code><span class="sig-paren">(</span><em class="sig-param">upper_bound</em>, <em class="sig-param">lower_bound</em>, <em class="sig-param">type</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#VarDomain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.VarDomain" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class stores the variable data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_upper_bound</strong> (<em>float</em>) – Upper bound of the variable</p></li>
+<li><p><strong>_lower_bound</strong> (<em>float</em>) – Lower bound of the variable</p></li>
+<li><p><strong>_type</strong> (<em>str</em>) – Type of the variable, i.e. real, integer, binary</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.model.constraints.VarDomain.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">upper_bound</em>, <em class="sig-param">lower_bound</em>, <em class="sig-param">type</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#VarDomain.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.VarDomain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.VarDomain.upper_bound">
+<em class="property">property </em><code class="sig-name descname">upper_bound</code><a class="headerlink" href="#decogo.model.constraints.VarDomain.upper_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the upper bound of the variable</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.VarDomain.lower_bound">
+<em class="property">property </em><code class="sig-name descname">lower_bound</code><a class="headerlink" href="#decogo.model.constraints.VarDomain.lower_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the lower bound of the variable</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.VarDomain.type">
+<em class="property">property </em><code class="sig-name descname">type</code><a class="headerlink" href="#decogo.model.constraints.VarDomain.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the type of the variable</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.model.constraints.LinearConstraint">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.model.constraints.</code><code class="sig-name descname">LinearConstraint</code><span class="sig-paren">(</span><em class="sig-param">lhs</em>, <em class="sig-param">relation</em>, <em class="sig-param">rhs</em>, <em class="sig-param">block_sizes</em>, <em class="sig-param">const=0</em>, <em class="sig-param">block_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#LinearConstraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.LinearConstraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for storing the linear constraint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<a class="reference internal" href="decogo.util.block_vector.html#decogo.util.block_vector.SparseBlockVector" title="decogo.util.block_vector.SparseBlockVector"><em>SparseBlockVector</em></a>) – Coefficients of right hand side of constraint</p></li>
+<li><p><strong>relation</strong> (<em>str</em>) – Constraint relation</p></li>
+<li><p><strong>rhs</strong> (<em>float</em>) – Right hand side value of constraint</p></li>
+<li><p><strong>is_local</strong> (<em>bool</em>) – Indicates of constraint is local, i.e. non zero values     of right hand are within the same block</p></li>
+<li><p><strong>block_id</strong> (<em>int</em><em> or </em><em>None</em>) – If constraint is local, then block is is assigned,     otherwise it is None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.model.constraints.LinearConstraint.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">lhs</em>, <em class="sig-param">relation</em>, <em class="sig-param">rhs</em>, <em class="sig-param">block_sizes</em>, <em class="sig-param">const=0</em>, <em class="sig-param">block_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#LinearConstraint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.LinearConstraint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.LinearConstraint._is_local">
+<code class="sig-name descname">_is_local</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#LinearConstraint._is_local"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.LinearConstraint._is_local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if constraint is local</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.LinearConstraint.eval">
+<code class="sig-name descname">eval</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#LinearConstraint.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.LinearConstraint.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes violation of constraint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<a class="reference internal" href="decogo.util.block_vector.html#decogo.util.block_vector.BlockVector" title="decogo.util.block_vector.BlockVector"><em>BlockVector</em></a>) – Given point to evaluate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Violation of the constraint</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.model.constraints.NonLinearConstraint">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.model.constraints.</code><code class="sig-name descname">NonLinearConstraint</code><span class="sig-paren">(</span><em class="sig-param">expr</em>, <em class="sig-param">orig_var_names_in_block</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#NonLinearConstraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.NonLinearConstraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for nonlinear constraint. This class stores original nonlinear
+Pyomo expression</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expr</strong> (<em>Expression</em>) – Original Pyomo expression of nonlinear constraint</p></li>
+<li><p><strong>orig_var_names_in_block</strong> (<em>list</em>) – Original variable names from the input     Pyomo model</p></li>
+<li><p><strong>_fun</strong> (<em>Expression</em>) – Function <span class="math notranslate nohighlight">\(f(x)\)</span>, where <span class="math notranslate nohighlight">\(f(x)\)</span> is the function     from the constraint <span class="math notranslate nohighlight">\(f(x) \leq b\)</span></p></li>
+<li><p><strong>relation</strong> (<em>str</em><em> or </em><em>None</em>) – Relation of the constraint, i.e equality or inequality</p></li>
+<li><p><strong>_vars_objects</strong> (<em>list</em><em> or </em><em>None</em>) – Pyomo variable objects from the parameter expr and     is used only for OA solver</p></li>
+<li><p><strong>gradient</strong> (<em>dict</em>) – Gradient computed symbolically and is used only in OA     solver</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.model.constraints.NonLinearConstraint.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">expr</em>, <em class="sig-param">orig_var_names_in_block</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#NonLinearConstraint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.NonLinearConstraint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.NonLinearConstraint._decompose">
+<code class="sig-name descname">_decompose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#NonLinearConstraint._decompose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.NonLinearConstraint._decompose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decomposes the nonlinear constraint <span class="math notranslate nohighlight">\(f(x) \leq b\)</span>, into
+function (left hand side), relation and right hand side. If <span class="math notranslate nohighlight">\(f(
+x) \geq b\)</span>, then the expression is reverted and represented
+as <span class="math notranslate nohighlight">\(b \leq f(x)\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.NonLinearConstraint.eval">
+<code class="sig-name descname">eval</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#NonLinearConstraint.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.NonLinearConstraint.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates violation of the constraint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>list</em>) – Given point to evaluate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Violation and value of the constraint</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.NonLinearConstraint.compute_gradient">
+<code class="sig-name descname">compute_gradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#NonLinearConstraint.compute_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.NonLinearConstraint.compute_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes just a gradient symbolically with sympy</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.NonLinearConstraint.compute_gradient_at_point">
+<code class="sig-name descname">compute_gradient_at_point</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#NonLinearConstraint.compute_gradient_at_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.NonLinearConstraint.compute_gradient_at_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates already computed gradient at given point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>list</em>) – Given point to evaluate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gradient with the respect to variables</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.NonLinearConstraint._assign_values_to_vars">
+<code class="sig-name descname">_assign_values_to_vars</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#NonLinearConstraint._assign_values_to_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.NonLinearConstraint._assign_values_to_vars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal method used for evaluation of nonlinear function
+represented with Pyomo variables. This method exploits the property
+that Var objects are mutable objects, one has to be careful with that.
+It uses the list of variable objects in the attributes. Since these
+objects are mutable objects, any changes of variable value will be
+also effective in all expressions where these variables are contained.
+So it is enough to assign the value of variable in one place. However
+this looks very dangerous.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>list</em>) – Given evaluation point</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.model.constraints.ObjectiveFunction">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.model.constraints.</code><code class="sig-name descname">ObjectiveFunction</code><span class="sig-paren">(</span><em class="sig-param">coef</em>, <em class="sig-param">block_sizes</em>, <em class="sig-param">const</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#ObjectiveFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.ObjectiveFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class stores the linear objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<a class="reference internal" href="decogo.util.block_vector.html#decogo.util.block_vector.SparseBlockVector" title="decogo.util.block_vector.SparseBlockVector"><em>SparseBlockVector</em></a>) – Linear objective function, stores the coefficients in sparse     format</p></li>
+<li><p><strong>const</strong> (<em>float</em>) – Constant value of objective value</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.model.constraints.ObjectiveFunction.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">coef</em>, <em class="sig-param">block_sizes</em>, <em class="sig-param">const</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#ObjectiveFunction.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.ObjectiveFunction.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.ObjectiveFunction.eval">
+<code class="sig-name descname">eval</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#ObjectiveFunction.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.ObjectiveFunction.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the objective function          <span class="math notranslate nohighlight">\(\sum_\limits{k \in K} c_k x_k\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<a class="reference internal" href="decogo.util.block_vector.html#decogo.util.block_vector.BlockVector" title="decogo.util.block_vector.BlockVector"><em>BlockVector</em></a>) – Given point for evaluation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the value of the objective function for <span class="math notranslate nohighlight">\(x\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.model.constraints.CutPool">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.model.constraints.</code><code class="sig-name descname">CutPool</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">blocks</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Container class for linear constraints. It contains both local and      global linear constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block_sizes</strong> (<em>list</em>) – Number of variables in block</p></li>
+<li><p><strong>blocks</strong> (<em>list</em>) – List of original variable names blockwise</p></li>
+<li><p><strong>obj</strong> (<a class="reference internal" href="#decogo.model.constraints.ObjectiveFunction" title="decogo.model.constraints.ObjectiveFunction"><em>ObjectiveFunction</em></a>) – Objective function</p></li>
+<li><p><strong>global_cuts</strong> (<em>list</em>) – List of global constraints</p></li>
+<li><p><strong>local_cuts</strong> (<em>dict</em>) – Stores the list of local cuts blockwise</p></li>
+<li><p><strong>copy_constraints</strong> (<em>list</em>) – Stores the list of copy_constraints</p></li>
+<li><p><strong>blocks_copy_constraints</strong> (<em>dict</em>) – Stores num of copy_constraints in each pair of blocks</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">blocks</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If objective function is not linear</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool._read_constraint_object">
+<code class="sig-name descname">_read_constraint_object</code><span class="sig-paren">(</span><em class="sig-param">con_obj</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool._read_constraint_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool._read_constraint_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads Pyomo constraints, detects if the constraint is linear.
+If yes, then it creates the linear constraint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>con_obj</strong> (<em>Constraint</em>) – Pyomo constraint object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool._get_linear_term_data">
+<code class="sig-name descname">_get_linear_term_data</code><span class="sig-paren">(</span><em class="sig-param">expr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool._get_linear_term_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool._get_linear_term_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursive function for reading and getting data for linear terms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<em>Expression</em>) – Linear expression to parse</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of coefficients and constant</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(list, int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool._get_variable_index_by_name">
+<code class="sig-name descname">_get_variable_index_by_name</code><span class="sig-paren">(</span><em class="sig-param">var_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool._get_variable_index_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool._get_variable_index_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get variable index from the list of blocks for sparse vector
+initialization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>var_name</strong> (<em>str</em>) – Original variable name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pair of indices: block id and index in the block</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(int, int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool.add_lin_local_constr">
+<code class="sig-name descname">add_lin_local_constr</code><span class="sig-paren">(</span><em class="sig-param">coeff</em>, <em class="sig-param">relation</em>, <em class="sig-param">b</em>, <em class="sig-param">block_sizes</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool.add_lin_local_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool.add_lin_local_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds linear local constraint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeff</strong> (<em>list</em>) – Coefficients of left hand side</p></li>
+<li><p><strong>relation</strong> (<em>str</em>) – Constraint relation</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Right hand side of the constraint</p></li>
+<li><p><strong>block_sizes</strong> (<em>list</em>) – Number of variables blockwise</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool.num_of_cuts">
+<em class="property">property </em><code class="sig-name descname">num_of_cuts</code><a class="headerlink" href="#decogo.model.constraints.CutPool.num_of_cuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets total number of all linear constraints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of all linear constraint</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool.num_of_global_cuts">
+<em class="property">property </em><code class="sig-name descname">num_of_global_cuts</code><a class="headerlink" href="#decogo.model.constraints.CutPool.num_of_global_cuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of linear global constraints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of global constraints only</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool.num_of_local_cuts">
+<em class="property">property </em><code class="sig-name descname">num_of_local_cuts</code><a class="headerlink" href="#decogo.model.constraints.CutPool.num_of_local_cuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of linear local constraints blockwise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of local constraints blockwise</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool.evaluate_violation_global_constraints">
+<code class="sig-name descname">evaluate_violation_global_constraints</code><span class="sig-paren">(</span><em class="sig-param">point</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool.evaluate_violation_global_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool.evaluate_violation_global_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates violation of all global constraints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>point</strong> (<a class="reference internal" href="decogo.util.block_vector.html#decogo.util.block_vector.BlockVector" title="decogo.util.block_vector.BlockVector"><em>BlockVector</em></a>) – Given point to evaluate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Violation vector, which corresponds to violation of each         global constraint</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.model.constraints.CutPool._add_copy_constraint">
+<code class="sig-name descname">_add_copy_constraint</code><span class="sig-paren">(</span><em class="sig-param">cut_index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/model/constraints.html#CutPool._add_copy_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.model.constraints.CutPool._add_copy_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate and add a global cut if it is a copy constraint
+:param cut_index: index of a global cut in global_cuts
+:type cut_index: int</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="decogo.model.model_decomposer.html" class="btn btn-neutral float-right" title="decogo.model.model_decomposer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="decogo.model.block_model.html" class="btn btn-neutral float-left" title="decogo.model.block_model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

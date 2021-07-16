@@ -1,0 +1,7 @@
+<map id="inheritance1c5fc3451a" name="inheritance1c5fc3451a">
+<area shape="rect" id="node1" href="generated/decogo.problem.approx_data.html#decogo.problem.approx_data.ApproxData" target="_top" title="Wrapper class for storing approximation data, i.e. inner points," alt="" coords="33,203,124,228"/>
+<area shape="rect" id="node2" href="generated/decogo.problem.approx_data.html#decogo.problem.approx_data.CompactCuts" target="_top" title="Class that stores valid compact linear cuts got after solving the" alt="" coords="28,153,129,179"/>
+<area shape="rect" id="node3" href="generated/decogo.problem.decomposed_problem.html#decogo.problem.decomposed_problem.DecomposedProblem" target="_top" title="This class contains all subproblems, master problems and approximation" alt="" coords="5,104,152,129"/>
+<area shape="rect" id="node4" href="generated/decogo.problem.approx_data.html#decogo.problem.approx_data.InnerPoints" target="_top" title="Class which stores inner points and corresponding columns" alt="" coords="35,55,122,80"/>
+<area shape="rect" id="node5" href="generated/decogo.problem.approx_data.html#decogo.problem.approx_data.LinearizationCuts" target="_top" title="This class computes and stores the linearization cuts which are used" alt="" coords="17,5,140,31"/>
+</map>

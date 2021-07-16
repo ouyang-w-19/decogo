@@ -1,0 +1,11 @@
+<map id="inheritance4aa596fba2" name="inheritance4aa596fba2">
+<area shape="rect" id="node1" title="Process objects represent activity that is run in a separate process" alt="" coords="31,351,131,376"/>
+<area shape="rect" id="node2" href="generated/decogo.solver.colgen.html#decogo.solver.colgen.ColGen" target="_top" title="Class which implements Column Generation algorithm" alt="" coords="45,301,117,327"/>
+<area shape="rect" id="node3" href="generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoLogger" target="_top" title="Class which is responsible for the logging of the solver. It sets up" alt="" coords="28,252,133,277"/>
+<area shape="rect" id="node4" href="generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoProcess" target="_top" title="Class which is responsible for solver process. The main idea of this" alt="" coords="324,351,439,376"/>
+<area shape="rect" id="node6" href="generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolver" target="_top" title="Class which starts the solution process" alt="" coords="30,203,131,228"/>
+<area shape="rect" id="node7" href="generated/decogo.solver.decogo.html#decogo.solver.decogo.DecogoSolverManager" target="_top" title="Class which manages algorithms of the solver. It performs the" alt="" coords="5,153,156,179"/>
+<area shape="rect" id="node8" href="generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver" target="_top" title="Class which implements OA method for convex problems" alt="" coords="43,104,118,129"/>
+<area shape="rect" id="node9" href="generated/decogo.solver.results.html#decogo.solver.results.Results" target="_top" title="Class which stores and makes some manipulations with the results." alt="" coords="45,55,117,80"/>
+<area shape="rect" id="node10" href="generated/decogo.solver.settings.html#decogo.solver.settings.Settings" target="_top" title="Class which stores all settings. The attributes in the are not set" alt="" coords="45,5,117,31"/>
+</map>

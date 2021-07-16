@@ -1,0 +1,950 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.pyomo_problem.subproblem &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="decogo.solver.decogo" href="decogo.solver.decogo.html" />
+    <link rel="prev" title="decogo.pyomo_problem.pyomo_decomposed_problem" href="decogo.pyomo_problem.pyomo_decomposed_problem.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.block_model.html">decogo.model.block_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.constraints.html">decogo.model.constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.model_decomposer.html">decogo.model.model_decomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.input_model_base.html">decogo.model.input_model_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.input_model.html">decogo.pyomo_minlp_model.input_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.subproblem.html">decogo.pyomo_minlp_model.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.master_problem_base.html">decogo.pyomo_minlp_model.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.nlp_master_problem.html">decogo.pyomo_minlp_model.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.projection_master_problem.html">decogo.pyomo_minlp_model.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.approx_data.html">decogo.problem.approx_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.decomposed_problem.html">decogo.problem.decomposed_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.inner_master_problem.html">decogo.problem.inner_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.master_problem.html">decogo.problem.master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.master_problem_base.html">decogo.pyomo_problem.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.oa_master_problem.html">decogo.pyomo_problem.oa_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.nlp_master_problem.html">decogo.pyomo_problem.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.projection_master_problem.html">decogo.pyomo_problem.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.pyomo_master_problem.html">decogo.pyomo_problem.pyomo_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.pyomo_decomposed_problem.html">decogo.pyomo_problem.pyomo_decomposed_problem</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">decogo.pyomo_problem.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.decogo.html">decogo.solver.decogo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.colgen.html">decogo.solver.colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.refactory_colgen.html">decogo.solver.refactory_colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.oa.html">decogo.solver.oa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.results.html">decogo.solver.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.settings.html">decogo.solver.settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.util.block_vector.html">decogo.util.block_vector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">Reference</a> &raquo;</li>
+        
+      <li>decogo.pyomo_problem.subproblem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/sources/generated/decogo.pyomo_problem.subproblem.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-decogo.pyomo_problem.subproblem">
+<span id="decogo-pyomo-problem-subproblem"></span><h1>decogo.pyomo_problem.subproblem<a class="headerlink" href="#module-decogo.pyomo_problem.subproblem" title="Permalink to this headline">¶</a></h1>
+<p>Implements and manages all sub-problems</p>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem" title="decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoLineSearchSubProblem</span></code></a>(block_model, block_id)</p></td>
+<td><p>Class defines line search sub-problem between exterior point <span class="math notranslate nohighlight">\(x_k^{ext}\)</span> and interior point <span class="math notranslate nohighlight">\(x_k^{int}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem" title="decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoMinlpSubProblem</span></code></a>(block_model, block_id)</p></td>
+<td><p>Class for defining the following sub-problem</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem" title="decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoProjectionSubProblem</span></code></a>(block_model, block_id)</p></td>
+<td><p>Class for defining a projection sub-problem</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem" title="decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoResourceProjectionSubProblem</span></code></a>(…)</p></td>
+<td><p>Class for defining a projection sub-problem</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase" title="decogo.pyomo_problem.subproblem.PyomoSubProblemBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoSubProblemBase</span></code></a>(block_model, block_id)</p></td>
+<td><p>Base class for construction of Pyomo model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems" title="decogo.pyomo_problem.subproblem.PyomoSubProblems"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoSubProblems</span></code></a>(block_model, block_id)</p></td>
+<td><p>Container class for managing all sub-problems</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.SubProblemBase" title="decogo.pyomo_problem.subproblem.SubProblemBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SubProblemBase</span></code></a>(block_model, block_id)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decogo.pyomo_problem.subproblem.SubProblemsBase" title="decogo.pyomo_problem.subproblem.SubProblemsBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SubProblemsBase</span></code></a>()</p></td>
+<td><p>Sub-problems base class</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemBase">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">SubProblemBase</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemBase" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemBase.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemBase.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemBase.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemBase.solve">
+<em class="property">abstract </em><code class="sig-name descname">solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">start_point=None</em>, <em class="sig-param">solver_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemBase.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemBase.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base method for calling the external solver to solve the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>start_point</strong> (<em>ndaray</em><em> or </em><em>None</em>) – Starting point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>solver_options</strong> (<em>list</em>) – Options for external solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal bound, dual bound, flag if the primal         bound is feasible</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemBase.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({'solve'})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemBase.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemBase._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemBase._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">PyomoSubProblemBase</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for construction of Pyomo model. Here are implemented
+methods for creating local linear and nonlinear constraints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block_model</strong> (<a class="reference internal" href="decogo.model.block_model.html#decogo.model.block_model.BlockModel" title="decogo.model.block_model.BlockModel"><em>BlockModel</em></a>) – Block model</p></li>
+<li><p><strong>block_id</strong> (<em>int</em>) – Block identifier</p></li>
+<li><p><strong>model</strong> (<em>ConcreteModel</em>) – Pyomo model</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">start_point=None</em>, <em class="sig-param">solver_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base method for calling the external solver to solve the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>start_point</strong> (<em>ndaray</em><em> or </em><em>None</em>) – Starting point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>solver_options</strong> (<em>list</em>) – Options for external solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal bound, dual bound, flag if the primal         bound is feasible</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.add_linear_constraint">
+<code class="sig-name descname">add_linear_constraint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.add_linear_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.add_linear_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new linear constraint</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.set_nlp">
+<code class="sig-name descname">set_nlp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.set_nlp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.set_nlp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relaxes integer varaibles to continious</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.unset_nlp">
+<code class="sig-name descname">unset_nlp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.unset_nlp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.unset_nlp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets to integer type for the variables which are integer in the
+original formulation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.update_var_lower_bound">
+<code class="sig-name descname">update_var_lower_bound</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.update_var_lower_bound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.update_var_lower_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the lower bound of the variable. The value is taken form
+the BlockModel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>tuple</em>) – Index (block_id, index)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.update_var_upper_bound">
+<code class="sig-name descname">update_var_upper_bound</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.update_var_upper_bound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.update_var_upper_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the upper bound of the variable. The value is taken form
+the BlockModel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>tuple</em>) – Index (block_id, index)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.fix_integers">
+<code class="sig-name descname">fix_integers</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.fix_integers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.fix_integers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fixes integer variables with given value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Given array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.unfix_integers">
+<code class="sig-name descname">unfix_integers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.unfix_integers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.unfix_integers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unfixes all integer variables</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.add_objective">
+<code class="sig-name descname">add_objective</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.add_objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.add_objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets default objective function, i.e. <span class="math notranslate nohighlight">\(c_k^Tx_k\)</span>, where
+<span class="math notranslate nohighlight">\(c_k\)</span> - partial objective from the original model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.set_objective">
+<code class="sig-name descname">set_objective</code><span class="sig-paren">(</span><em class="sig-param">direction</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblemBase.set_objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.set_objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the objective function with given direction vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>direction</strong> (<em>ndarray</em>) – Given vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblemBase._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblemBase._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">PyomoMinlpSubProblem</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoMinlpSubProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for defining the following sub-problem</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+    \min \ &amp;d_k^Ty_k, \newline
+    &amp;y_k \in X_k, d_k \in \mathbb{R}^{n_k}
+\end{split}
+\end{equation}\]</div>
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoMinlpSubProblem.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoMinlpSubProblem._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">PyomoProjectionSubProblem</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoProjectionSubProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for defining a projection sub-problem</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+    \min \ &amp;||y_k-x_k||^2,\newline
+    &amp;y_k \in G_k, x_k \text{ is fixed}
+\end{split}
+\end{equation}\]</div>
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoProjectionSubProblem.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.obj_rule">
+<code class="sig-name descname">obj_rule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoProjectionSubProblem.obj_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.obj_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the objective function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Objective expression</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Expression</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.set_projection_point">
+<code class="sig-name descname">set_projection_point</code><span class="sig-paren">(</span><em class="sig-param">point_to_project</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoProjectionSubProblem.set_projection_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.set_projection_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets projection point, i.e. <span class="math notranslate nohighlight">\(x_k\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>point_to_project</strong> (<em>ndarray</em>) – Projection point</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoProjectionSubProblem._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">PyomoResourceProjectionSubProblem</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoResourceProjectionSubProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for defining a projection sub-problem</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+    \min \ &amp;||A_kx_k - w_k||^2,\newline
+    &amp;y_k \in G_k, w_k \text{ is fixed}
+\end{split}
+\end{equation}\]</div>
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoResourceProjectionSubProblem.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.obj_rule">
+<code class="sig-name descname">obj_rule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoResourceProjectionSubProblem.obj_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.obj_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the objective function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Objective expression</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Expression</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.set_projection_point">
+<code class="sig-name descname">set_projection_point</code><span class="sig-paren">(</span><em class="sig-param">point_to_project</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoResourceProjectionSubProblem.set_projection_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.set_projection_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets projection point, i.e. <span class="math notranslate nohighlight">\(w_k\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>point_to_project</strong> (<em>ndarray</em>) – Projection point</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoResourceProjectionSubProblem._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">PyomoLineSearchSubProblem</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoLineSearchSubProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class defines line search sub-problem between exterior point
+<span class="math notranslate nohighlight">\(x_k^{ext}\)</span> and interior point <span class="math notranslate nohighlight">\(x_k^{int}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+    \max \ &amp; \alpha, \newline
+    &amp;y_k = \alpha x_k^{ext} + (1 - \alpha) x_k^{int}, \newline
+    &amp;y_k \in X_k
+\end{split}
+\end{equation}\]</div>
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoLineSearchSubProblem.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.set_interior_exterior_points">
+<code class="sig-name descname">set_interior_exterior_points</code><span class="sig-paren">(</span><em class="sig-param">exterior_point</em>, <em class="sig-param">interior_point</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoLineSearchSubProblem.set_interior_exterior_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.set_interior_exterior_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets values of two endpoints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exterior_point</strong> (<em>ndarray</em>) – Exterior point</p></li>
+<li><p><strong>interior_point</strong> (<em>ndarray</em>) – Interior point</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">start_point=None</em>, <em class="sig-param">solver_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoLineSearchSubProblem.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the subproblem and gets value of <span class="math notranslate nohighlight">\(\alpha\)</span>. For more
+info, see base method <a class="reference internal" href="#decogo.pyomo_problem.subproblem.SubProblemBase.solve" title="decogo.pyomo_problem.subproblem.SubProblemBase.solve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SubProblemBase.solve()</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoLineSearchSubProblem._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">SubProblemsBase</code><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemsBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sub-problems base class</p>
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemsBase.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase.minlp_solve">
+<em class="property">abstract </em><code class="sig-name descname">minlp_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">solver_options=None</em>, <em class="sig-param">start_point=None</em>, <em class="sig-param">direction=None</em>, <em class="sig-param">cell=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemsBase.minlp_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase.minlp_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">MinlpSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>solver_options</strong> (<em>list</em><em> or </em><em>None</em>) – External solver options, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>direction</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Direction for the objective, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>cell</strong> (<em>Cell</em><em> or </em><em>None</em>) – Cell, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal and dual bound</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase.fixed_minlp_solve">
+<em class="property">abstract </em><code class="sig-name descname">fixed_minlp_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">start_point</em>, <em class="sig-param">solver_options=None</em>, <em class="sig-param">direction=None</em>, <em class="sig-param">cell=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemsBase.fixed_minlp_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase.fixed_minlp_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">MinlpSubProblem</span></code> with fixed integer variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, and point which is         used for fixing the integers</p></li>
+<li><p><strong>solver_options</strong> (<em>list</em><em> or </em><em>None</em>) – External solver options, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>direction</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Direction for the objective, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>cell</strong> (<em>Cell</em><em> or </em><em>None</em>) – Cell, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal and dual bound</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase.nlp_proj_solve">
+<em class="property">abstract </em><code class="sig-name descname">nlp_proj_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">point_to_project</em>, <em class="sig-param">start_point=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemsBase.nlp_proj_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase.nlp_proj_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">ProjSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>point_to_project</strong> (<em>ndarray</em>) – Projection point</p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal bound and flag indicating the         feasibility of primal solution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase.solve_line_search_subproblem">
+<em class="property">abstract </em><code class="sig-name descname">solve_line_search_subproblem</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">exterior_point</em>, <em class="sig-param">interior_point</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemsBase.solve_line_search_subproblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase.solve_line_search_subproblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">LineSearchSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>exterior_point</strong> (<em>ndarray</em>) – Exterior point</p></li>
+<li><p><strong>interior_point</strong> (<em>ndarray</em>) – Interior point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>value of parameter <span class="math notranslate nohighlight">\(\alpha\)</span> and solution point</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase.resource_proj_solve">
+<em class="property">abstract </em><code class="sig-name descname">resource_proj_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">point_to_project</em>, <em class="sig-param">start_point=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#SubProblemsBase.resource_proj_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase.resource_proj_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">ResourceProjSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>point_to_project</strong> (<em>ndarray</em>) – Projection point</p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal bound and flag indicating the         feasibility of primal solution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({'fixed_minlp_solve', 'minlp_solve', 'nlp_proj_solve', 'resource_proj_solve', 'solve_line_search_subproblem'})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.SubProblemsBase._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.SubProblemsBase._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.subproblem.</code><code class="sig-name descname">PyomoSubProblems</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Container class for managing all sub-problems</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minlp_sub_problem</strong> (<a class="reference internal" href="decogo.pyomo_minlp_model.subproblem.html#decogo.pyomo_minlp_model.subproblem.PyomoMinlpSubProblem" title="decogo.pyomo_minlp_model.subproblem.PyomoMinlpSubProblem"><em>PyomoMinlpSubProblem</em></a>) – Sub-probem with linear objective</p></li>
+<li><p><strong>proj_sub_problem</strong> (<a class="reference internal" href="decogo.pyomo_minlp_model.subproblem.html#decogo.pyomo_minlp_model.subproblem.PyomoProjectionSubProblem" title="decogo.pyomo_minlp_model.subproblem.PyomoProjectionSubProblem"><em>PyomoProjectionSubProblem</em></a>) – Pure projection sub-problem</p></li>
+<li><p><strong>resource_constrained_sub_problem</strong> (<em>PyomoResourceConstrainedSubProblem</em>) – Resource constrained sub-problem     for checking the feasibility of the resources</p></li>
+<li><p><strong>line_search_sub_problem</strong> (<a class="reference internal" href="decogo.pyomo_minlp_model.subproblem.html#decogo.pyomo_minlp_model.subproblem.PyomoLineSearchSubProblem" title="decogo.pyomo_minlp_model.subproblem.PyomoLineSearchSubProblem"><em>PyomoLineSearchSubProblem</em></a>) – Line search sub-problem</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method
+:param approx_data:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.minlp_solve">
+<code class="sig-name descname">minlp_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">solver_options=None</em>, <em class="sig-param">start_point=None</em>, <em class="sig-param">direction=None</em>, <em class="sig-param">cell=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.minlp_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.minlp_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">MinlpSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>solver_options</strong> (<em>list</em><em> or </em><em>None</em>) – External solver options, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>direction</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Direction for the objective, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>cell</strong> (<em>Cell</em><em> or </em><em>None</em>) – Cell, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal and dual bound</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.fixed_minlp_solve">
+<code class="sig-name descname">fixed_minlp_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">start_point</em>, <em class="sig-param">solver_options=None</em>, <em class="sig-param">direction=None</em>, <em class="sig-param">cell=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.fixed_minlp_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.fixed_minlp_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">MinlpSubProblem</span></code> with fixed integer variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, and point which is         used for fixing the integers</p></li>
+<li><p><strong>solver_options</strong> (<em>list</em><em> or </em><em>None</em>) – External solver options, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>direction</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Direction for the objective, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>cell</strong> (<em>Cell</em><em> or </em><em>None</em>) – Cell, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal and dual bound</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.nlp_proj_solve">
+<code class="sig-name descname">nlp_proj_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">point_to_project</em>, <em class="sig-param">start_point=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.nlp_proj_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.nlp_proj_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">ProjSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>point_to_project</strong> (<em>ndarray</em>) – Projection point</p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal bound and flag indicating the         feasibility of primal solution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.resource_proj_solve">
+<code class="sig-name descname">resource_proj_solve</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">point_to_project</em>, <em class="sig-param">solver_options=None</em>, <em class="sig-param">start_point=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.resource_proj_solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.resource_proj_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">ResourceProjSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>point_to_project</strong> (<em>ndarray</em>) – Projection point</p></li>
+<li><p><strong>start_point</strong> (<em>ndarray</em><em> or </em><em>None</em>) – Staring point for the solver, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution point, primal bound and flag indicating the         feasibility of primal solution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.solve_line_search_subproblem">
+<code class="sig-name descname">solve_line_search_subproblem</code><span class="sig-paren">(</span><em class="sig-param">solver_name</em>, <em class="sig-param">exterior_point</em>, <em class="sig-param">interior_point</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.solve_line_search_subproblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.solve_line_search_subproblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves <code class="xref py py-class docutils literal notranslate"><span class="pre">LineSearchSubProblem</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver_name</strong> (<em>str</em>) – External solver name</p></li>
+<li><p><strong>exterior_point</strong> (<em>ndarray</em>) – Exterior point</p></li>
+<li><p><strong>interior_point</strong> (<em>ndarray</em>) – Interior point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>value of parameter <span class="math notranslate nohighlight">\(\alpha\)</span> and solution point</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.add_linear_constraint">
+<code class="sig-name descname">add_linear_constraint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.add_linear_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.add_linear_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds linear constraints to sub-problems</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.update_var_lower_bound">
+<code class="sig-name descname">update_var_lower_bound</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.update_var_lower_bound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.update_var_lower_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the lower bound of variable by index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>tuple</em>) – Index of the variable (block_id, index)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.update_var_upper_bound">
+<code class="sig-name descname">update_var_upper_bound</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/subproblem.html#PyomoSubProblems.update_var_upper_bound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.update_var_upper_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the upper bound of variable by index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>tuple</em>) – Index of the variable (block_id, index)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems.__abstractmethods__">
+<code class="sig-name descname">__abstractmethods__</code><em class="property"> = frozenset({})</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems.__abstractmethods__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="decogo.pyomo_problem.subproblem.PyomoSubProblems._abc_impl">
+<code class="sig-name descname">_abc_impl</code><em class="property"> = &lt;_abc_data object&gt;</em><a class="headerlink" href="#decogo.pyomo_problem.subproblem.PyomoSubProblems._abc_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="decogo.solver.decogo.html" class="btn btn-neutral float-right" title="decogo.solver.decogo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="decogo.pyomo_problem.pyomo_decomposed_problem.html" class="btn btn-neutral float-left" title="decogo.pyomo_problem.pyomo_decomposed_problem" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

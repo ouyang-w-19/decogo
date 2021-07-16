@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.solver.results &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.solver.results</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.solver.results</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Stores the results obtained by the solver&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;decogo&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Results"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results">[docs]</a><span class="k">class</span> <span class="nc">Results</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class which stores and makes some manipulations with the results.</span>
+<span class="sd">    The results are: primal/dual bound, primal solution point, timings, gap&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Results.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># solver strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sense</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># sense of the original problem, i.e. min or max</span>
+
+        <span class="c1"># general timing info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_clock_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># stores time of CPU at start of the solution process</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># total time spent for running the solver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomp_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># time spent for decomposition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">containers_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># time spent for containers creation</span>
+
+        <span class="c1"># region OA summary info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_problem_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># time spent for solving sub problems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># time spent for oa_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_alg_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># time spent for oa main algorithm</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_iter</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">primal_bound</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># primal bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">primal_sol_point</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># solution to primal bound of optimal value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dual_bound</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>  <span class="c1"># dual bound</span>
+        <span class="c1"># endregion</span>
+
+        <span class="c1"># region DIOR summary info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_iterations</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of main iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimal_subproblems</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># indicates if all subproblems were solved to optimality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_cg_iterations</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of CG iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cg_num_minlp_problems</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of MINLP subproblems during CG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cg_num_unfixed_nlp_problems</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of unfixed NLP subproblems during CG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cg_num_fixed_nlp_problems</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of fixed NLP subproblems during CG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cg_relaxation</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># objective value of CG relaxation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_outer_iterations</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number inner outer MIP iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compact_oa_obj_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>  <span class="c1"># objective value of compact OA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compact_ia_obj_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>  <span class="c1"># objective value of compact MIP IA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_of_columns_after_cg</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of columns after CG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_problem_number_after_cg</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of solved subproblems after CG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_number_columns</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># total number of columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_sub_problem_number</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># total number of solved subproblems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_tilde_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># objective value in the NLP projected point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_number_columns_blockwise</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># total number of columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_used_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># used time during the running</span></div>
+        <span class="c1"># endregion</span>
+
+<div class="viewcode-block" id="Results.set_new_primal_bound"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.set_new_primal_bound">[docs]</a>    <span class="k">def</span> <span class="nf">set_new_primal_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primal_bound</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets new primal bound and primal point.</span>
+
+<span class="sd">        :param primal_bound: Primal bound</span>
+<span class="sd">        :type primal_bound: float</span>
+<span class="sd">        :param point: Point which corresponds to the primal bound</span>
+<span class="sd">        :type point: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">improved</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">primal_bound</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">:</span>
+            <span class="n">improved</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">primal_bound</span> <span class="o">=</span> <span class="n">primal_bound</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">primal_sol_point</span> <span class="o">=</span> <span class="n">point</span>
+
+        <span class="k">return</span> <span class="n">improved</span></div>
+
+<div class="viewcode-block" id="Results.get_gap"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.get_gap">[docs]</a>    <span class="k">def</span> <span class="nf">get_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primal_bound</span><span class="p">,</span> <span class="n">dual_bound</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the gap in percentage between primal and dual bound</span>
+
+<span class="sd">        :param primal_bound: Primal bound</span>
+<span class="sd">        :type primal_bound: float</span>
+<span class="sd">        :param dual_bound: Dual bound</span>
+<span class="sd">        :type dual_bound: float</span>
+<span class="sd">        :return: Gap</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dual_bound</span> <span class="o">-</span> <span class="n">primal_bound</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span>
+            <span class="mi">100</span> <span class="o">*</span> <span class="n">diff</span> <span class="o">/</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">primal_bound</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dual_bound</span><span class="p">))</span> <span class="o">+</span> <span class="mf">1e-5</span><span class="p">),</span>
+            <span class="mi">10</span><span class="p">)</span>  <span class="c1"># or min?</span></div>
+
+<div class="viewcode-block" id="Results.print_results"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints summary of results at the end of the logging process</span>
+<span class="sd">        depending on the strategy&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_total_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_decomp_time_and_total_time</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;OA&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_oa_stats</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;CG&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_col_gen_stats</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;ADAPTCG&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_col_gen_stats</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;DynCG&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_col_gen_stats</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Results.print_decomp_time_and_total_time"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.print_decomp_time_and_total_time">[docs]</a>    <span class="k">def</span> <span class="nf">print_decomp_time_and_total_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints total time and decomposition time&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Total time:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Reformulation time:&#39;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">decomp_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">containers_time</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Decomposition time:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomp_time</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Containers time:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">containers_time</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Results.print_oa_stats"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.print_oa_stats">[docs]</a>    <span class="k">def</span> <span class="nf">print_oa_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints OA stats&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of iterations:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_iter</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Dual bound:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Primal bound:&#39;</span><span class="p">,</span>
+                                      <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Gap:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">get_gap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">)))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Oa start time:&#39;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">init_time</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Oa main algorithm time:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">main_alg_time</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Algorithm time:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">init_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_alg_time</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Sub problems time:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">sub_problem_time</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Results.print_col_gen_stats"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.print_col_gen_stats">[docs]</a>    <span class="k">def</span> <span class="nf">print_col_gen_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print Column Generation stats&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Primal bound:&#39;</span><span class="p">,</span>
+                                        <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span>
+                                              <span class="mi">10</span><span class="p">)))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Main iterations:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_iterations</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of CG iterations:&#39;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">num_cg_iterations</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;CG relaxation obj. value:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cg_relaxation</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of MINLP subproblems:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">cg_num_minlp_problems</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of unfixed NLP subproblems:&#39;</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">cg_num_unfixed_nlp_problems</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of fixed NLP subproblems:&#39;</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">cg_num_fixed_nlp_problems</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of solved sub-problems after CG:&#39;</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">sub_problem_number_after_cg</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of columns after CG:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">num_of_columns_after_cg</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;CG Gap (CG relaxation and primal bound):&#39;</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">get_gap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">cg_relaxation</span><span class="p">)))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;50}{1: &lt;30}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Total number of columns:&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">total_number_columns</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Results.add_sub_problem_time"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.add_sub_problem_time">[docs]</a>    <span class="k">def</span> <span class="nf">add_sub_problem_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Accumulates sub-problem time</span>
+
+<span class="sd">        :param time: Time to add</span>
+<span class="sd">        :type time: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_problem_time</span> <span class="o">+=</span> <span class="n">time</span></div>
+
+<div class="viewcode-block" id="Results.calculate_total_time"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.results.html#decogo.solver.results.Results.calculate_total_time">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_total_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates total time&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_clock_time</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

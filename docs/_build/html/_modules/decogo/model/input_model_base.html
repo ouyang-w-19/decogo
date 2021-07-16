@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.model.input_model_base &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.model.input_model_base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.model.input_model_base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Implement base class of general input model&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">decogo.model.constraints</span> <span class="kn">import</span> <span class="n">LinearConstraint</span>
+<span class="kn">from</span> <span class="nn">decogo.solver.results</span> <span class="kn">import</span> <span class="n">Results</span>
+<span class="kn">from</span> <span class="nn">decogo.problem.decomposed_problem</span> <span class="kn">import</span> <span class="n">DecomposedProblem</span>
+
+
+<div class="viewcode-block" id="InputModelBase"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.InputModelBase">[docs]</a><span class="k">class</span> <span class="nc">InputModelBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base class which stores data of the input model and</span>
+<span class="sd">    solver of sub-problems and original problem (primal heuristics).</span>
+
+<span class="sd">    :param sub_problems: list of SubProblems blockwise</span>
+<span class="sd">    :type sub_problems: list</span>
+<span class="sd">    :param original_problem: container of original problem</span>
+<span class="sd">    :type original_problem: subclass of OriginalProblemBase</span>
+<span class="sd">    :param cuts: container of linear constraints</span>
+<span class="sd">    :type cuts: CutPoolCG</span>
+<span class="sd">    :param sub_models: list of containers for variables from a single \</span>
+<span class="sd">    block and local nonlinear constraints blockwise</span>
+<span class="sd">    :type sub_models: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="InputModelBase.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.InputModelBase.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_problems</span><span class="p">,</span> <span class="n">original_problem</span><span class="p">,</span> <span class="n">cuts</span><span class="p">,</span> <span class="n">sub_models</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_problems</span> <span class="o">=</span> <span class="n">sub_problems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_problem</span> <span class="o">=</span> <span class="n">original_problem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cuts</span> <span class="o">=</span> <span class="n">cuts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_models</span> <span class="o">=</span> <span class="n">sub_models</span></div>
+
+<div class="viewcode-block" id="InputModelBase._construct_cut_pool"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.InputModelBase._construct_cut_pool">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_construct_cut_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Base method for generating the parameters of cut_pool</span>
+
+<span class="sd">        :return: block_sizes, blocks, obj, global_cuts, local_cuts</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="OriginalProblemBase"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.OriginalProblemBase">[docs]</a><span class="k">class</span> <span class="nc">OriginalProblemBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; container class for original_problem with user-defined solver</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OriginalProblemBase.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.OriginalProblemBase.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="OriginalProblemBase.local_solve"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.OriginalProblemBase.local_solve">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">local_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_point</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Method for solving original problem</span>
+<span class="sd">        non-optimal/heuristically/locally</span>
+
+<span class="sd">        :param start_point: Starting point for the solver, defaults to ``None``</span>
+<span class="sd">        :type start_point: ndarray</span>
+<span class="sd">        :param result: stores and makes some manipulations with the CG results</span>
+<span class="sd">        :type result: Results</span>
+<span class="sd">        :param problem: stores all problem objects</span>
+<span class="sd">        :type problem: DecomposedProblem</span>
+<span class="sd">        :param iter: index of iterations in main algorithm</span>
+<span class="sd">        :type iter: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="OriginalProblemBase.local_solve_fast"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.OriginalProblemBase.local_solve_fast">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">local_solve_fast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_point</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Method for fast solving original problem</span>
+<span class="sd">        non-optimal/heuristically/locally</span>
+
+<span class="sd">        :param start_point: Starting point for the solver, defaults to ``None``</span>
+<span class="sd">        :type start_point: ndarray</span>
+<span class="sd">        :param result: stores and makes some manipulations with the CG results</span>
+<span class="sd">        :type result: Results</span>
+<span class="sd">        :param problem: stores all problem objects</span>
+<span class="sd">        :type problem: DecomposedProblem</span>
+<span class="sd">        :param iter: index of iterations in main algorithm</span>
+<span class="sd">        :type iter: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="SubModelBase"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.SubModelBase">[docs]</a><span class="k">class</span> <span class="nc">SubModelBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract base class which stores the variables from the single</span>
+<span class="sd">    block and local nonlinear constraints.</span>
+
+<span class="sd">    :param vars_in_block: List of original variable names from the model</span>
+<span class="sd">    :type vars_in_block: list</span>
+<span class="sd">    :param block_id: Identifier for block</span>
+<span class="sd">    :type block_id: int</span>
+<span class="sd">    :param variables: List of all variables with all necessary properties</span>
+<span class="sd">    :type variables: list</span>
+<span class="sd">    :param block_size: Number of variables in the sub-model</span>
+<span class="sd">    :type block_size: int</span>
+<span class="sd">    :param integer: Indicates if the current sub-model contains variable of \</span>
+<span class="sd">    integer type</span>
+<span class="sd">    :type integer: bool</span>
+<span class="sd">    :param nonlin_constr: List of local nonlinear constraints</span>
+<span class="sd">    :type nonlin_constr: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SubModelBase.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.SubModelBase.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vars_in_block</span><span class="p">,</span> <span class="n">block_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># stores original names of the variables in the block</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vars_in_block</span> <span class="o">=</span> <span class="n">vars_in_block</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_id</span> <span class="o">=</span> <span class="n">block_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nonlin_constr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vars_in_block</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">integer</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="kc">False</span></div></div>
+
+
+<div class="viewcode-block" id="SubProblemsBase"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.SubProblemsBase">[docs]</a><span class="k">class</span> <span class="nc">SubProblemsBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base class for constructing a generalised model of sub-problems</span>
+<span class="sd">    with user-defined solvers.</span>
+
+<span class="sd">    :param block_id: Block identifier</span>
+<span class="sd">    :type block_id: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SubProblemsBase.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.SubProblemsBase.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_id</span> <span class="o">=</span> <span class="n">block_id</span></div>
+
+<div class="viewcode-block" id="SubProblemsBase.local_solve"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.SubProblemsBase.local_solve">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">local_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">start_point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Method for solving sub-problem</span>
+<span class="sd">        non-optimal/heuristically/locally</span>
+
+<span class="sd">        :param result: stores and makes some manipulations with the CG results</span>
+<span class="sd">        :type result: Results</span>
+<span class="sd">        :param direction: Given vector</span>
+<span class="sd">        :type direction: ndarray</span>
+<span class="sd">        :param start_point: Starting point for the solver, defaults to ``None``</span>
+<span class="sd">        :type start_point: ndarray or None</span>
+<span class="sd">        :return: Solution point (ndarray), primal bound, dual bound,\</span>
+<span class="sd">        flag if the primal bound is feasible</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="SubProblemsBase.global_solve"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.SubProblemsBase.global_solve">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">global_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">start_point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Method for solving</span>
+<span class="sd">        sub-problem globally/near-optimal or calling an exact solver</span>
+
+<span class="sd">        :param result: stores and makes some manipulations with the CG results</span>
+<span class="sd">        :type result: Results</span>
+<span class="sd">        :param direction: Given vector</span>
+<span class="sd">        :type direction: ndarray</span>
+<span class="sd">        :param start_point: Starting point for the solver, defaults to ``None``</span>
+<span class="sd">        :type start_point: ndaray or None</span>
+<span class="sd">        :return: Solution point (ndarray), primal bound, dual bound,\</span>
+<span class="sd">        flag if the primal bound is feasible</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="CutPoolCG"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.CutPoolCG">[docs]</a><span class="k">class</span> <span class="nc">CutPoolCG</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A class for containing linear constraints.</span>
+
+<span class="sd">    This class contains both local and global linear constraints, obj function.</span>
+
+<span class="sd">    :param block_sizes: Number of variables in block</span>
+<span class="sd">    :type block_sizes: list</span>
+<span class="sd">    :param blocks: List of original variable names blockwise</span>
+<span class="sd">    :type blocks: list</span>
+<span class="sd">    :param obj: Objective function</span>
+<span class="sd">    :type obj: ObjectiveFunction</span>
+<span class="sd">    :param global_cuts: List of global constraints</span>
+<span class="sd">    :type global_cuts: list</span>
+<span class="sd">    :param local_cuts: Stores the list of local cuts blockwise</span>
+<span class="sd">    :type local_cuts: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CutPoolCG.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.CutPoolCG.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_sizes</span><span class="o">=</span><span class="p">[],</span> <span class="n">blocks</span><span class="o">=</span><span class="p">[],</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">global_cuts</span><span class="o">=</span><span class="p">[],</span> <span class="n">local_cuts</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span> <span class="o">=</span> <span class="n">block_sizes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">blocks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span> <span class="o">=</span> <span class="n">global_cuts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span> <span class="o">=</span> <span class="n">local_cuts</span></div>
+
+<div class="viewcode-block" id="CutPoolCG.add_lin_local_constr"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.CutPoolCG.add_lin_local_constr">[docs]</a>    <span class="k">def</span> <span class="nf">add_lin_local_constr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coeff</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds linear local constraint</span>
+
+<span class="sd">        :param coeff: Coefficients of left hand side</span>
+<span class="sd">        :type coeff: list</span>
+<span class="sd">        :param relation: Constraint relation</span>
+<span class="sd">        :type relation: str</span>
+<span class="sd">        :param b: Right hand side of the constraint</span>
+<span class="sd">        :type b: float</span>
+<span class="sd">        :param block_sizes: Number of variables blockwise</span>
+<span class="sd">        :type block_sizes: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lin_con</span> <span class="o">=</span> <span class="n">LinearConstraint</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">block_sizes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">lin_con</span><span class="o">.</span><span class="n">block_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lin_con</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_of_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets total number of all linear constraints</span>
+
+<span class="sd">        :return: Number of all linear constraint</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_cuts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">num_cuts</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">num_cuts</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets total number of blocks</span>
+
+<span class="sd">        :return: Number of blocks</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_of_global_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the number of linear global constraints</span>
+
+<span class="sd">        :return: Number of global constraints only</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_of_local_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the number of linear local constraints blockwise</span>
+
+<span class="sd">        :return: Number of local constraints blockwise</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_cuts</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">))]</span>
+
+<div class="viewcode-block" id="CutPoolCG.evaluate_violation_global_constraints"><a class="viewcode-back" href="../../../sources/generated/decogo.model.input_model_base.html#decogo.model.input_model_base.CutPoolCG.evaluate_violation_global_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_violation_global_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates violation of all global constraints</span>
+
+<span class="sd">        :param point: Given point to evaluate</span>
+<span class="sd">        :type point: BlockVector</span>
+<span class="sd">        :return: Violation vector, which corresponds to violation of each \</span>
+<span class="sd">        global constraint</span>
+<span class="sd">        :rtype: ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">violation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_of_global_cuts</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cut</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_cuts</span><span class="p">):</span>
+            <span class="n">viol</span> <span class="o">=</span> <span class="n">cut</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="n">violation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">viol</span>
+
+        <span class="k">return</span> <span class="n">violation</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.pyomo_problem.pyomo_decomposed_problem &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.pyomo_problem.pyomo_decomposed_problem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.pyomo_problem.pyomo_decomposed_problem</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Main module for managing block model and approximation data&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">decogo.problem.approx_data</span> <span class="kn">import</span> <span class="n">ApproxData</span>
+<span class="kn">from</span> <span class="nn">decogo.pyomo_problem.pyomo_master_problem</span> <span class="kn">import</span> <span class="n">PyomoMasterProblems</span>
+<span class="kn">from</span> <span class="nn">decogo.pyomo_problem.subproblem</span> <span class="kn">import</span> <span class="n">PyomoSubProblems</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;decogo&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PyomoDecomposedProblem"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem">[docs]</a><span class="k">class</span> <span class="nc">PyomoDecomposedProblem</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This class contains all subproblems, master problems and approximation</span>
+<span class="sd">    data and methods for manipulating them (add, update etc.)</span>
+
+<span class="sd">    :param block_model: Block model</span>
+<span class="sd">    :type block_model: BlockModel</span>
+<span class="sd">    :param approx_data: Approximation data class (Inner points, linearization \</span>
+<span class="sd">    cuts, etc.)</span>
+<span class="sd">    :type approx_data: ApproxData</span>
+<span class="sd">    :param sub_problems: Contains all necessary Pyomo subproblems</span>
+<span class="sd">    :type sub_problems: list</span>
+<span class="sd">    :param master_problems: Contains all necessary Pyomo master problems</span>
+<span class="sd">    :type master_problems: PyomoMasterProblems</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_model</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span> <span class="o">=</span> <span class="n">block_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span> <span class="o">=</span> <span class="n">ApproxData</span><span class="p">(</span><span class="n">block_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_problems</span> <span class="o">=</span> <span class="p">[</span><span class="n">PyomoSubProblems</span><span class="p">(</span><span class="n">block_model</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+                             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span> <span class="o">=</span> <span class="n">PyomoMasterProblems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="p">,</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="p">,</span>
+                                                   <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_block</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">)</span>
+                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">sub_models</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">linear</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.add_linear_local_constraint"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_linear_local_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">add_linear_local_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a new valid local linear constraint to block model cut pool</span>
+<span class="sd">        and to the sub-problems</span>
+<span class="sd">        </span>
+<span class="sd">        :param block_id: Block identifier</span>
+<span class="sd">        :type block_id: int</span>
+<span class="sd">        :param lhs: Left hand side of the constraint</span>
+<span class="sd">        :type lhs: ndarray</span>
+<span class="sd">        :param relation: Relation of the constraint :math:`\\leq, \\geq, =`</span>
+<span class="sd">        :type relation: str</span>
+<span class="sd">        :param rhs: Right hand side of the constraint</span>
+<span class="sd">        :type rhs: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coeff</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">[</span><span class="n">block_id</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">coeff</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">block_id</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">add_lin_local_constr</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span>
+                                                       <span class="n">rhs</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">)</span>
+            <span class="c1"># update master problems</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">add_lin_local_constr</span><span class="p">(</span><span class="n">block_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.add_compact_lin_local_constr"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_compact_lin_local_constr">[docs]</a>    <span class="k">def</span> <span class="nf">add_compact_lin_local_constr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds valid compact linear cut to master problems and to the</span>
+<span class="sd">        container, see :meth:`problem.approx_data.ApproxData.add_compact_cut`&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">lhs</span><span class="p">)))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1"># adds valid local linear cuts (D) to master problems in</span>
+            <span class="c1"># corresponding im/orig space</span>
+            <span class="n">added_compact_cut</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">add_compact_lin_local_constr</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span>
+                                                                  <span class="n">relation</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">added_compact_cut</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">add_compact_cut_heu_oa</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span>
+                                                        <span class="n">rhs</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">sub_problems</span><span class="p">[</span><span class="n">block_id</span><span class="p">]</span><span class="o">.</span><span class="n">add_compact_lin_local_constr</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span>
+                                                                     <span class="n">relation</span><span class="p">,</span>
+                                                                     <span class="n">rhs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">add_compact_cut</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.update_var_lower_bound"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.update_var_lower_bound">[docs]</a>    <span class="k">def</span> <span class="nf">update_var_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_lower_bound</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates the lower bound of the given variable at block model and</span>
+<span class="sd">        Pyomo models</span>
+
+<span class="sd">        :param new_lower_bound: New lower bound</span>
+<span class="sd">        :type new_lower_bound: float</span>
+<span class="sd">        :param index: Index of the variable as tuple (block_id, index)</span>
+<span class="sd">        :type index: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># update in block model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">update_var_lower_bound</span><span class="p">(</span><span class="n">new_lower_bound</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+
+        <span class="c1"># update in Pyomo models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">update_var_lower_bound</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_problems</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">update_var_lower_bound</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.update_var_upper_bound"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.update_var_upper_bound">[docs]</a>    <span class="k">def</span> <span class="nf">update_var_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_upper_bound</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates the upper bound of the given variable at block model and</span>
+<span class="sd">        Pyomo models</span>
+
+<span class="sd">        :param new_upper_bound: New lower bound</span>
+<span class="sd">        :type new_upper_bound: float</span>
+<span class="sd">        :param index: Index of the variable as tuple (block_id, index)</span>
+<span class="sd">        :type index: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># update in block model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">update_var_upper_bound</span><span class="p">(</span><span class="n">new_upper_bound</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+
+        <span class="c1"># update in Pyomo models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">update_var_upper_bound</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_problems</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">update_var_upper_bound</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.compute_gradients"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes gradients of the nonlinear constraints (used by OA</span>
+<span class="sd">        solver)&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">compute_gradients</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.add_linearization_cuts"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_linearization_cuts">[docs]</a>    <span class="k">def</span> <span class="nf">add_linearization_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds the linearization cuts to Pyomo models and to the list of</span>
+<span class="sd">        cuts, see :meth:`problem.approx_data.ApproxData.add_linearization_cuts`</span>
+
+<span class="sd">        :param y: Linearization point</span>
+<span class="sd">        :type y: BlockVector or ndarray</span>
+<span class="sd">        :param eps: Accuracy for defining the active constraints</span>
+<span class="sd">        :type eps: float</span>
+<span class="sd">        :param x: Solution of OA relaxation</span>
+<span class="sd">        :type x: BlockVector or ndarray or None</span>
+<span class="sd">        :param block_id: Block identifier</span>
+<span class="sd">        :type block_id: int or None</span>
+<span class="sd">        :return: Number of new added cuts</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># add linearization cuts to ApproxData</span>
+        <span class="n">n_cuts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                                                         <span class="n">block_id</span><span class="o">=</span><span class="n">block_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">n_cuts</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">n_cuts</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.add_inner_point"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_inner_point">[docs]</a>    <span class="k">def</span> <span class="nf">add_inner_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">min_inner_point_dist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds an inner point to the list of points and updates</span>
+<span class="sd">        corresponding master problems, see</span>
+<span class="sd">        :meth:`problem.approx_data.ApproxData.add_inner_point`&quot;&quot;&quot;</span>
+
+        <span class="c1"># add column just for nonlinear block</span>
+        <span class="k">if</span> <span class="n">block_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_block</span><span class="p">:</span>
+            <span class="n">is_new_point</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">add_inner_point</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span>
+                                                 <span class="n">min_inner_point_dist</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_new_point</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">add_inner_point</span><span class="p">(</span><span class="n">block_id</span><span class="p">)</span>
+
+                <span class="c1"># add column of hyper block to corresponding atomic blocks</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">inner_points</span><span class="o">.</span><span class="n">KT</span><span class="p">[</span><span class="n">block_id</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># print(&#39;add column to hyper block &#39; + str(block_id))</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">inner_points</span><span class="o">.</span><span class="n">KT</span><span class="p">[</span><span class="n">block_id</span><span class="p">]:</span>
+                        <span class="n">is_new_point_mini</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> \
+                            <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">add_inner_point</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">point</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">is_new_point_mini</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">add_inner_point</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                        <span class="c1">#     print(&#39;add column to atomic block &#39; + str(k))</span>
+                        <span class="c1"># else:</span>
+                        <span class="c1">#     print(&#39;not new column for atomic block &#39; + str(k))</span>
+            <span class="c1">#     else:</span>
+            <span class="c1">#         print(&#39;add column to atomic block &#39; + str(block_id))</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#     if len(self.approx_data.inner_points.KT[block_id]) &gt; 1:</span>
+            <span class="c1">#         print(&#39;not new column for hyper block &#39; + str(block_id))</span>
+            <span class="c1">#     else:</span>
+            <span class="c1">#         print(&#39;not new column for atomic block &#39; + str(block_id))</span>
+
+            <span class="k">return</span> <span class="n">is_new_point</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">column</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.get_min_inner_point"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_min_inner_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_min_inner_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets inner point with respect to the minimum value computed with</span>
+<span class="sd">        some direction in original space, see</span>
+<span class="sd">        :meth:`problem.approx_data.ApproxData.get_min_inner_point`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">get_min_inner_point</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.get_min_column"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_min_column">[docs]</a>    <span class="k">def</span> <span class="nf">get_min_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets column with respect to the minimum value computed with some</span>
+<span class="sd">        direction in image space, see</span>
+<span class="sd">        :meth:`problem.approx_data.ApproxData.get_min_column`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">get_min_column</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.get_inner_points_size"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_inner_points_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_inner_points_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets inner points size, see</span>
+<span class="sd">        :meth:`problem.approx_data.ApproxData.get_inner_points_size`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">approx_data</span><span class="o">.</span><span class="n">get_inner_points_size</span><span class="p">(</span><span class="n">block_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.max_viol_nonlin_constr"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.max_viol_nonlin_constr">[docs]</a>    <span class="k">def</span> <span class="nf">max_viol_nonlin_constr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determines if the solution is feasible regarding the nonlinear</span>
+<span class="sd">        constraints by computing the maximum violation,</span>
+<span class="sd">        see :meth:`model.block_model.BlockModel.max_violation_nonlinear_constraints`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">max_violation_nonlinear_constraints</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.eval_viol_lin_global_constraints"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.eval_viol_lin_global_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">eval_viol_lin_global_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates the violation of global linear constraints, see</span>
+<span class="sd">        :meth:`model.block_model.BlockModel.evaluate_violation_linear_global_constraints`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">eval_viol_lin_global_constraints</span><span class="p">(</span><span class="n">point</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyomoDecomposedProblem.round"><a class="viewcode-back" href="../../../sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.html#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.round">[docs]</a>    <span class="k">def</span> <span class="nf">round</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rounds point to the closest integer, see</span>
+<span class="sd">        :meth:`model.block_model.BlockModel.round`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

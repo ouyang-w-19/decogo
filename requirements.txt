@@ -1,0 +1,9 @@
+###### Requirements with Version Specifiers ######`
+pyomo>=6.0.0
+
+###### Requirements without Version Specifiers ######
+scipy
+pandas
+psutil
+pyutilib
+networkx

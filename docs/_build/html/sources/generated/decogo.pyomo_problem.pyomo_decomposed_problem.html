@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.pyomo_problem.pyomo_decomposed_problem &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="decogo.pyomo_problem.subproblem" href="decogo.pyomo_problem.subproblem.html" />
+    <link rel="prev" title="decogo.pyomo_problem.pyomo_master_problem" href="decogo.pyomo_problem.pyomo_master_problem.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.block_model.html">decogo.model.block_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.constraints.html">decogo.model.constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.model_decomposer.html">decogo.model.model_decomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.model.input_model_base.html">decogo.model.input_model_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.input_model.html">decogo.pyomo_minlp_model.input_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.subproblem.html">decogo.pyomo_minlp_model.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.master_problem_base.html">decogo.pyomo_minlp_model.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.nlp_master_problem.html">decogo.pyomo_minlp_model.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_minlp_model.projection_master_problem.html">decogo.pyomo_minlp_model.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.approx_data.html">decogo.problem.approx_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.decomposed_problem.html">decogo.problem.decomposed_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.inner_master_problem.html">decogo.problem.inner_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.problem.master_problem.html">decogo.problem.master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.master_problem_base.html">decogo.pyomo_problem.master_problem_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.oa_master_problem.html">decogo.pyomo_problem.oa_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.nlp_master_problem.html">decogo.pyomo_problem.nlp_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.projection_master_problem.html">decogo.pyomo_problem.projection_master_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.pyomo_master_problem.html">decogo.pyomo_problem.pyomo_master_problem</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">decogo.pyomo_problem.pyomo_decomposed_problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.pyomo_problem.subproblem.html">decogo.pyomo_problem.subproblem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.decogo.html">decogo.solver.decogo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.colgen.html">decogo.solver.colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.refactory_colgen.html">decogo.solver.refactory_colgen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.oa.html">decogo.solver.oa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.results.html">decogo.solver.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.solver.settings.html">decogo.solver.settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decogo.util.block_vector.html">decogo.util.block_vector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">Reference</a> &raquo;</li>
+        
+      <li>decogo.pyomo_problem.pyomo_decomposed_problem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/sources/generated/decogo.pyomo_problem.pyomo_decomposed_problem.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-decogo.pyomo_problem.pyomo_decomposed_problem">
+<span id="decogo-pyomo-problem-pyomo-decomposed-problem"></span><h1>decogo.pyomo_problem.pyomo_decomposed_problem<a class="headerlink" href="#module-decogo.pyomo_problem.pyomo_decomposed_problem" title="Permalink to this headline">¶</a></h1>
+<p>Main module for managing block model and approximation data</p>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem" title="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyomoDecomposedProblem</span></code></a>(block_model, strategy)</p></td>
+<td><p>This class contains all subproblems, master problems and approximation data and methods for manipulating them (add, update etc.)</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem">
+<em class="property">class </em><code class="sig-prename descclassname">decogo.pyomo_problem.pyomo_decomposed_problem.</code><code class="sig-name descname">PyomoDecomposedProblem</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">strategy</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class contains all subproblems, master problems and approximation
+data and methods for manipulating them (add, update etc.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block_model</strong> (<a class="reference internal" href="decogo.model.block_model.html#decogo.model.block_model.BlockModel" title="decogo.model.block_model.BlockModel"><em>BlockModel</em></a>) – Block model</p></li>
+<li><p><strong>approx_data</strong> (<a class="reference internal" href="decogo.problem.approx_data.html#decogo.problem.approx_data.ApproxData" title="decogo.problem.approx_data.ApproxData"><em>ApproxData</em></a>) – Approximation data class (Inner points, linearization     cuts, etc.)</p></li>
+<li><p><strong>sub_problems</strong> (<em>list</em>) – Contains all necessary Pyomo subproblems</p></li>
+<li><p><strong>master_problems</strong> (<a class="reference internal" href="decogo.pyomo_problem.pyomo_master_problem.html#decogo.pyomo_problem.pyomo_master_problem.PyomoMasterProblems" title="decogo.pyomo_problem.pyomo_master_problem.PyomoMasterProblems"><em>PyomoMasterProblems</em></a>) – Contains all necessary Pyomo master problems</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">block_model</em>, <em class="sig-param">strategy</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_linear_local_constraint">
+<code class="sig-name descname">add_linear_local_constraint</code><span class="sig-paren">(</span><em class="sig-param">block_id</em>, <em class="sig-param">lhs</em>, <em class="sig-param">relation</em>, <em class="sig-param">rhs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.add_linear_local_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_linear_local_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new valid local linear constraint to block model cut pool
+and to the sub-problems</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block_id</strong> (<em>int</em>) – Block identifier</p></li>
+<li><p><strong>lhs</strong> (<em>ndarray</em>) – Left hand side of the constraint</p></li>
+<li><p><strong>relation</strong> (<em>str</em>) – Relation of the constraint <span class="math notranslate nohighlight">\(\leq, \geq, =\)</span></p></li>
+<li><p><strong>rhs</strong> (<em>float</em>) – Right hand side of the constraint</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_compact_lin_local_constr">
+<code class="sig-name descname">add_compact_lin_local_constr</code><span class="sig-paren">(</span><em class="sig-param">block_id</em>, <em class="sig-param">lhs</em>, <em class="sig-param">relation</em>, <em class="sig-param">rhs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.add_compact_lin_local_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_compact_lin_local_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds valid compact linear cut to master problems and to the
+container, see <code class="xref py py-meth docutils literal notranslate"><span class="pre">problem.approx_data.ApproxData.add_compact_cut()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.update_var_lower_bound">
+<code class="sig-name descname">update_var_lower_bound</code><span class="sig-paren">(</span><em class="sig-param">new_lower_bound</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.update_var_lower_bound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.update_var_lower_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the lower bound of the given variable at block model and
+Pyomo models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_lower_bound</strong> (<em>float</em>) – New lower bound</p></li>
+<li><p><strong>index</strong> (<em>tuple</em>) – Index of the variable as tuple (block_id, index)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.update_var_upper_bound">
+<code class="sig-name descname">update_var_upper_bound</code><span class="sig-paren">(</span><em class="sig-param">new_upper_bound</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.update_var_upper_bound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.update_var_upper_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the upper bound of the given variable at block model and
+Pyomo models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_upper_bound</strong> (<em>float</em>) – New lower bound</p></li>
+<li><p><strong>index</strong> (<em>tuple</em>) – Index of the variable as tuple (block_id, index)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.compute_gradients">
+<code class="sig-name descname">compute_gradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.compute_gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.compute_gradients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes gradients of the nonlinear constraints (used by OA
+solver)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_linearization_cuts">
+<code class="sig-name descname">add_linearization_cuts</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">eps</em>, <em class="sig-param">x=None</em>, <em class="sig-param">block_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.add_linearization_cuts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_linearization_cuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the linearization cuts to Pyomo models and to the list of
+cuts, see <code class="xref py py-meth docutils literal notranslate"><span class="pre">problem.approx_data.ApproxData.add_linearization_cuts()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<a class="reference internal" href="decogo.util.block_vector.html#decogo.util.block_vector.BlockVector" title="decogo.util.block_vector.BlockVector"><em>BlockVector</em></a><em> or </em><em>ndarray</em>) – Linearization point</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – Accuracy for defining the active constraints</p></li>
+<li><p><strong>x</strong> (<a class="reference internal" href="decogo.util.block_vector.html#decogo.util.block_vector.BlockVector" title="decogo.util.block_vector.BlockVector"><em>BlockVector</em></a><em> or </em><em>ndarray</em><em> or </em><em>None</em>) – Solution of OA relaxation</p></li>
+<li><p><strong>block_id</strong> (<em>int</em><em> or </em><em>None</em>) – Block identifier</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Number of new added cuts</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_inner_point">
+<code class="sig-name descname">add_inner_point</code><span class="sig-paren">(</span><em class="sig-param">block_id</em>, <em class="sig-param">point</em>, <em class="sig-param">min_inner_point_dist=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.add_inner_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.add_inner_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an inner point to the list of points and updates
+corresponding master problems, see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">problem.approx_data.ApproxData.add_inner_point()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_min_inner_point">
+<code class="sig-name descname">get_min_inner_point</code><span class="sig-paren">(</span><em class="sig-param">block_id</em>, <em class="sig-param">direction</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.get_min_inner_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_min_inner_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets inner point with respect to the minimum value computed with
+some direction in original space, see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">problem.approx_data.ApproxData.get_min_inner_point()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_min_column">
+<code class="sig-name descname">get_min_column</code><span class="sig-paren">(</span><em class="sig-param">block_id</em>, <em class="sig-param">direction</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.get_min_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_min_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets column with respect to the minimum value computed with some
+direction in image space, see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">problem.approx_data.ApproxData.get_min_column()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_inner_points_size">
+<code class="sig-name descname">get_inner_points_size</code><span class="sig-paren">(</span><em class="sig-param">block_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.get_inner_points_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.get_inner_points_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets inner points size, see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">problem.approx_data.ApproxData.get_inner_points_size()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.max_viol_nonlin_constr">
+<code class="sig-name descname">max_viol_nonlin_constr</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.max_viol_nonlin_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.max_viol_nonlin_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if the solution is feasible regarding the nonlinear
+constraints by computing the maximum violation,
+see <code class="xref py py-meth docutils literal notranslate"><span class="pre">model.block_model.BlockModel.max_violation_nonlinear_constraints()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.eval_viol_lin_global_constraints">
+<code class="sig-name descname">eval_viol_lin_global_constraints</code><span class="sig-paren">(</span><em class="sig-param">point</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.eval_viol_lin_global_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.eval_viol_lin_global_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the violation of global linear constraints, see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">model.block_model.BlockModel.evaluate_violation_linear_global_constraints()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.round">
+<code class="sig-name descname">round</code><span class="sig-paren">(</span><em class="sig-param">block_id</em>, <em class="sig-param">point</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/decogo/pyomo_problem/pyomo_decomposed_problem.html#PyomoDecomposedProblem.round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decogo.pyomo_problem.pyomo_decomposed_problem.PyomoDecomposedProblem.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rounds point to the closest integer, see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">model.block_model.BlockModel.round()</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="decogo.pyomo_problem.subproblem.html" class="btn btn-neutral float-right" title="decogo.pyomo_problem.subproblem" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="decogo.pyomo_problem.pyomo_master_problem.html" class="btn btn-neutral float-left" title="decogo.pyomo_problem.pyomo_master_problem" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

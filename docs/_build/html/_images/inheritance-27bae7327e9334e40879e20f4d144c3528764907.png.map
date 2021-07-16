@@ -1,0 +1,7 @@
+<map id="inheritance3ca03f4e12" name="inheritance3ca03f4e12">
+<area shape="rect" id="node1" href="generated/decogo.pyomo_problem.master_problem_base.html#decogo.pyomo_problem.master_problem_base.MasterProblemBase" target="_top" title="Base class for master problems in original space" alt="" coords="5,31,145,56"/>
+<area shape="rect" id="node2" href="generated/decogo.pyomo_problem.projection_master_problem.html#decogo.pyomo_problem.projection_master_problem.MipProjectionMasterProblem" target="_top" title="Class for defining MIP projection master problem defined using" alt="" coords="193,5,383,31"/>
+<area shape="rect" id="node4" href="generated/decogo.pyomo_problem.oa_master_problem.html#decogo.pyomo_problem.oa_master_problem.OaMasterProblem" target="_top" title="Class for defining an outer master problem" alt="" coords="225,55,351,80"/>
+<area shape="rect" id="node3" href="generated/decogo.pyomo_problem.nlp_master_problem.html#decogo.pyomo_problem.nlp_master_problem.NlpProblem" target="_top" title="Class for defining the NLP master problem. Used for obtaining solution" alt="" coords="431,55,520,80"/>
+<area shape="rect" id="node5" href="generated/decogo.pyomo_problem.projection_master_problem.html#decogo.pyomo_problem.projection_master_problem.NlpResourceProjectionProblem" target="_top" title="Class for defining NLP projection master problem (integer variables" alt="" coords="568,55,771,80"/>
+</map>

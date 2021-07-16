@@ -1,0 +1,6 @@
+<map id="inheritanceee89bba6d7" name="inheritanceee89bba6d7">
+<area shape="rect" id="node1" href="generated/decogo.problem.inner_master_problem.html#decogo.problem.inner_master_problem.ExtendedInnerMasterProblem" target="_top" title="Class for defining inner master problem which is solved over the convex" alt="" coords="5,104,199,129"/>
+<area shape="rect" id="node2" href="generated/decogo.problem.inner_master_problem.html#decogo.problem.inner_master_problem.InnerMasterProblem" target="_top" title="Class for defining inner master problem which is solved over the convex" alt="" coords="33,55,171,80"/>
+<area shape="rect" id="node4" href="generated/decogo.problem.inner_master_problem.html#decogo.problem.inner_master_problem.MiniInnerMasterProblem" target="_top" title="mini inner master problem for fast minlp subproblem solving; multiple" alt="" coords="247,55,409,80"/>
+<area shape="rect" id="node3" href="generated/decogo.problem.master_problem.html#decogo.problem.master_problem.MasterProblems" target="_top" title="Container class for managing all master problems" alt="" coords="43,5,161,31"/>
+</map>

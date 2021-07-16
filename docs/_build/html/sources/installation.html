@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Installation &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example" href="example.html" />
+    <link rel="prev" title="Decogo" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyomo">Pyomo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#solvers">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-python-packages">Other Python packages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-for-development-in-windows">Installation for development in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sources/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Decogo is tested on Python 3.8 (CPython).</p>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pyomo">
+<h3>Pyomo<a class="headerlink" href="#pyomo" title="Permalink to this headline">¶</a></h3>
+<p>Decogo uses <a class="reference external" href="http://www.pyomo.org/">Pyomo</a> of version &gt;= 6.0 (tested up to 6.0.1)</p>
+</div>
+<div class="section" id="solvers">
+<h3>Solvers<a class="headerlink" href="#solvers" title="Permalink to this headline">¶</a></h3>
+<p>Decogo uses MINLP, NLP and MIP solvers which can interface with Pyomo.
+We recommend the following solvers:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>MIP:</dt><dd><ul>
+<li><p><a class="reference external" href="https://www.gurobi.com/">Gurobi</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>NLP:</dt><dd><ul>
+<li><p><a class="reference external" href="https://anaconda.org/conda-forge/ipopt">IPOPT</a> (install using <code class="docutils literal notranslate"><span class="pre">conda</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>MINLP:</dt><dd><ul>
+<li><p><a class="reference external" href="https://www.scipopt.org/">SCIP</a> (needs version that supports AMPL)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="other-python-packages">
+<h3>Other Python packages<a class="headerlink" href="#other-python-packages" title="Permalink to this headline">¶</a></h3>
+<p>It is necessary to have installed the following Python packages:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">psutil</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyutilib</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">networkx</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation-for-development-in-windows">
+<h2>Installation for development in Windows<a class="headerlink" href="#installation-for-development-in-windows" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Install <a class="reference external" href="https://gitforwindows.org/">Git</a></p></li>
+<li><p>Install Python 3.8 with <a class="reference external" href="https://www.anaconda.com/products/individual#windows">Anaconda distribution</a></p></li>
+<li><p>Python IDE: <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> (full version with institution email is free) is recommended, however you are free to use any IDE you prefer</p></li>
+<li><p>Install Gurobi Optimizer software (academic license is free) and choose one of the python installation options</p></li>
+<li><p>Install ipopt using <code class="docutils literal notranslate"><span class="pre">conda</span></code></p></li>
+<li><p>Download SCIP executable that support AMPL interface. Put executables either into system folder (C:\Windows\System32) or add executable location to PATH variable</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="example.html" class="btn btn-neutral float-right" title="Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Decogo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

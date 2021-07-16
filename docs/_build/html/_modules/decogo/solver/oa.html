@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>decogo.solver.oa &mdash; Decogo 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Decogo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/modules.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/classes.html">Class inheritance diagram</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Decogo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>decogo.solver.oa</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for decogo.solver.oa</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Implements OA algorithm for convex problems&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">decogo.solver.settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">decogo.util.block_vector</span> <span class="kn">import</span> <span class="n">BlockVector</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;decogo&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="OaSolver"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver">[docs]</a><span class="k">class</span> <span class="nc">OaSolver</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class which implements OA method for convex problems</span>
+
+<span class="sd">    :param problem: Decomposed problem class, which stores all input data</span>
+<span class="sd">    :type problem: DecomposedProblem</span>
+<span class="sd">    :param settings: Settings class</span>
+<span class="sd">    :type settings: Settings</span>
+<span class="sd">    :param result: Class which stores the results</span>
+<span class="sd">    :type result: Results</span>
+<span class="sd">    :param x_center: Point inside of the feasible nonlinear set, which is \</span>
+<span class="sd">    used for the line search</span>
+<span class="sd">    :type x_center: BlockVector or None</span>
+
+<span class="sd">    .. Note::</span>
+<span class="sd">        If there are any numerical instability (infeasible OA after some</span>
+<span class="sd">        iterations, no improvement of OA etc), the following things should be</span>
+<span class="sd">        checked:</span>
+
+<span class="sd">        * Do all variables have the bounds? If not, at least try to estimate \</span>
+<span class="sd">        them;</span>
+<span class="sd">        * Are the linearization cuts added using the points from local \</span>
+<span class="sd">        optimization? If yes, then don&#39;t add them;</span>
+<span class="sd">        * Check the sign of new constraints of the reformulation, i.e. switch \</span>
+<span class="sd">        from :math:`==` to :math:`\\leq` in decomposer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OaSolver.__init__"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="n">problem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the interior point</span></div>
+
+<div class="viewcode-block" id="OaSolver.solve"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Main method which calls all necessary methods for the OA algorithm.</span>
+<span class="sd">        See papers for more info&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Initialization&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_oa</span><span class="p">()</span>
+
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">hat_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_oa</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Main algorithm&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;7}{1: &lt;25}{2: &lt;20}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;iter&#39;</span><span class="p">,</span> <span class="s1">&#39;dual bound&#39;</span><span class="p">,</span>
+                                                     <span class="s1">&#39;primal bound&#39;</span><span class="p">))</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">num_iter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">tilde_x</span><span class="p">,</span> <span class="n">primal_bound</span><span class="p">,</span> <span class="n">prim_sol_is_feasible</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_solve</span><span class="p">(</span>
+                <span class="n">hat_x</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">get_gap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">)</span> <span class="o">&lt;=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_rel_obj_val</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s1">&#39;</span><span class="si">{0: &lt;7}{1: &lt;25}{2: &lt;20}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">num_iter</span><span class="p">,</span>
+                        <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+                        <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span><span class="mi">10</span><span class="p">)))</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">EXIT: gap is closed&#39;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">cut_refine</span><span class="p">(</span><span class="n">hat_x</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix_and_refine</span><span class="p">(</span><span class="n">tilde_x</span><span class="p">)</span>
+
+            <span class="n">hat_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_oa</span><span class="p">()</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">{0: &lt;7}{1: &lt;25}{2: &lt;20}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">num_iter</span><span class="p">,</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">num_iter</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_max_iter</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">EXIT: maximum number of iterations exceeded&#39;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">get_gap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">primal_bound</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">)</span> <span class="o">&lt;=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_rel_obj_val</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">EXIT: gap is closed&#39;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">timer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">main_alg_time</span> <span class="o">=</span> <span class="n">timer</span></div>
+
+<div class="viewcode-block" id="OaSolver.init_oa"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.init_oa">[docs]</a>    <span class="k">def</span> <span class="nf">init_oa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initial phase of OA algorithm, which solves only LP OA master</span>
+<span class="sd">        problems&quot;&quot;&quot;</span>
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">compute_gradients</span><span class="p">()</span>
+
+        <span class="n">dual_bound_prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span>
+        <span class="n">num_iter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0: &lt;7}{1: &lt;25}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;iter&#39;</span><span class="p">,</span> <span class="s1">&#39;LP relaxation of MIP&#39;</span><span class="p">))</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">num_iter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">hat_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_lp_oa</span><span class="p">()</span>
+
+            <span class="n">hat_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">hat_x</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">hat_y</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_active_constraint</span><span class="p">,</span>
+                                                <span class="n">hat_x</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">{0: &lt;7}{1: &lt;25}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_iter</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dual_bound_prev</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">)</span> <span class="o">&lt;=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_start</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">dual_bound_prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;LP relaxation: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span>
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">solve_nlp_const_obj</span><span class="p">(</span><span class="n">hat_x</span><span class="p">)</span>
+
+        <span class="c1"># solve nlp problem without fixing the integer variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_unfixed_nlp_cuts</span><span class="p">(</span><span class="n">hat_x</span><span class="p">)</span>
+
+        <span class="c1"># perform line search</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_line_search</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;LP relaxation with line search&#39;</span><span class="p">)</span>
+            <span class="n">dual_bound_prev</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+            <span class="n">num_iter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">num_iter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="n">hat_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_lp_oa</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_line_search_cuts</span><span class="p">(</span><span class="n">hat_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span><span class="p">)</span>
+
+                <span class="n">hat_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">hat_x</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">hat_y</span><span class="p">,</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_active_constraint</span><span class="p">)</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s1">&#39;</span><span class="si">{0: &lt;7}{1: &lt;25}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_iter</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">sense</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dual_bound_prev</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span><span class="p">)</span> <span class="o">&lt;=</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_start</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="n">dual_bound_prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span>
+
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">timer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">init_time</span> <span class="o">=</span> <span class="n">timer</span></div>
+
+<div class="viewcode-block" id="OaSolver.solve_oa"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.solve_oa">[docs]</a>    <span class="k">def</span> <span class="nf">solve_oa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solves MIPOA master problem</span>
+
+<span class="sd">        :return: Solution point</span>
+<span class="sd">        :rtype: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make timing here, if necessary</span>
+        <span class="n">hat_x</span><span class="p">,</span> <span class="n">dual_obj_val</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">solve_mip_oa</span><span class="p">(</span>
+                <span class="n">solver_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">mip_solver</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span> <span class="o">=</span> <span class="n">dual_obj_val</span>
+
+        <span class="k">return</span> <span class="n">hat_x</span></div>
+
+<div class="viewcode-block" id="OaSolver.local_solve"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.local_solve">[docs]</a>    <span class="k">def</span> <span class="nf">local_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hat_x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solves NLP master problem with fixed integer variables</span>
+
+<span class="sd">        :param hat_x: Pint for fixing integer variables and starting point</span>
+<span class="sd">        :type hat_x: BlockVector</span>
+<span class="sd">        :return: Solution point, objective value and flag if the solution \</span>
+<span class="sd">        point is infeasible</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tilde_x</span><span class="p">,</span> <span class="n">primal_bound</span><span class="p">,</span> <span class="n">prim_sol_is_feasible</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">nlp_solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">nlp_solver</span><span class="p">,</span>
+                                                   <span class="n">point_to_fix</span><span class="o">=</span><span class="n">hat_x</span><span class="p">,</span>
+                                                   <span class="n">start_point</span><span class="o">=</span><span class="n">hat_x</span><span class="p">)</span>
+        <span class="c1"># this could cause numerical instability,</span>
+        <span class="c1"># i.e. after adding cuts from fixed NLP the OA master problem can</span>
+        <span class="c1"># become infeasible</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">tilde_x</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_active_constraint</span><span class="p">,</span>
+                                            <span class="n">x</span><span class="o">=</span><span class="n">hat_x</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prim_sol_is_feasible</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">set_new_primal_bound</span><span class="p">(</span><span class="n">primal_bound</span><span class="p">,</span> <span class="n">tilde_x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tilde_x</span><span class="p">,</span> <span class="n">primal_bound</span><span class="p">,</span> <span class="n">prim_sol_is_feasible</span></div>
+
+<div class="viewcode-block" id="OaSolver.project"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.project">[docs]</a>    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hat_x</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solves projection sub-problems</span>
+
+<span class="sd">        :param hat_x: Point to project</span>
+<span class="sd">        :type hat_x: BlockVector</span>
+<span class="sd">        :param block_id: If it is not ``None``, then it performs projection \</span>
+<span class="sd">        for one blocks, otherwise - for all</span>
+<span class="sd">        :type block_id: int or None</span>
+<span class="sd">        :return: Solution of projection sub-problems</span>
+<span class="sd">        :rtype: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">block_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">BlockVector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">block_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+                    <span class="n">y_sol_k</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">sub_problems</span><span class="p">[</span><span class="n">block_id</span><span class="p">]</span><span class="o">.</span><span class="n">nlp_proj_solve</span><span class="p">(</span>
+                            <span class="n">solver_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">nlp_solver</span><span class="p">,</span>
+                            <span class="n">point_to_project</span><span class="o">=</span><span class="n">hat_x</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">block_id</span><span class="p">))</span>
+                    <span class="n">y</span><span class="o">.</span><span class="n">set_block</span><span class="p">(</span><span class="n">block_id</span><span class="p">,</span> <span class="n">y_sol_k</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># if k is not None we pass here x_hat as a local vector, i.e.</span>
+                <span class="c1"># hat_x_k and we have similar result - y_k</span>
+                <span class="n">y</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">sub_problems</span><span class="p">[</span><span class="n">block_id</span><span class="p">]</span><span class="o">.</span><span class="n">nlp_proj_solve</span><span class="p">(</span>
+                        <span class="n">solver_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">nlp_solver</span><span class="p">,</span>
+                        <span class="n">point_to_project</span><span class="o">=</span><span class="n">hat_x</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> \
+                    <span class="s1">&#39;Cannot load a SolverResults object with bad status: error&#39;</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Ipopt exited with the error during projection &#39;</span>
+                            <span class="s1">&#39;step. Skipping adding the linearization cuts&#39;</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">hat_x</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">add_sub_problem_time</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">y</span></div>
+
+<div class="viewcode-block" id="OaSolver.cut_refine"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.cut_refine">[docs]</a>    <span class="k">def</span> <span class="nf">cut_refine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hat_x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calls methods for refinement of OA with projection and line search</span>
+
+<span class="sd">        :param hat_x: Infeasible point regarding nonlinear set</span>
+<span class="sd">        :type hat_x: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">hat_x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_active_constraint</span><span class="p">,</span>
+                                            <span class="n">x</span><span class="o">=</span><span class="n">hat_x</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_line_search</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_line_search_cuts</span><span class="p">(</span><span class="n">hat_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OaSolver.solve_lp_oa"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.solve_lp_oa">[docs]</a>    <span class="k">def</span> <span class="nf">solve_lp_oa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solves intger relaxation of MIPOA master problem</span>
+
+<span class="sd">        :return: Solution point</span>
+<span class="sd">        :rtype: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make timing here, if necessary</span>
+        <span class="n">x_hat</span><span class="p">,</span> <span class="n">obj_val</span><span class="p">,</span> <span class="n">duals</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">solve_integer_relaxed_oa</span><span class="p">(</span>
+                <span class="n">solver_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">lp_solver</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">dual_bound</span> <span class="o">=</span> <span class="n">obj_val</span>
+
+        <span class="k">return</span> <span class="n">x_hat</span></div>
+
+<div class="viewcode-block" id="OaSolver.solve_nlp_const_obj"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.solve_nlp_const_obj">[docs]</a>    <span class="k">def</span> <span class="nf">solve_nlp_const_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hat_x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solve the NLP problem with zero objective vector</span>
+<span class="sd">        in order to get the interior point for performing the line search</span>
+
+<span class="sd">        :param hat_x: Starting point</span>
+<span class="sd">        :type hat_x: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make timing here, if necessary</span>
+        <span class="n">cut_direction</span> <span class="o">=</span> <span class="n">BlockVector</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">)</span>  <span class="c1"># zero objective</span>
+        <span class="n">x_center</span><span class="p">,</span> <span class="n">obj_val</span><span class="p">,</span> <span class="n">sol_is_feasible</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">nlp_solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">nlp_solver</span><span class="p">,</span>
+                                                   <span class="n">start_point</span><span class="o">=</span><span class="n">hat_x</span><span class="p">,</span>
+                                                   <span class="n">cut_direction</span><span class="o">=</span><span class="n">cut_direction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span> <span class="o">=</span> <span class="n">x_center</span></div>
+
+<div class="viewcode-block" id="OaSolver.fix_and_refine"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.fix_and_refine">[docs]</a>    <span class="k">def</span> <span class="nf">fix_and_refine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tilde_x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performs fix-and-refine procedure, which solves fixed MIPOA</span>
+<span class="sd">        sub-problems with slacks and projection sub-problems. See paper for</span>
+<span class="sd">        more info</span>
+
+<span class="sd">        :param tilde_x: Point to fix</span>
+<span class="sd">        :type tilde_x: BlockVector</span>
+<span class="sd">        :return: Solution point from MIPOA sub-problems and slacks</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_fix_and_refine</span><span class="p">:</span>
+            <span class="n">hat_x</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tilde_x</span><span class="p">)</span>
+
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># list of booleans that says if the slacks at each block</span>
+                <span class="c1"># iteration were zero or not</span>
+                <span class="n">slacks</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+                    <span class="n">hat_y_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">hat_x</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">k</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">hat_y_k</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_active_constraint</span><span class="p">,</span>
+                                                        <span class="n">block_id</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+
+                    <span class="c1"># make timing, if necessary</span>
+                    <span class="n">hat_x</span><span class="p">,</span> <span class="n">obj_val</span><span class="p">,</span> <span class="n">slacks_are_zero</span> <span class="o">=</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">solve_mipoa_with_slacks</span><span class="p">(</span>
+                            <span class="n">solver_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">mip_solver</span><span class="p">,</span>
+                            <span class="n">x</span><span class="o">=</span><span class="n">hat_x</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+
+                    <span class="n">slacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slacks_are_zero</span><span class="p">)</span>
+
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_changed</span><span class="p">(</span><span class="n">hat_x</span><span class="p">,</span> <span class="n">tilde_x</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="n">tilde_x</span> <span class="o">=</span> <span class="n">hat_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">add_sub_problem_time</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">hat_x</span><span class="p">,</span> <span class="n">slacks</span></div>
+
+<div class="viewcode-block" id="OaSolver.int_changed"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.int_changed">[docs]</a>    <span class="k">def</span> <span class="nf">int_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if the values of integer variables between two points are</span>
+<span class="sd">        changed</span>
+
+<span class="sd">        :param point1: First point</span>
+<span class="sd">        :type point1: BlockVector</span>
+<span class="sd">        :param point2: Second point</span>
+<span class="sd">        :type point2: BlockVector</span>
+<span class="sd">        :return: ``True`` if changed, ``False`` - otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">sub_models</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;Integers&#39;</span> <span class="ow">or</span> <span class="n">var</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;Binary&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">point1</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">point2</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]:</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="OaSolver.add_line_search_cuts"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.add_line_search_cuts">[docs]</a>    <span class="k">def</span> <span class="nf">add_line_search_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hat_x</span><span class="p">,</span> <span class="n">star_x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performs line-search between two points. At resulting point it adds</span>
+<span class="sd">        linearization cuts</span>
+
+<span class="sd">        :param hat_x: Point outside of the feasible nonlinear set</span>
+<span class="sd">        :type hat_x: BlockVector</span>
+<span class="sd">        :param star_x: Point inside of the feasible nonlinear set</span>
+<span class="sd">        :type star_x: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make timing here if necessary</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">BlockVector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">block_sizes</span><span class="p">)</span>
+
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">block_model</span><span class="o">.</span><span class="n">num_blocks</span><span class="p">):</span>
+                <span class="n">alpha_k</span><span class="p">,</span> <span class="n">y_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">sub_problems</span><span class="p">[</span>
+                    <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">solve_line_search_subproblem</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">nlp_solver</span><span class="p">,</span> <span class="n">hat_x</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+                    <span class="n">star_x</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+                <span class="n">alpha</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alpha_k</span><span class="p">)</span>
+                <span class="n">y</span><span class="o">.</span><span class="n">set_block</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">y_k</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Cannot load a SolverResults object with bad &#39;</span> \
+                            <span class="s1">&#39;status: error&#39;</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipping line search in this iteration because of &#39;</span>
+                            <span class="s1">&#39;sub-solver error&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">add_sub_problem_time</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">y</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_active_constraint</span><span class="p">,</span>
+                                            <span class="n">x</span><span class="o">=</span><span class="n">hat_x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OaSolver.add_unfixed_nlp_cuts"><a class="viewcode-back" href="../../../sources/generated/decogo.solver.oa.html#decogo.solver.oa.OaSolver.add_unfixed_nlp_cuts">[docs]</a>    <span class="k">def</span> <span class="nf">add_unfixed_nlp_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hat_x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solve NLP problem without fixing the integer variables</span>
+<span class="sd">        and adds cuts at the result</span>
+
+<span class="sd">        :param hat_x: Starting point</span>
+<span class="sd">        :type hat_x: BlockVector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make timing here, if necessary</span>
+
+        <span class="n">bar_x</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">sol_is_feasible</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">master_problems</span><span class="o">.</span><span class="n">nlp_solve</span><span class="p">(</span>
+                <span class="n">solver_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">nlp_solver</span><span class="p">,</span> <span class="n">start_point</span><span class="o">=</span><span class="n">hat_x</span><span class="p">)</span>
+
+        <span class="c1"># adds just cuts at x_bar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">add_linearization_cuts</span><span class="p">(</span><span class="n">bar_x</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">oa_eps_active_constraint</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Pavlo Muts, Ouyang Wu and Ivo Nowak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
