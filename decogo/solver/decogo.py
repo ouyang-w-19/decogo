@@ -267,12 +267,15 @@ class DecogoSolverManager:
                 self.results.containers_time
             self.results.current_used_time += self.results.containers_time
         else:
+            self.results.containers_time = time.time()
             self.results.sense = input_model.sense
             block_model = BlockModel(input_model)
             self.problem = DecomposedProblem(block_model,
                                              input_model.sub_problems,
                                              input_model.original_problem)
-
+            self.results.containers_time = time.time() - \
+                self.results.containers_time
+            self.results.current_used_time = self.results.containers_time
 
 class DecogoLogger:
     """Class which is responsible for the logging of the solver. It sets up
