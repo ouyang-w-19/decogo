@@ -764,7 +764,7 @@ class PyomoSubProblems(SubProblemsBase):
         self.resource_proj_sub_problem = \
             PyomoResourceProjectionSubProblem(sub_models, cuts, block_id)
 
-    def global_solve(self, result, direction, start_point=None):
+    def global_solve(self, result, direction, start_point=None, **kwargs):
 
         solver_name = self.settings.minlp_solver
         solver_options = self.settings.get_minlp_solver_options()
@@ -775,7 +775,7 @@ class PyomoSubProblems(SubProblemsBase):
 
         return y_new, primal_bound, dual_bound, sol_is_feasible
 
-    def local_solve(self, result, direction, start_point=None):
+    def local_solve(self, result, direction, start_point=None, **kwargs):
 
         solver_options = self.settings.get_nlp_solver_options()
         # in order to solve NLP relaxation of MINLP problem it is not

@@ -3,10 +3,10 @@ import sys
 
 # add Decogo source files to path
 # very important to do it before importing Decogo
-path = os.path.dirname(os.getcwd())
-while os.path.basename(path) != 'decogo':
-    path = os.path.dirname(path)
-sys.path.insert(0, path)
+# path = os.path.dirname(os.getcwd())
+# while os.path.basename(path) != 'decogo':
+#     path = os.path.dirname(path)
+# sys.path.insert(0, path)
 
 from decogo.solver.decogo import DecogoSolver
 from tests.examples.tu.DESSLib_testmodel.DESS_blockstructure import \

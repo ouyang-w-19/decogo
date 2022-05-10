@@ -41,11 +41,13 @@ class RefactoryColGen:
         # initial column generation
         tic_init_cg = time.time()
         i_find_sol = 0
+        # TODO: ADJUSTED DECOGO
         while True:  # find feasible solution and eliminate slacks
+            # break
             # in IA master problem
             i_find_sol += 1
             tic = time.time()
-            self.column_generation(approx_solver=True)  # solve subproblems
+            self.column_generation(approx_solver=True)  # solve sub-problems
             # approximately
             time_cg = round(time.time() - tic, 2)
             logger.info('Time used for init CG '
@@ -180,8 +182,8 @@ class RefactoryColGen:
 
             logger.info('Time used for CG in iter '
                         '{0}: --{1}-- seconds'.format(
-                            self.result.main_iterations,
-                            time_column_generation))
+                self.result.main_iterations,
+                time_column_generation))
 
             logger.info('------------------------------------')
             logger.info('CG regarding all blocks')
@@ -199,7 +201,9 @@ class RefactoryColGen:
                     _, _, delta_k, new_point, _ = \
                         self.generate_column(k, reduced_cost_direction)
 
-                    if delta_k <= -1e-3:
+                    # if delta_k <= -1e-3:
+                    # TODO: DECOGO CHANGE
+                    if delta_k < 0:
                         hat_k_set.append(k)
 
             time_column_generation = round(time.time() - tic, 2)
@@ -264,8 +268,8 @@ class RefactoryColGen:
             time_i_loop = round(time.time() - tic_i_start, 2)
             time_i_loop_set.append(time_i_loop)
             logger.info('Total time used in iter {0}'
-                        ': --{1}-- seconds'. format(self.result.main_iterations,
-                                                    time_i_loop))
+                        ': --{1}-- seconds'.format(self.result.main_iterations,
+                                                   time_i_loop))
 
             if self.result.main_iterations == \
                     self.settings.cg_max_main_iter:
@@ -286,8 +290,8 @@ class RefactoryColGen:
 
         self.result.total_sub_problem_number \
             = self.result.cg_num_minlp_problems + \
-            self.result.cg_num_unfixed_nlp_problems + \
-            self.result.cg_num_fixed_nlp_problems
+              self.result.cg_num_unfixed_nlp_problems + \
+              self.result.cg_num_fixed_nlp_problems
 
         self.result.sub_problem_number_after_cg = \
             self.result.total_sub_problem_number
@@ -564,7 +568,7 @@ class RefactoryColGen:
                 logger.info('IA obj. val: {0}'.format(
                     obj_value_ia * self.result.sense))
                 logger.info('Elapsed time: {0}'.format(self.result.current_used_time +
-                                               (time.time() - start_time)))
+                                                       (time.time() - start_time)))
 
             # use column
             for j, (index, vector) in enumerate(r_cg.vectors.items()):
@@ -692,6 +696,11 @@ class RefactoryColGen:
                     new_columns_generated[k] += 1
                 y.set_block(k, feasible_point)
                 lag_sol += primal_bound
+            # TODO: DECOGO CHANGE!
+            # Update the original TOProblem acc. to blocks feasible calculated points
+            # if self.problem.original_problem.__class__.__name__ == "TOOriginalProblem":
+            #     self.problem.original_problem.update_problem(y)
+
             lag_sol -= np.dot(direction_vector, b)
 
             logger.info('{0: <15}{1: <30}{2: <30}'
@@ -748,25 +757,25 @@ class RefactoryColGen:
         """
         if approx_solver:  # approximate solve minlp subproblem
             feasible_point, primal_bound, reduced_cost, is_new_point, \
-             column = self.local_solve_subproblem(
+            column = self.local_solve_subproblem(
                 block_id, direction, x_k=x_k)
         else:
             if self.settings.cg_generate_columns_with_nlp is True:
                 feasible_point, primal_bound, reduced_cost, is_new_point, \
-                 column = self.local_solve_subproblem(block_id,
-                                                      direction,
-                                                      x_k=x_k)
+                column = self.local_solve_subproblem(block_id,
+                                                     direction,
+                                                     x_k=x_k)
                 if reduced_cost > -0.01:
                     feasible_point, reduced_cost, primal_bound, _, \
-                     is_new_point, column = \
-                     self.global_solve_subproblem(
-                         block_id, direction, heuristic=heuristic)
+                    is_new_point, column = \
+                        self.global_solve_subproblem(
+                            block_id, direction, heuristic=heuristic)
             else:
                 feasible_point, reduced_cost, primal_bound, _, is_new_point, \
-                 column = self.global_solve_subproblem(
+                column = self.global_solve_subproblem(
                     block_id, direction, heuristic=heuristic)
-
-        reduced_cost = round(reduced_cost, 3)
+        # TODO: DECOGO CHANGE: removed round
+        # reduced_cost = round(reduced_cost, 3)
 
         return feasible_point, primal_bound, reduced_cost, is_new_point, column
 
@@ -808,7 +817,7 @@ class RefactoryColGen:
         # solve the sub-problem
         feasible_point, primal_bound, dual_bound, _ = \
             self.problem.sub_problems[block_id].global_solve(
-                direction=dir_orig_space, result=self.result)
+                direction=dir_orig_space, result=self.result, problem=self.problem)
 
         column = None
         if compute_reduced_cost is True:
@@ -840,7 +849,7 @@ class RefactoryColGen:
             self.result.optimal_subproblems = False
 
         return feasible_point, reduced_cost, primal_bound, dual_bound, \
-            is_new_point, column
+               is_new_point, column
 
     def get_slack_directions(self, slacks):
         """Computes new direction based on the slack values of IA master problem
@@ -894,9 +903,10 @@ class RefactoryColGen:
                 block_id, dir_orig_space)
 
         # solve the sub-problem
+        # TODO: DECOGO CHANGE: make master problem available in solvers; make decomposed problem available in solvers
         tilde_y, new_point_obj_val, _, sol_is_feasible = \
             self.problem.sub_problems[block_id].local_solve(
-                direction=dir_orig_space, result=self.result)
+                direction=dir_orig_space, result=self.result, start_point=x_k, problem=self.problem)
 
         reduced_cost = 0
         column = None
@@ -925,14 +935,20 @@ class RefactoryColGen:
         logger.info('\n=======================================================')
         logger.info('Find solution - init')
 
+        # TODO: DECOGO CHANGE
         # solve IA master problem
-        _, _, w_ia, _, _, obj_value_ia = \
+        _, x_ia, w_ia, _, _, obj_value_ia = \
             self.problem.master_problems.solve_ia(self.settings.lp_solver)
         self.result.cg_relaxation = obj_value_ia
 
-        self.problem.original_problem.local_solve_fast(w_ia, self.result,
-                                                       self.problem,
-                                                       iter_index)
+        if self.problem.original_problem.__class__.__name__ == "TOOriginalProblem":
+            self.problem.original_problem.local_solve_fast(x_ia, self.result,
+                                                           self.problem,
+                                                           iter_index)
+        else:
+            self.problem.original_problem.local_solve_fast(w_ia, self.result,
+                                                           self.problem,
+                                                           iter_index)
 
     def find_solution(self, iter_index=None):
         """Primal heuristics method

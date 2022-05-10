@@ -127,7 +127,7 @@ class SubProblemsBase(ABC):
         self.block_id = block_id
 
     @abstractmethod
-    def local_solve(self, result, direction, start_point=None):
+    def local_solve(self, result, direction, start_point=None, **kwargs):
         """ Method for solving sub-problem
         non-optimal/heuristically/locally
 
@@ -144,7 +144,7 @@ class SubProblemsBase(ABC):
         pass
 
     @abstractmethod
-    def global_solve(self, result, direction, start_point=None):
+    def global_solve(self, result, direction, start_point=None, **kwargs):
         """ Method for solving
         sub-problem globally/near-optimal or calling an exact solver
 
