@@ -307,7 +307,8 @@ class PyomoOriginalProblem(OriginalProblemBase):
         self.nlp_resource_projection_problem = \
             NlpResourceProjectionProblem(sub_models, cuts)
 
-    def local_solve_fast(self, start_point, result, problem, iter=None):
+    def local_solve_fast(self, start_point, result, problem, iter=None,
+                         **kwargs):
 
         # solve NLP resource projection problem
         tilde_y, obj_val_nlp_1st, sol_is_feasible = \
@@ -405,7 +406,7 @@ class PyomoOriginalProblem(OriginalProblemBase):
                             .format(int(iter)))
         logger.info('\n=======================================================')
 
-    def local_solve(self, start_point, result, problem, iter=None):
+    def local_solve(self, start_point, result, problem, iter=None, **kwargs):
         mip_solver = 'gurobi_persistent'
         pool_solutions = self.settings.cg_find_sol_mip_pool
 

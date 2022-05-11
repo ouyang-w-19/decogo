@@ -817,7 +817,8 @@ class RefactoryColGen:
         # solve the sub-problem
         feasible_point, primal_bound, dual_bound, _ = \
             self.problem.sub_problems[block_id].global_solve(
-                direction=dir_orig_space, result=self.result, problem=self.problem)
+                direction=dir_orig_space, result=self.result,
+                problem=self.problem)
 
         column = None
         if compute_reduced_cost is True:
@@ -905,8 +906,9 @@ class RefactoryColGen:
         # solve the sub-problem
         # TODO: DECOGO CHANGE: make master problem available in solvers; make decomposed problem available in solvers
         tilde_y, new_point_obj_val, _, sol_is_feasible = \
-            self.problem.sub_problems[block_id].local_solve(
-                direction=dir_orig_space, result=self.result, start_point=x_k, problem=self.problem)
+            self.problem.sub_problems[block_id].local_solve(result=self.result,
+                                                            direction=dir_orig_space,
+                                                            start_point=x_k)
 
         reduced_cost = 0
         column = None
@@ -966,7 +968,7 @@ class RefactoryColGen:
         self.result.cg_relaxation = obj_value_ia
 
         self.problem.original_problem.local_solve(tilde_y, self.result,
-                                                  self.problem, iter_index)
+                                                  self.problem)
 
     def print_z_values(self, z):
         """Prints sorted z-weights blockwise

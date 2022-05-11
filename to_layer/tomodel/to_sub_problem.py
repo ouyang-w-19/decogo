@@ -86,7 +86,13 @@ class TOSubProblem(SubProblemsBase):
 
     # Is called for CG and fast CG
     # or rather solving without using the direction
-    def local_solve(self, result, direction, start_point=None, problem=None):
+    def local_solve(self, result, direction, start_point=None, **kwargs):
+
+        # include argument problem into kwargs
+        if 'problem' in kwargs:
+            problem = kwargs['problem']
+        else:
+            problem = None
 
         try:
             x_new, u_new, obj_new = self.solve_by_simp(start_point, _direction=direction)
@@ -111,7 +117,14 @@ class TOSubProblem(SubProblemsBase):
     # Is called for sub-gradient
     # or rather solver depends on direction
     # direction is already q = d^T \cdot A_k
-    def global_solve(self, result, direction, start_point=None, problem=None):
+    def global_solve(self, result, direction, start_point=None, **kwargs):
+
+        # include argument problem into kwargs
+        if 'problem' in kwargs:
+            problem = kwargs['problem']
+        else:
+            problem = None
+
         self.sub_gradient_iter += 1
         if start_point is None:
             if problem.get_min_inner_point(self.block_id, direction)[1] != float('inf'):

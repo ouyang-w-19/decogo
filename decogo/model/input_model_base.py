@@ -47,7 +47,7 @@ class OriginalProblemBase(ABC):
         super().__init__()
 
     @abstractmethod
-    def local_solve(self, start_point, result, problem, iter=None):
+    def local_solve(self, start_point, result, problem, iter=None, **kwargs):
         """ Method for solving original problem
         non-optimal/heuristically/locally
 
@@ -63,7 +63,8 @@ class OriginalProblemBase(ABC):
         pass
 
     @abstractmethod
-    def local_solve_fast(self, start_point, result, problem, iter=None):
+    def local_solve_fast(self, start_point, result, problem, iter=None,
+                         **kwargs):
         """ Method for fast solving original problem
         non-optimal/heuristically/locally
 
@@ -108,7 +109,7 @@ class SubModelBase(ABC):
         self.block_id = block_id
         self.variables = []
         self.nonlin_constr = []
-        self.block_size = len(vars_in_block)
+        self.block_size = len(self.vars_in_block)
         self.integer = False
         self.linear = False
 

@@ -41,7 +41,8 @@ class TOOriginalProblem(OriginalProblemBase):
 
         return _x, _u
 
-    def local_solve(self, start_point: BlockVector, result, problem, iter=None):
+    def local_solve(self, start_point: BlockVector, result, problem, iter=None,
+                    **kwargs):
 
         _x_start, _u_start = self.trans_to_orig_space(start_point)
 
@@ -117,7 +118,8 @@ class TOOriginalProblem(OriginalProblemBase):
 
     # start_point is  in image space
     # it is just more to find a feasible point of the original problem than calculate the complete model with simp
-    def local_solve_fast(self, start_point: BlockVector, result, problem, iter=None):
+    def local_solve_fast(self, start_point: BlockVector, result, problem,
+                         iter=None, **kwargs):
 
         self.model.base_model.SimpProblem.max_main_iterations = self.used_simp_iter_for_fast
 
