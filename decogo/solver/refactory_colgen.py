@@ -41,9 +41,8 @@ class RefactoryColGen:
         # initial column generation
         tic_init_cg = time.time()
         i_find_sol = 0
-        # TODO: ADJUSTED DECOGO
         while True:  # find feasible solution and eliminate slacks
-            # break
+
             # in IA master problem
             i_find_sol += 1
             tic = time.time()
@@ -202,7 +201,6 @@ class RefactoryColGen:
                         self.generate_column(k, reduced_cost_direction)
 
                     # if delta_k <= -1e-3:
-                    # TODO: DECOGO CHANGE
                     if delta_k < 0:
                         hat_k_set.append(k)
 
@@ -696,10 +694,6 @@ class RefactoryColGen:
                     new_columns_generated[k] += 1
                 y.set_block(k, feasible_point)
                 lag_sol += primal_bound
-            # TODO: DECOGO CHANGE!
-            # Update the original TOProblem acc. to blocks feasible calculated points
-            # if self.problem.original_problem.__class__.__name__ == "TOOriginalProblem":
-            #     self.problem.original_problem.update_problem(y)
 
             lag_sol -= np.dot(direction_vector, b)
 
@@ -774,7 +768,6 @@ class RefactoryColGen:
                 feasible_point, reduced_cost, primal_bound, _, is_new_point, \
                 column = self.global_solve_subproblem(
                     block_id, direction, heuristic=heuristic)
-        # TODO: DECOGO CHANGE: removed round
         # reduced_cost = round(reduced_cost, 3)
 
         return feasible_point, primal_bound, reduced_cost, is_new_point, column
@@ -904,11 +897,11 @@ class RefactoryColGen:
                 block_id, dir_orig_space)
 
         # solve the sub-problem
-        # TODO: DECOGO CHANGE: make master problem available in solvers; make decomposed problem available in solvers
         tilde_y, new_point_obj_val, _, sol_is_feasible = \
             self.problem.sub_problems[block_id].local_solve(result=self.result,
                                                             direction=dir_orig_space,
-                                                            start_point=x_k)
+                                                            start_point=x_k,
+                                                            problem=self.problem)
 
         reduced_cost = 0
         column = None
@@ -937,7 +930,6 @@ class RefactoryColGen:
         logger.info('\n=======================================================')
         logger.info('Find solution - init')
 
-        # TODO: DECOGO CHANGE
         # solve IA master problem
         _, x_ia, w_ia, _, _, obj_value_ia = \
             self.problem.master_problems.solve_ia(self.settings.lp_solver)
