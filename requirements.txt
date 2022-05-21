@@ -2,8 +2,11 @@
 pyomo>=6.0.0
 
 ###### Requirements without Version Specifiers ######
-scipy
+scipy~=1.7.0
 pandas
-psutil
-pyutilib
-networkx
+psutil~=5.8.0
+pyutilib~=6.0.0
+networkx~=2.5.1
+
+numpy~=1.19.4
+matplotlib~=3.3.3

@@ -46,7 +46,10 @@ class Element:
         return zip(a, b)
 
     def __create_node_permutation__(self):
-
+        """
+        Not required anymore?!
+        :return:
+        """
         _nodes = list(self.Nodes.keys())
 
         self.node_perm = list(self.pairwise(_nodes))
@@ -66,6 +69,10 @@ class Element:
     
     # determine element's centroid
     def set_centroid(self):
+        """
+        Sets the centroid of a finite element; e.g. required for determining element neighbors
+        :return: nothing
+        """
         _arr = np.array([self.Nodes[n_id].n_vec for n_id in self.Nodes])
         self.centroid = np.array(
             [
@@ -77,7 +84,8 @@ class Element:
     def update_stiffness_matrix(self, e_min=1e-9, e_max=1, p=3):
         self.Ke = (e_min + self.x ** p * (e_max - e_min)) * self.Ke0
     
-    # update nodal forces of element's nodes using the gaussian approach with the mean value at gaussian integration points
+    # update nodal forces of element's nodes using the gaussian approach with the mean value at
+    # gaussian integration points
     def update_nodal_forces(self, u_out=None):
         _nodes = list(self.Nodes.keys())
         if u_out is not None:

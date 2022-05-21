@@ -30,6 +30,12 @@ def __k_sub__(__nu):
 
 # returns the stiffness matrix depending on the Young's Modulus and the poission's ratio
 def ke(e, nu):
+    """
+    Returns a static stiffness matrix for a quadrilateral element with a edge length of 1.
+    :param e: Young's Modulus
+    :param nu:  Poission's Number
+    :return: static stiffness matrix
+    """
     k = __k_sub__(nu)
     return e / (1 - nu ** 2) * np.array([[k[0], k[1], k[2], k[3], k[4], k[5], k[6], k[7]],
                                          [k[1], k[0], k[7], k[6], k[5], k[4], k[3], k[2]],

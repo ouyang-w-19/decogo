@@ -5,11 +5,15 @@ from decogo.model.input_model_base import SubProblemsBase
 
 from to_layer.tomodel.to_sub_model import TOSubModel
 from to_layer.utils.utils import penalization_function, reward_function, create_random_point
+from to_layer.pyomo.global_solver import GlobalSolver
 
 logger = logging.getLogger("decogo")
 
 
 class TOSubProblem(SubProblemsBase):
+
+    _global_solver : GlobalSolver = None
+
     sub_gradient_iter = 0
     column_number = 10
     threshold = 0.2
@@ -23,6 +27,8 @@ class TOSubProblem(SubProblemsBase):
         self.integer = sub_models[block_id].integer
         self.cuts = cuts
         self.sub_model: TOSubModel = sub_models[self.block_id]
+
+        self._global_solver = GlobalSolver(self.sub_model.sub_domain.FEModel)
 
         super().__init__(self.block_id)
 
