@@ -17,6 +17,8 @@ class SubDomain:
     dofs_per_node: int = 2
     SubDomain_ID: int = 0
 
+    Dimension: int = 2
+
     celx: int = 0  # hopefully out-dated
     cely: int = 0  # hopefully out-dated
     celz: int = 0  # hopefully out-dated
@@ -45,7 +47,7 @@ class SubDomain:
         Calculates flexibility of sub-domain depending on x and u
         :param _x: density distribution; shape must fit to element number
         :type np.array
-        :param _u: displacements in the domain TODO: can be none -> calculate using domains forces?
+        :param _u: displacements in the domain
         :type np.array
         :return: _c flexibility
         """
@@ -176,15 +178,15 @@ class SubDomain:
         # Set SimpProblem
         self.SubSimpProblem = SimpProblem(len(self.Nodes), self.Elements, self.FEModel)
 
-    # TODO: Check Requirement!!!
     def set_init_vectors(self, u_glob: np.array, x_sub_domain: np.array):
         self.x_init = x_sub_domain
         idx = np.array(self.Dofs)[:] - 1
         self.u_init = u_glob[idx]
         self.y_init = np.concatenate([self.x_init, self.u_init])
 
-    def __init__(self, elements: dict, subdomain_id: int, celx=0, cely=0, celz=0):
+    def __init__(self, elements: dict, subdomain_id: int, dim=2, celx=0, cely=0, celz=0):
         self.Elements = elements
+        self.Dimension = dim
         self.Nodes = []
         self.Dofs = []
         self.SubDomain_ID = subdomain_id

@@ -42,5 +42,6 @@ fixed_nodes = [1, 5]                                            # create a list 
 bc = BoundaryConditions(f_dict, fixed_nodes, list(base_nodes))  # create the boundary conditions nodes
 
 base_model = TOModelBase(nodes, elements, bc, 2)                # create the instance of TOModelBase
-
+# define the simple design space by hand of 4 x 4 elements
+base_model.SimpProblem.shape = (4, 4)
 # base_model can be used for further actions or rather will be imported for optimization

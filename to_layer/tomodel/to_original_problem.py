@@ -33,11 +33,11 @@ class TOOriginalProblem(OriginalProblemBase):
         self.ele_list = list(self.model.base_model.elements.keys())
 
     def trans_to_orig_space(self, point: BlockVector):
-        _x = np.array([y_k[:len(self.model.cells[block_id + 1].Elements)] for block_id, y_k in point.vectors.items()])
+        _x = np.array([y_k[:len(self.model.sub_domains[block_id + 1].Elements)] for block_id, y_k in point.vectors.items()])
         _x = np.reshape(_x, (_x.size,))
 
         # TODO: Not completely done!
-        _u = np.array([y_k[len(self.model.cells[block_id + 1].Elements):] for block_id, y_k in point.vectors.items()])
+        _u = np.array([y_k[len(self.model.sub_domains[block_id + 1].Elements):] for block_id, y_k in point.vectors.items()])
 
         return _x, _u
 
@@ -46,7 +46,6 @@ class TOOriginalProblem(OriginalProblemBase):
 
         _x_start, _u_start = self.trans_to_orig_space(start_point)
 
-        self.model.base_model.SimpProblem.shape = (4, 4)  # TODO: Remove it from here -> add earlier
         self.model.base_model.SimpProblem.max_main_iterations = 100
         try:
             # penalization section
@@ -56,9 +55,6 @@ class TOOriginalProblem(OriginalProblemBase):
             _name = None
 
             _x, _u, _obj = self.model.base_model.SimpProblem.solve(_x_start, output=True, model_name=_name)
-
-            # _x, _u, _obj =\
-            #     self.model.base_model.FEModel.incorporate_one_constraint(_x, self.input_model.one_constraint)
 
             # penalization sections
             if self.input_model.penalization_approach:
@@ -83,7 +79,7 @@ class TOOriginalProblem(OriginalProblemBase):
 
         x_indices = np.array(list(self.model.base_model.elements.keys()))
 
-        for sub_domain_id, sub_domain in self.model.cells.items():
+        for sub_domain_id, sub_domain in self.model.sub_domains.items():
             _eles = list(sub_domain.Elements.keys())
             _indices = np.array([np.where(e == x_indices)[0][0] for e in _eles]).squeeze()
             x_domain = _x[_indices]
@@ -104,7 +100,7 @@ class TOOriginalProblem(OriginalProblemBase):
     def get_blockwise_point(self, _x, _u) -> np.array:
 
         y = []
-        for domain_id, sub_domain in self.model.cells.items():
+        for domain_id, sub_domain in self.model.sub_domains.items():
             u_domain = _u[np.array(sub_domain.Dofs)[:] - 1]
             eles = list(sub_domain.Elements.keys())
             e_indices = [self.ele_list.index(i) for i in eles]
@@ -123,13 +119,11 @@ class TOOriginalProblem(OriginalProblemBase):
 
         self.model.base_model.SimpProblem.max_main_iterations = self.used_simp_iter_for_fast
 
-        # TODO: Consider Volume of Elements
         self.model.base_model.SimpProblem.shape = (4, 4)
-        _x, _u, _c = self.model.base_model.SimpProblem.solve(np.array([self.model.base_model.SimpProblem.volfrac]
-                                                             * len(self.model.base_model.elements)),
-                                                             output=False)
 
-        # _x, _u, _c = self.model.base_model.FEModel.incorporate_one_constraint(_x, self.input_model.one_constraint)
+        x_start, u_start = self.trans_to_orig_space(start_point)
+
+        _x, _u, _c = self.model.base_model.SimpProblem.solve(x_start, output=False)
 
         if self.input_model.integer:
             _x, _u, _c = self.input_model.model.base_model.FEModel.transform_relaxed_point(_x)
@@ -144,13 +138,13 @@ class TOOriginalProblem(OriginalProblemBase):
             _c_initial = _c
 
         # adjust rhs of volume constraint in accordance to the one constraint
-        # self.cuts.global_cuts[len(self.model.copies)].rhs = _x_initial.sum()  # TODO:consider explicit volume
+        # self.cuts.global_cuts[len(self.model.copies)].rhs = _x_initial.sum()
         # set a first primal bound
         result.set_new_primal_bound(_c_initial, _y_initial)
 
         # set inner points of primal bound to IA
         y = self.get_blockwise_point(_x_initial, _u)
-        for i in range(len(self.model.cells)):
+        for i in range(len(self.model.sub_domains)):
             problem.add_inner_point(i, y[i],
                                     min_inner_point_dist=self.input_model.settings.cg_min_inner_point_distance)
 
@@ -167,7 +161,7 @@ class TOOriginalProblem(OriginalProblemBase):
 
                 y = self.get_blockwise_point(x_pert, u_pert)
 
-                for j in range(len(self.model.cells)):
+                for j in range(len(self.model.sub_domains)):
                     # add an inner point to LP-IA
                     problem.add_inner_point(j, y[j],
                                             min_inner_point_dist=self.input_model.settings.cg_min_inner_point_distance)

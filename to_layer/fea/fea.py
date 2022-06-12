@@ -13,6 +13,7 @@ class FEModel:
 
     node_number = 0
     dofs_per_node = 2
+    dimension: int = 0
 
     global_nodes = []
     elements = {}
@@ -143,12 +144,12 @@ class FEModel:
 
         return self.__get_updates__(_x)
 
-    def __init__(self, nodes: list, elements: dict, boundary_conditions: BoundaryConditions):
+    def __init__(self, nodes: list, elements: dict, boundary_conditions: BoundaryConditions, dim=2):
         self.node_number = len(nodes)
         self.dof_number = self.node_number * self.dofs_per_node
         self.local_nodes = list(range(1, self.node_number + 1))
         self.local_dofs = list(range(1, self.dof_number + 1))
-
+        self.dimension = dim
         self.elements = elements
 
         self.global_dofs = np.unique(np.array([self.elements[i].DoFHelper

@@ -199,7 +199,7 @@ class Visualizer:
     def display_reformulated_model(self, ref_model: TOReformulatedUserModel, cell_displacements: dict):
         _fig, _ax = plt.subplots(figsize=(10, 10))
         # draw cell
-        for cid, c in ref_model.cells.items():
+        for cid, c in ref_model.sub_domains.items():
             self.__draw_cell__(c, _ax, cell_displacements[cid], ref_model.cutted_nodes)
 
         _ax.scatter([], [], c='green', marker='>', label='Fixations')

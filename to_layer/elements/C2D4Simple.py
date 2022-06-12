@@ -17,6 +17,7 @@ shape_functions = {
         4: lambda r, s: 1 / 4 * (1 - r) * (1 + s),
 }
 
+
 # sub stiffness matrix of a simple C2D4 element
 def __k_sub__(__nu):
     return np.array([1 / 2 - __nu / 6,
@@ -27,6 +28,7 @@ def __k_sub__(__nu):
                      -1 / 8 - __nu / 8,
                      __nu / 6,
                      1 / 8 - 3 * __nu / 8])
+
 
 # returns the stiffness matrix depending on the Young's Modulus and the poission's ratio
 def ke(e, nu):
@@ -46,3 +48,24 @@ def ke(e, nu):
                                          [k[6], k[3], k[4], k[1], k[2], k[7], k[0], k[5]],
                                          [k[7], k[2], k[1], k[4], k[3], k[6], k[5], k[0]]])
 
+
+def B(r, s):
+
+    return np.array(
+        [-0.5 + 0.25 * s, 0, 0.5 - 0.25 * s, 0, 0.5 + 0.25 * s, 0, -0.5 - 0.25 * s, 0],
+        [0, -0.5 + 0.25 * r, 0, -0.5 - 0.25 * r, 0, 0.5 + 0.25 * r, 0, 0.5 - 0.25 * r],
+        [-0.5 + 0.25 * r, -0.5 + 0.25 * s, -0.5 - 0.25 * r, 0.5 - 0.25 * s, 0.5 + 0.25 * r,
+         0.5 + 0.25 * s, 0.5 - 0.25 * r, -0.5 - 0.25 * s]
+    )
+
+
+def E(e, nu):
+
+    llambda = (nu * e) / ((1 + nu) * (1 - 2 * nu))
+    mu = e / (2 * (1 + nu))
+
+    return np.array(
+        [llambda + 2 * mu, llambda, 0],
+        [llambda, llambda + 2 * mu, 0],
+        [0, 0, mu]
+    )

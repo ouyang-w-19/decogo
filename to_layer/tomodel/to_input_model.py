@@ -114,7 +114,6 @@ class TOInputModel(InputModelBase):
         # ---------------------------------------------------------------------
 
         # global volume constraint
-        # TODO: implement explicit volumes of elements
         # right hand side of constraint
         if self.penalization_approach is False:
             rhs = len(self.model.base_model.elements) * self.model.base_model.SimpProblem.volfrac
@@ -144,7 +143,6 @@ class TOInputModel(InputModelBase):
         # ---------------------------------------------------------------------
         return block_sizes, blocks, obj, global_cuts, local_cuts
 
-    # TODO: Check Correctness! or rather check if any other definitions of bounds exists
     def __get_bounds__(self):
 
         # Density Bounds
@@ -166,7 +164,7 @@ class TOInputModel(InputModelBase):
 
         e_list = list(self.model.base_model.elements.keys())
 
-        for domain_id, domain in self.model.cells.items():
+        for domain_id, domain in self.model.sub_domains.items():
             domain_eles = np.array(list(domain.Elements.keys()))
             x_block = _x[np.array([np.where(e_list == de) for de in domain_eles]).flatten()]
             u_block = _u[np.array(domain.Dofs)[:] - 1]
@@ -184,7 +182,7 @@ class TOInputModel(InputModelBase):
         base_problem = self.model.base_model.SimpProblem.configure(_simp_config)
 
         # sub domains
-        for domain_id, domain in self.model.cells.items():
+        for domain_id, domain in self.model.sub_domains.items():
             domain.SubSimpProblem.configure(_simp_config)
 
         # Pertubation Section

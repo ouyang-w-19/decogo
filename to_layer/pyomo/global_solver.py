@@ -6,7 +6,7 @@ from to_layer.fea.fea import FEModel
 from typing import Type
 
 
-class GlobalSolver():
+class GlobalSolver:
 
     _model: ConcreteModel = None
     _solver: SolverFactory = None
@@ -18,13 +18,11 @@ class GlobalSolver():
     def solve(self, **kwargs):
         self._model.display()
 
-
-
         res = self._solver.solve(self._model, tee=True)
         self._model.display()
         return res
 
     def __init__(self, domain: FEModel):
-
-        self._model = PymTOModel(domain).get_model()
+        _m = PymTOModel(domain)
+        self._model = _m.get_model()
         self._solver = SolverFactory('scipampl')

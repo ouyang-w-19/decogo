@@ -42,12 +42,11 @@ class TOSubModel(SubModelBase):
 
         self.one_constraint = self.get_one_indices()
 
-        self.sub_domain: SubDomain = self.ref_model.cells[block_id + 1]
+        self.sub_domain: SubDomain = self.ref_model.sub_domains[block_id + 1]
 
         self.nonlin_constr = [1]
 
         # bar_uk is required for stabilizer
-        # TODO: Improve Usage
         self.bar_uk = self.inp_model.model.base_model.FEModel.U[np.array(self.sub_domain.Dofs)[:] - 1]
 
         # Variables Creation

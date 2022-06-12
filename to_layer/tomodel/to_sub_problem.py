@@ -28,7 +28,7 @@ class TOSubProblem(SubProblemsBase):
         self.cuts = cuts
         self.sub_model: TOSubModel = sub_models[self.block_id]
 
-        self._global_solver = GlobalSolver(self.sub_model.sub_domain.FEModel)
+        # self._global_solver = GlobalSolver(self.sub_model.sub_domain.FEModel)
 
         super().__init__(self.block_id)
 
@@ -36,7 +36,7 @@ class TOSubProblem(SubProblemsBase):
 
         self.temp_columns = []
 
-        self.sub_model.sub_domain.SubSimpProblem.shape = (2, 2)  # TODO: Configure Shape for SubDomains
+        # self.sub_model.sub_domain.SubSimpProblem.shape = (2, 2)
 
         if _y_tilde is not None:
             _x = _y_tilde[:len(self.sub_model.sub_domain.Elements)]
@@ -71,8 +71,8 @@ class TOSubProblem(SubProblemsBase):
             _G = self.sub_model.sub_domain.FEModel.boundary_conditions.outer_forces_vec + _g
 
         # print(_x)
-        # solve the sub-domain by simp # TODO: rename d_k parameter to h_k = (d_k + g_k); Test only d_k
-        _x_new, _u_new, _obj_new = self.sub_model.sub_domain.SubSimpProblem.solve(_x, d_k=_G, output=False)
+        # solve the sub-domain by simp; h_k = (d_k + g_k);
+        _x_new, _u_new, _obj_new = self.sub_model.sub_domain.SubSimpProblem.solve(_x, h_k=_G, output=False)
 
         # _x_new, _u_new, _obj_new = \
         #     self.sub_model.sub_domain.FEModel.incorporate_one_constraint(_x_new, self.sub_model.one_constraint)

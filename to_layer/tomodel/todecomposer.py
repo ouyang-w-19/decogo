@@ -16,8 +16,8 @@ class TODecomposer:
     blocks: List[List[str]] = []  # list of lists: inner list for each SD, containing vars
     block_sizes: List[int] = []  # list with sub-domain sizes (number of variables in each block)
 
-    mapping_copy_constraints = []  # TODO: Check Requirement!
-    symbolic_copy_constraints = []  # TODO: Check Requirement!
+    mapping_copy_constraints = []
+    symbolic_copy_constraints = []
 
     def get_wu_nodes_in_elements(self):
         wn = {}

@@ -44,7 +44,7 @@ class SimpProblem:
 
     feasible_solution = False
 
-    def solve(self, x_init, d_k=None, output=False, model_name: str = 'test'):
+    def solve(self, x_init, h_k=None, output=False, model_name: str = 'test'):
 
         if output:
             self.setup_output(name=model_name)
@@ -60,8 +60,8 @@ class SimpProblem:
         for i, (e_id, element) in enumerate(self.Elements.items()):
             element.x = x_init[i]
         # incorporate decogo direction
-        if d_k is not None:
-            self.FE_Model.F = d_k
+        if h_k is not None:
+            self.FE_Model.F = h_k
 
         # determine initial volume
         self.V0 = self.get_v(x_init)
@@ -176,7 +176,7 @@ class SimpProblem:
         # Dimension section
         self.NNodes = nnodes
         self.Nodes = list(range(self.NNodes))
-        self.DoFs = list(range(self.NNodes * 2))  # TODO: Replace 2 with dof per node number
+        self.DoFs = list(range(self.NNodes * fe_model.dofs_per_node))
         # end Dimension section
         # Element section
         self.Elements = eles

@@ -11,7 +11,7 @@ class TOReformulatedUserModel:
     decomposer: TODecomposer
     blocks = []
     block_sizes = []
-    cells = {}  # TODO: Shall called SubDomains
+    sub_domains = {}
     cutted_nodes = []
     f: SparseBlockVector
     f_vals = []
@@ -28,7 +28,7 @@ class TOReformulatedUserModel:
 
         _c = 0
 
-        for domain_id, sub_domain in self.cells.items():
+        for domain_id, sub_domain in self.sub_domains.items():
             _e_domains = np.array(list(sub_domain.Elements.keys()))
             _u_domain = _u[np.array(sub_domain.Dofs)[:] - 1]
             _x_domain = _x[np.array([np.where(elements == e) for e in _e_domains]).flatten()]
@@ -45,8 +45,8 @@ class TOReformulatedUserModel:
         print("\tNumber: {}\n".format(len(self.copies)))
         for sym in self.decomposer.symbolic_copy_constraints:
             print("\t{}".format(sym))
-        print("\nNumber of cells: {}\n".format(len(self.cells)))
-        for i, c in self.cells.items():
+        print("\nNumber of cells: {}\n".format(len(self.sub_domains)))
+        for i, c in self.sub_domains.items():
             print("SubDomain-ID: {}\n".format(c.SubDomain_ID))
             print("\tGlobal Nodes: {}\n".format(c.Nodes))
             print("\tGlobal DoFs: {}\n".format(c.Dofs))
@@ -58,7 +58,7 @@ class TOReformulatedUserModel:
 
     def __get_f_as_sparse_block_vector__(self):
         coeffs = []
-        for sd_id, sub_domain in self.cells.items():
+        for sd_id, sub_domain in self.sub_domains.items():
             idx = np.where(sub_domain.FEModel.F != 0)[0][:]
             for i in idx:
                 coeffs.append((sd_id-1, i + len(sub_domain.Elements), sub_domain.FEModel.F[i]))
@@ -67,15 +67,15 @@ class TOReformulatedUserModel:
 
     def __get_global_volume_constraint__(self):
         global_volume_constraint = []
-        for c_id, cell in self.cells.items():
-            block_id = c_id - 1
-            for element in range(len(cell.Elements)):
-                global_volume_constraint.append((block_id, element, 1))  # TODO: Implement Volumes for each element
+        for sd_id, sub_domain in self.sub_domains.items():
+            block_id = sd_id - 1
+            for i, (e_id, element) in enumerate(sub_domain.Elements.items()):
+                global_volume_constraint.append((block_id, i, element.V))
         return global_volume_constraint
 
     def __determine_penalized_objective_function__(self):
         coeffs = []
-        for sd_id, sub_domain in self.cells.items():
+        for sd_id, sub_domain in self.sub_domains.items():
             # penalized densities
             for e in range(len(sub_domain.Elements)):
                 coeffs.append((sd_id - 1, e, 1))
@@ -89,7 +89,7 @@ class TOReformulatedUserModel:
     def get_one_elements(self):
         ones = []
         # loaded elements
-        for domain_id, domain in self.cells.items():
+        for domain_id, domain in self.sub_domains.items():
             for node, vec in domain.FEModel.boundary_conditions.outer_forces.items():
                 for i, element in domain.Elements.items():
                     if node in element.Nodes:
@@ -105,14 +105,14 @@ class TOReformulatedUserModel:
         self.base_model = base_model
         self.decomposer = decomposer
         self.blocks, self.block_sizes = self.decomposer.decompose()
-        self.cells = self.decomposer.cells
+        self.sub_domains = self.decomposer.cells
         self.cutted_nodes = self.decomposer.cutted_nodes
         self.f_sparse, self.f_coefficients = self.__get_f_as_sparse_block_vector__()
 
-        self.all_vars = [self.cells[c].Vars for c in self.cells]
+        self.all_vars = [self.sub_domains[c].Vars for c in self.sub_domains]
         self.all_vars = np.reshape(self.all_vars, (sum(self.block_sizes), )).tolist()
 
-        self.blockwise_vars = {b_id: self.cells[b_id].Vars for b_id in self.cells}
+        self.blockwise_vars = {b_id: self.sub_domains[b_id].Vars for b_id in self.sub_domains}
 
         self.copies = self.decomposer.get_copy_constraints()
         self.zeros = self.decomposer.get_zero_constraints()

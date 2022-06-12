@@ -34,6 +34,9 @@ class Element:
     dCe = 0.0  # derived flexibility
     ddCe = 0.0 # derived derived flexibility
 
+    # stress section
+    stress_components: int = 0
+
     @staticmethod
     def pairwise(iterable):
         """
@@ -160,7 +163,7 @@ class Element:
         _v2 = self.Nodes[_n_indices[1]].n_vec - self.Nodes[_n_indices[3]].n_vec
         return 0.5 * np.linalg.norm(np.cross(_v1, _v2))
 
-    def __init__(self, e_id: int, nodes: dict, ke: np.array, dense_x: float = 1.0):
+    def __init__(self, e_id: int, nodes: dict, ke: np.array, dense_x: float = 1.0, dofs_per_node=2, dim=2):
         self.id = e_id
         self.Nodes = nodes  # dict with nodes as objects
         self.__create_node_permutation__()
@@ -168,8 +171,14 @@ class Element:
         self.Ke = ke  # element's stiffness matrix
         self.Ke0 = ke  # create a copy to store the initial stiffness matrix
         # dict with: keys: Nodes, values: corr. dofs
-        # TODO: Just works for two dofs at a node at the moment
-        self.Dofs = {n: list(range(2 * n - 1, 2 * n + 1)) for n in self.Nodes.keys()}
+
+        self.dofs_per_node = dofs_per_node
+
+        self.dimension = dim
+        self.stress_components = 3 * (self.dimension - 1)
+
+        self.Dofs = {n: list(range(n * self.dofs_per_node - self.dofs_per_node + 1,
+                                   n * self.dofs_per_node + 1)) for n in self.Nodes.keys()}
 
         # elements displacements; init with zeros;
         # has to be calculated by using the element's shape functions

@@ -62,7 +62,7 @@ class MFEMMesh:
 
         self.mesh_path = os.path.join(dir_path, "sd{}.mesh".format(domain.SubDomain_ID))
 
-        self.dimension = domain.dofs_per_node  # TODO: not very exact but works for the moment
+        self.dimension = domain.Dimension
 
         self.elements = domain.Elements
         self.element_number = len(self.elements)

@@ -15,8 +15,8 @@ class PymTOModel:
 
     def __init__(self, domain: FEModel):
         self._domain = domain
-        self._model = self.get_model()
-        self.boundary_force_vector = np.zeros((len(self._domain.global_dofs, )))
+
+        self.boundary_force_vector = self._domain.boundary_conditions.boundary_forces_vec
         self.original_force_vector = self._domain.boundary_conditions.outer_forces_vec
         self.complete_force_vector = self.original_force_vector + self.boundary_force_vector
 
@@ -30,8 +30,8 @@ class PymTOModel:
 
         init_data = {i: u_init[i] for i in range(len(self._domain.global_dofs))}
         # define indices
-        m.IDX_elements = Set(initialize=range(len(self._domain.elements)))
-        m.IDX_dofs = Set(initialize=range(len(self._domain.global_dofs)))
+        m.IDX_elements = Set(initialize=list(self._domain.elements.keys()))
+        m.IDX_dofs = RangeSet(0, len(self._domain.global_dofs) - 1)
 
         # define parameters
         m.F = Param(m.IDX_dofs,
@@ -49,12 +49,14 @@ class PymTOModel:
         # define elasticity constraint
         def elasticity_rule(_m, _i):
             lhs = 0
+            _global_i = self._domain.global_dofs[_i]
             for _j in range(len(self._domain.global_dofs)):
+                _global_j = self._domain.global_dofs[_j]
                 for e_id, element in self._domain.elements.items():
-                    if _i in element.Global_DoFs and _j in element.Global_DoFs:
-                        _i_index = np.where(element.Global_DoFs == _i)[0][0]
-                        _j_index = np.where(element.Global_DoFs == _j)[0][0]
-                        lhs += _m.rho[e_id] * element.K[_i_index, _j_index] * _m.u[_j]
+                    if _global_i in element.DoFHelper and _global_j in element.DoFHelper:
+                        _i_index = np.where(element.DoFHelper == _global_i)[0][0]
+                        _j_index = np.where(element.DoFHelper == _global_j)[0][0]
+                        lhs += _m.rho[e_id] * element.Ke0[_i_index, _j_index] * _m.u[_j]
             return lhs == self.complete_force_vector[_i]
         m.elasticity_constraint = Constraint(m.IDX_dofs, rule=elasticity_rule)
 
@@ -65,11 +67,12 @@ class PymTOModel:
             _sigma = []
             _sigma_temp = 0
             _element = self._domain.elements[_e]
-            _stress_components = 3 * _element.Dimension - 3  # TODO: Move to Element Formulation
+
+            _stress_components = _element.stress_components
             for _i in range(_stress_components):
                 _bq_temp = 0
-                for _j in _element.Global_DoFs:
-                    _j_index = np.where(_element.Global_DoFs == _j)[0][0]
+                for _j in _element.DoFHelper:
+                    _j_index = np.where(np.array(_element.DoFHelper) == _j)[0][0]
                     _bq_temp += _element.B[_i, _j_index] * _m.u[_j]
                 _bq.append(_bq_temp)
 

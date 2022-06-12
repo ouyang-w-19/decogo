@@ -30,6 +30,9 @@ manual_boundary_conditions = BoundaryConditions(
 # get the TOModelBase object using the parser
 base_model: TOModelBase = p.get_base_model(_bc=manual_boundary_conditions)
 
+# define the simple design space by hand of 4 x 4 elements
+base_model.SimpProblem.shape = (4, 4)
+
 cut_nodes = [15, 18, 24, 9, 12, 22, 21, 20, 6]   # define the node which will be cut due to the decomposer
 cut_nodes.sort()     # sort the node; note absolutely necessary
 
