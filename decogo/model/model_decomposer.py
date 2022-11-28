@@ -226,7 +226,7 @@ class PyomoModelDecomposer:
                         raise Exception(
                             'Modelling issue: some of the constraints contain \ '
                             'word "new", rename these constraints')
-                if isinstance(con_obj, ScalarConstraint):
+                if con_obj.__class__ is ScalarConstraint:
                     if isinstance(con_obj.body, Var):
                         var_obj = con_obj.body
                         if con_obj.equality:
@@ -238,7 +238,7 @@ class PyomoModelDecomposer:
                         elif con_obj.lower is not None:
                             var_obj.setlb(con_obj.lower.value)
                         block_obj.del_component(con_name)
-                elif isinstance(con_obj, IndexedConstraint):
+                elif con_obj.__class__ is IndexedConstraint:
                     for index in con_obj:
                         if isinstance(con_obj[index].body, Var):
                             var_obj = con_obj[index].body
@@ -251,10 +251,6 @@ class PyomoModelDecomposer:
                             elif con_obj.lower is not None:
                                 var_obj.setlb(con_obj[index].lower.value)
                             con_obj[index].deactivate()
-                else:
-                    raise ValueError(
-                        'Dev: Found constraint object type which was '
-                        'not considered')
 
         if self.settings.decomp_estimate_var_bounds is True:
             self._estimate_var_bounds()

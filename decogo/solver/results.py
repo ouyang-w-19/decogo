@@ -2,6 +2,8 @@
 
 import logging
 import time
+import numpy as np
+import os
 
 logger = logging.getLogger('decogo')
 
@@ -53,6 +55,8 @@ class Results:
         self.current_used_time = float('inf')  # used time during the running
         # endregion
 
+        self.sub_problem_data = SubProblemData()
+
     def set_new_primal_bound(self, primal_bound, point):
         """Sets new primal bound and primal point.
 
@@ -93,8 +97,6 @@ class Results:
         if self.strategy == 'OA':
             self.print_oa_stats()
         elif self.strategy == 'CG':
-            self.print_col_gen_stats()
-        elif self.strategy == 'ADAPTCG':
             self.print_col_gen_stats()
         elif self.strategy == 'DynCG':
             self.print_col_gen_stats()
@@ -170,10 +172,10 @@ class Results:
 
         logger.info('{0: <50}{1: <30}'.format('Number of columns after CG:',
                                               self.num_of_columns_after_cg))
-        logger.info(
-            '{0: <50}{1: <30}'.format('CG Gap (CG relaxation and primal bound):',
-                                      self.get_gap(self.primal_bound,
-                                                   self.cg_relaxation)))
+        # logger.info(
+        #     '{0: <50}{1: <30}'.format('CG Gap (CG relaxation and primal bound):',
+        #                               self.get_gap(self.primal_bound,
+        #                                            self.cg_relaxation)))
 
         logger.info('{0: <50}{1: <30}'.format('Total number of columns:',
                                               self.total_number_columns))
@@ -189,3 +191,178 @@ class Results:
     def calculate_total_time(self):
         """Calculates total time"""
         self.total_time = time.time() - self.start_clock_time
+
+    def add_sub_problem_data(self, block_id, dir_im_space, dir_orig_space,
+                             column, point, ia_sol):
+        """"Add sub-problem data by calling :meth:`SubProblemData.add_data`"""
+        self.sub_problem_data.add_data_im_space(block_id, dir_im_space, column)
+        self.sub_problem_data.add_data_orig_space(block_id,
+                                                  dir_orig_space,
+                                                  point,
+                                                  ia_sol)
+
+
+class SubProblemData:
+    """Class which stores direction and columns
+
+    :param block_model: Block model
+    :type block_model: BlockModel
+    :param data: Data stored blockwise as dictionary of lists
+    :type data: dict
+    """
+    def __init__(self):
+        """Constructor method"""
+
+        self.data_orig_space = {}
+        self.data_im_space = {}
+
+    def __getitem__(self, item):
+        """Index operator
+
+        :param item: Given index as tuple (block_id, index)
+        :type item: tuple
+        :return: tuple (point, column), i.e point and corresponding column
+        :rtype: tuple
+        """
+        k, j = item
+        return self.data[k][j]
+
+    def add_data_im_space(self, block_id, dir_im_space, column):
+        """Add sub-problem data
+
+        :param block_id: Block identifier
+        :type block_id: int
+        :param dir_im_space: Given direction
+        :type dir_im_space: ndarray
+        :param column: Given column
+        :type column: ndarray
+        :return: Tuple which containes direction, column
+        :rtype: tuple
+        """
+        if block_id not in self.data_im_space.keys():
+            self.data_im_space[block_id] = {}
+
+        if self.data_im_space[block_id]:
+            self.data_im_space[block_id]['input'] = \
+                np.vstack((self.data_im_space[block_id]['input'],
+                          dir_im_space[np.newaxis]))
+            self.data_im_space[block_id]['output'] = \
+                np.vstack((self.data_im_space[block_id]['output'],
+                          column[np.newaxis]))
+        else:
+            # empty dataset, dir_im_space, column, 1 dim -> 2 dim array
+            self.data_im_space[block_id]['input'] = \
+                dir_im_space[np.newaxis]
+            self.data_im_space[block_id]['output'] = column[np.newaxis]
+
+        return dir_im_space, column
+
+    def add_data_orig_space(self, block_id, dir_orig_space, point, ia_sol=None):
+        """Add sub-problem data
+
+        :param block_id: Block identifier
+        :type block_id: int
+        :param dir_orig_space: Given direction
+        :type dir_orig_space: ndarray
+        :param point: Given point
+        :type point: ndarray
+        :return: Tuple which containes direction, point
+        :rtype: tuple
+        """
+        if block_id not in self.data_orig_space.keys():
+            self.data_orig_space[block_id] = {}
+
+        if self.data_orig_space[block_id]:
+            self.data_orig_space[block_id]['input'] = \
+                np.vstack((self.data_orig_space[block_id]['input'],
+                          dir_orig_space[np.newaxis]))
+            self.data_orig_space[block_id]['output'] = \
+                np.vstack((self.data_orig_space[block_id]['output'],
+                          point[np.newaxis]))
+            if ia_sol is not None:
+                self.data_orig_space[block_id]['ia_sol'] = \
+                    np.vstack((self.data_orig_space[block_id]['ia_sol'],
+                               ia_sol[np.newaxis]))
+            else:
+                ia_sol = np.zeros(point.shape)
+                ia_sol[0] = float('inf')
+                self.data_orig_space[block_id]['ia_sol'] = \
+                    np.vstack((self.data_orig_space[block_id]['ia_sol'],
+                               ia_sol[np.newaxis]))
+                logger.info('- no ia sol for sub-problem solving')
+        else:
+            # empty dataset, dir_im_space, column, 1 dim -> 2 dim array
+            self.data_orig_space[block_id]['input'] = \
+                dir_orig_space[np.newaxis]
+            self.data_orig_space[block_id]['output'] = point[np.newaxis]
+            if ia_sol is not None:
+                self.data_orig_space[block_id]['ia_sol'] = ia_sol[np.newaxis]
+            else:
+                ia_sol = np.zeros(point.shape)
+                ia_sol[0] = float('inf')
+                self.data_orig_space[block_id]['ia_sol'] = ia_sol[np.newaxis]
+                logger.info('- no ia sol for sub-problem solving')
+
+        return dir_orig_space, point
+
+    def export_data(self, folder_name='data', exact_solver=False):
+        wd = os.getcwd()
+        path = '{0}\\{1}'.format(wd, folder_name)
+        try:
+            os.mkdir(path)
+            if exact_solver is True:
+                path = '{0}\\{1}\\exact_solver'.format(wd, folder_name)
+                os.mkdir(path)
+        except OSError:
+            pass
+
+        if exact_solver is True:
+            try:
+                path = '{0}\\{1}\\exact_solver'.format(wd, folder_name)
+                os.mkdir(path)
+            except OSError:
+                pass
+
+        for block_id, data_np in self.data_orig_space.items():
+            if exact_solver is True:
+                input_txt = \
+                    '{0}\\{1}\\exact_solver\\block_{2}_input_orig_space.csv'.\
+                    format(wd, folder_name, block_id)
+                output_txt = \
+                    '{0}\\{1}\\exact_solver\\block_{2}_output_orig_space.csv'\
+                    .format(wd, folder_name, block_id)
+                ia_sol_txt = \
+                    '{0}\\{1}\\exact_solver\\block_{2}_ia_orig_space.csv'\
+                    .format(wd, folder_name, block_id)
+            else:
+                input_txt = \
+                    '{0}\\{1}\\block_{2}_input_orig_space.csv'.\
+                    format(wd, folder_name, block_id)
+                output_txt = \
+                    '{0}\\{1}\\block_{2}_output_orig_space.csv'\
+                    .format(wd, folder_name, block_id)
+            if 'input' in data_np.keys():
+                np.savetxt(input_txt, data_np['input'], delimiter=',')
+            if 'output' in data_np.keys():
+                np.savetxt(output_txt, data_np['output'], delimiter=',')
+            if 'ia_sol' in data_np.keys():
+                np.savetxt(ia_sol_txt, data_np['ia_sol'], delimiter=',')
+
+        for block_id, data_np in self.data_im_space.items():
+            if exact_solver is True:
+                input_txt = \
+                    '{0}\\{1}\\exact_solver\\block_{2}_input_im_space.csv'. \
+                    format(wd, folder_name, block_id)
+                output_txt = \
+                    '{0}\\{1}\\exact_solver\\block_{2}_output_im_space.csv' \
+                    .format(wd, folder_name, block_id)
+            else:
+                input_txt = \
+                    '{0}\\{1}\\block_{2}_input_im_space.csv'. \
+                    format(wd, folder_name, block_id)
+                output_txt = \
+                    '{0}\\{1}\\block_{2}_output_im_space.csv' \
+                    .format(wd, folder_name, block_id)
+            # np.savetxt(input_txt, data_np['input'], delimiter=',')
+            np.savetxt(output_txt, data_np['output'], delimiter=',')
+

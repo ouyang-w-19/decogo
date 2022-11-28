@@ -96,7 +96,11 @@ _setting_names_default_val = \
      'max_iter_standard_cg': 5,  # maximum iteration number for
      # fast cg for active blocks
 
-
+     # ml-based acceleration
+     'generate_data': False,  # enable saving sub_problem data if true
+     'exact_solve_data': False,  # enable sub_problem data with exact solver
+     # if true
+     'data_instance_folder_name': 'data',  # name of data folder
      }
 
 
@@ -194,11 +198,6 @@ class Settings:
                     raise ValueError(
                         'Invalid value for setting \'{0}\'. '
                         'It must be a string.'.format(key))
-            elif key == 'block_agg_option':
-                if settings[key] not in [ 'successive', 'random', 'viol_copy_constr']:
-                    raise ValueError(
-                        'Invalid value for setting \'{0}\'. '
-                        'It must be a string.'.format(key))
             elif key == 'cg_subproblem_sol_percent':
                 if type(settings[key]) not in [int, float]:
                     raise ValueError('Invalid value for setting \'{0}\'. '
@@ -208,6 +207,11 @@ class Settings:
                         raise ValueError('Invalid value for setting \'{0}\'. '
                                          'It must be from 0 to 100.'.format(key))
             elif 'solver' in key:
+                if type(settings[key]) is not str:
+                    raise ValueError(
+                        'Invalid value for setting \'{0}\'. '
+                        'It must be a string.'.format(key))
+            elif 'data_instance_folder_name' in key:
                 if type(settings[key]) is not str:
                     raise ValueError(
                         'Invalid value for setting \'{0}\'. '

@@ -184,7 +184,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'Decogo.tex', 'Decogo Documentation',
-     'Pavlo Muts, Ouyang Wu and Ivo Nowak', 'manual'),
+     'Pavlo Muts and Ivo Nowak', 'manual'),
 ]
 
 

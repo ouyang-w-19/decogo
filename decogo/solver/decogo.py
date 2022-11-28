@@ -19,6 +19,7 @@ from decogo.problem.decomposed_problem import \
 from decogo.solver.colgen import ColGen
 from decogo.solver.refactory_colgen import RefactoryColGen
 from decogo.solver.oa import OaSolver
+from decogo.solver.dyn_colgen import DynColGen
 from decogo.solver.results import Results
 from decogo.solver.settings import Settings
 
@@ -145,6 +146,11 @@ class DecogoProcess(Process):
         while True:
             if self._child_conn.poll():
                 logger.info('\nEXIT: timeout')
+                if self.solver.settings.generate_data is True:
+                    # self.results.sub_problem_data.export_data()
+                    self.solver.results.sub_problem_data.export_data(
+                        self.solver.settings.data_instance_folder_name,
+                        self.solver.settings.exact_solve_data)
                 self.solver.results.print_results()
                 break
             if self.solver_thread.is_alive():
@@ -235,11 +241,19 @@ class DecogoSolverManager:
                                              self.results)
                 else:
                     solver = ColGen(self.problem, self.settings, self.results)
+            elif self.settings.strategy == 'DynCG':
+                solver = DynColGen(self.problem, self.settings, self.results)
             solver.solve()  # it's ok, the solver strategy is always provided
 
         except Exception:
             logger.exception('\nEXIT: Some exception')
         finally:
+            #  export data
+            if self.settings.generate_data is True:
+                # self.results.sub_problem_data.export_data()
+                self.results.sub_problem_data.export_data(
+                    self.settings.data_instance_folder_name,
+                    self.settings.exact_solve_data)
             self.results.print_results()
             self.logger_handler.clean_up()
 
@@ -276,6 +290,7 @@ class DecogoSolverManager:
             self.results.containers_time = time.time() - \
                 self.results.containers_time
             self.results.current_used_time = self.results.containers_time
+
 
 class DecogoLogger:
     """Class which is responsible for the logging of the solver. It sets up

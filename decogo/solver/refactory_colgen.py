@@ -35,18 +35,39 @@ class RefactoryColGen:
         """
         Inner approximation algorithm
         """
-
-        self.ia_init()
+        check_w, duals = self.ia_init()
 
         # initial column generation
         tic_init_cg = time.time()
         i_find_sol = 0
+
+        # region test of fw_column_generation
+
+        # # increase duals
+        # max_val = abs(max(duals, key=abs))
+        # duals = np.full(shape=self.problem.block_model.cuts.num_of_global_cuts,
+        #                 fill_value=100 * max_val)
+        #
+        # # select nonlinear atomic blocks
+        # t_set_atomic = [k for k in range(self.problem.block_model.num_blocks)]
+        #
+        # # generate columns for atomic blocks using fast column generation
+        # self.fw_column_generation(check_w=check_w, duals=duals,
+        #                           t_set=t_set_atomic)
+        # endregion
+
         while True:  # find feasible solution and eliminate slacks
             # in IA master problem
             i_find_sol += 1
             tic = time.time()
-            self.column_generation(approx_solver=True)  # solve subproblems
-            # approximately
+
+            # option to generate sub-problem data with exact solver
+            if self.settings.exact_solve_data is False:
+                self.column_generation(approx_solver=True)  # solve sub-problems
+                # approximately
+            else:
+                self.column_generation()  # solve sub-problems exactly
+
             time_cg = round(time.time() - tic, 2)
             logger.info('Time used for init CG '
                         'in iter {0}: --{1}-- seconds'
@@ -62,7 +83,8 @@ class RefactoryColGen:
             time_find_solution = round(time.time() - tic, 2)
             logger.info('Time used for init FindSol '
                         'in iter {0}: --{1}-- seconds'
-                        .format(self.result.main_iterations, time_find_solution))
+                        .format(self.result.main_iterations,
+                                time_find_solution))
             self.result.current_used_time += time_find_solution
             logger.info('-----------------------------------------------------')
             logger.info('Elapsed time: --{0}-- seconds'
@@ -180,8 +202,8 @@ class RefactoryColGen:
 
             logger.info('Time used for CG in iter '
                         '{0}: --{1}-- seconds'.format(
-                            self.result.main_iterations,
-                            time_column_generation))
+                self.result.main_iterations,
+                time_column_generation))
 
             logger.info('------------------------------------')
             logger.info('CG regarding all blocks')
@@ -197,7 +219,8 @@ class RefactoryColGen:
             for k in range(self.problem.block_model.num_blocks):
                 if self.problem.block_model.sub_models[k].linear is False:
                     _, _, delta_k, new_point, _ = \
-                        self.generate_column(k, reduced_cost_direction)
+                        self.generate_column(k, reduced_cost_direction,
+                                             x_k=x_ia.get_block(k))
 
                     if delta_k <= -1e-3:
                         hat_k_set.append(k)
@@ -264,17 +287,18 @@ class RefactoryColGen:
             time_i_loop = round(time.time() - tic_i_start, 2)
             time_i_loop_set.append(time_i_loop)
             logger.info('Total time used in iter {0}'
-                        ': --{1}-- seconds'. format(self.result.main_iterations,
-                                                    time_i_loop))
+                        ': --{1}-- seconds'.format(self.result.main_iterations,
+                                                   time_i_loop))
 
             if self.result.main_iterations == \
                     self.settings.cg_max_main_iter:
                 logger.info('\nIteration limit')
                 break
 
-            if stop_by_cg_converg is True:
-                logger.info('CG converged')
-                break
+            if not self.settings.generate_data:
+                if stop_by_cg_converg is True:
+                    logger.info('CG converged')
+                    break
 
         self.result.num_of_columns_after_cg = sum(
             self.problem.get_inner_points_size(k)
@@ -286,19 +310,17 @@ class RefactoryColGen:
 
         self.result.total_sub_problem_number \
             = self.result.cg_num_minlp_problems + \
-            self.result.cg_num_unfixed_nlp_problems + \
-            self.result.cg_num_fixed_nlp_problems
+              self.result.cg_num_unfixed_nlp_problems + \
+              self.result.cg_num_fixed_nlp_problems
 
         self.result.sub_problem_number_after_cg = \
             self.result.total_sub_problem_number
 
     def ia_init(self, duals=None):
-        """Initialization of inner outer approximation
+        """Initialization of inner approximation
 
         :param duals: Initial dual vector for initialization
         :type duals: ndarray
-        :return: Solution of MIP projection master problem
-        :rtype: BlockVector
         """
 
         logger.info('\nInitialization')
@@ -310,7 +332,7 @@ class RefactoryColGen:
             duals = np.zeros(shape=self.problem
                              .block_model.cuts.num_of_global_cuts)
 
-        self.sub_gradient(duals)
+        duals, check_w = self.sub_gradient(duals)
 
         time_sub_gradient = round(time.time() - tic, 2)
         logger.info('\nTime used for SubGradient: --{0}-- seconds'
@@ -318,8 +340,11 @@ class RefactoryColGen:
         self.result.current_used_time += time_sub_gradient
 
         logger.info('-----------------------------------------------------')
-        logger.info('Elapsed time: {0}'.format(self.result.current_used_time))
+        logger.info('Elapsed time: --{0}-- seconds'
+                    .format(round(self.result.current_used_time, 2)))
         logger.info('-----------------------------------------------------')
+
+        return check_w, duals
 
     def column_generation(self, subset_of_blocks=None, approx_solver=False):
         """Performs column generation steps (see paper)
@@ -527,7 +552,8 @@ class RefactoryColGen:
                             k, direction, x_k=x_ia.get_block(k))
                 else:
                     _, _, reduced_cost_list[k], new_point, r_k = \
-                        self.generate_column(k, direction)
+                        self.generate_column(k, direction,
+                                             x_k=x_ia.get_block(k))
                 generate_column_time_list[k] = round(time.time() - tic,
                                                      2)
                 if r_k is not None:
@@ -563,7 +589,8 @@ class RefactoryColGen:
             if sum(map(sum, slacks)) < 1e-2:
                 logger.info('IA obj. val: {0}'.format(
                     obj_value_ia * self.result.sense))
-                logger.info('Elapsed time: {0}'.format(self.result.current_used_time +
+                logger.info(
+                    'Elapsed time: {0}'.format(self.result.current_used_time +
                                                (time.time() - start_time)))
 
             # use column
@@ -683,15 +710,31 @@ class RefactoryColGen:
             lag_sol = 0
             direction = np.concatenate(([1], direction_vector))
             for k in range(self.problem.block_model.num_blocks):
-                tic = time.time()
-                feasible_point, primal_bound, reduced_cost, new_point, _ = \
-                    self.generate_column(k, direction)
-                time_generate_column_sub_gradient_list[k] = round(
-                    time.time() - tic, 2)
-                if new_point is True:
-                    new_columns_generated[k] += 1
-                y.set_block(k, feasible_point)
-                lag_sol += primal_bound
+                if self.problem.block_model.sub_models[k].linear:
+                    # solve the sub-problem of linear atomic block
+                    # logger.info('{0: <15}{1: <30}'
+                    #             .format('linear block:', k))
+                    dir_orig_space = \
+                        self.problem.block_model.trans_into_orig_space(
+                            k, direction)
+                    feasible_point, _, _, _ = \
+                        self.problem.sub_problems[k].minlp_solve(
+                            solver_name='gurobi',
+                            direction=dir_orig_space)
+                    y.set_block(k, feasible_point)
+                else:
+                    # logger.info('{0: <15}{1: <30}'
+                    #             .format('nonlinear block:', k))
+                    tic = time.time()
+                    feasible_point, primal_bound, reduced_cost, new_point, _ = \
+                        self.generate_column(k, direction)
+                    time_generate_column_sub_gradient_list[k] = round(
+                        time.time() - tic, 2)
+                    if new_point is True:
+                        new_columns_generated[k] += 1
+                    y.set_block(k, feasible_point)
+                    lag_sol += primal_bound
+
             lag_sol -= np.dot(direction_vector, b)
 
             logger.info('{0: <15}{1: <30}{2: <30}'
@@ -721,7 +764,15 @@ class RefactoryColGen:
             # update direction
             direction_vector += alpha * violation
 
-        return direction_vector
+        check_w = BlockVector()
+
+        # taking most recent generated column into check_w
+        for k in range(self.problem.block_model.num_blocks):
+            column = \
+                self.problem.block_model.trans_into_im_space(k, y.get_block(k))
+            check_w.set_block(k, column)
+
+        return direction_vector, check_w
 
     def generate_column(self, block_id, direction, heuristic=True,
                         approx_solver=False, x_k=None):
@@ -748,23 +799,23 @@ class RefactoryColGen:
         """
         if approx_solver:  # approximate solve minlp subproblem
             feasible_point, primal_bound, reduced_cost, is_new_point, \
-             column = self.local_solve_subproblem(
-                block_id, direction, x_k=x_k)
+                column = self.local_solve_subproblem(
+                    block_id, direction, x_k=x_k)
         else:
             if self.settings.cg_generate_columns_with_nlp is True:
                 feasible_point, primal_bound, reduced_cost, is_new_point, \
-                 column = self.local_solve_subproblem(block_id,
-                                                      direction,
-                                                      x_k=x_k)
+                    column = self.local_solve_subproblem(block_id,
+                                                         direction,
+                                                         x_k=x_k)
                 if reduced_cost > -0.01:
                     feasible_point, reduced_cost, primal_bound, _, \
-                     is_new_point, column = \
-                     self.global_solve_subproblem(
-                         block_id, direction, heuristic=heuristic)
+                        is_new_point, column = \
+                        self.global_solve_subproblem(block_id, direction)
             else:
                 feasible_point, reduced_cost, primal_bound, _, is_new_point, \
-                 column = self.global_solve_subproblem(
-                    block_id, direction, heuristic=heuristic)
+                    column = self.global_solve_subproblem(block_id,
+                                                          direction,
+                                                          x_k=x_k)
 
         reduced_cost = round(reduced_cost, 3)
 
@@ -772,8 +823,7 @@ class RefactoryColGen:
 
     def global_solve_subproblem(self, block_id,
                                 dir_im_space,
-                                compute_reduced_cost=True,
-                                heuristic=True):
+                                compute_reduced_cost=True, x_k=None):
         """Solves subproblem, adds inner point, \
         (either in compact form or in the original) and computes reduced cost \
         for the new inner point
@@ -808,7 +858,8 @@ class RefactoryColGen:
         # solve the sub-problem
         feasible_point, primal_bound, dual_bound, _ = \
             self.problem.sub_problems[block_id].global_solve(
-                direction=dir_orig_space, result=self.result)
+                direction=dir_orig_space,
+                result=self.result)
 
         column = None
         if compute_reduced_cost is True:
@@ -833,6 +884,15 @@ class RefactoryColGen:
             column = self.problem.block_model.trans_into_im_space(
                 block_id, feasible_point)
 
+        # add sub-problem data
+        if self.settings.generate_data is True:
+            self.result.add_sub_problem_data(block_id,
+                                             dir_im_space,
+                                             dir_orig_space,
+                                             column,
+                                             feasible_point,
+                                             x_k)
+
         # check if subproblem is solved to optimality
         gap = abs(primal_bound - dual_bound) / (
                 max(abs(primal_bound), abs(dual_bound)) + 1e-5)
@@ -840,7 +900,7 @@ class RefactoryColGen:
             self.result.optimal_subproblems = False
 
         return feasible_point, reduced_cost, primal_bound, dual_bound, \
-            is_new_point, column
+               is_new_point, column
 
     def get_slack_directions(self, slacks):
         """Computes new direction based on the slack values of IA master problem
@@ -896,7 +956,8 @@ class RefactoryColGen:
         # solve the sub-problem
         tilde_y, new_point_obj_val, _, sol_is_feasible = \
             self.problem.sub_problems[block_id].local_solve(
-                direction=dir_orig_space, result=self.result)
+                direction=dir_orig_space, result=self.result,
+                start_point=best_point)
 
         reduced_cost = 0
         column = None
@@ -909,6 +970,13 @@ class RefactoryColGen:
                 self.problem.add_inner_point(
                     block_id, tilde_y, min_inner_point_dist=
                     self.settings.cg_min_inner_point_distance)
+
+            # add sub-problem data
+            if self.settings.generate_data is True:
+                self.result.add_sub_problem_data(block_id,
+                                                 dir_im_space,
+                                                 dir_orig_space,
+                                                 column, tilde_y)
         else:
             tilde_y = None
             new_point_obj_val = None
@@ -971,3 +1039,342 @@ class RefactoryColGen:
             'Pairs (index z_k values), such that z_k > 0, sorted by z_k values')
         for k in range(self.problem.block_model.num_blocks):
             logger.info('block {0}: {1}'.format(k, non_zero_z[k]))
+
+    def fw_column_generation(self, check_w, duals, t_set):
+        """ Performs fast FW column generation steps (see paper) """
+
+        logger.info('---------------------------------------------------------')
+        logger.info('Fast fw column generation')
+
+        tic_fast_cg = time.time()
+
+        direction = np.concatenate(([1], duals))
+
+        # sigma_cg = abs(duals) + value?
+        sigma_cg = abs(duals)
+
+        # todo: refactor this, make use of BlockVector,
+        # if neccessary extend BlockVector class
+        for j, (index, vector) in enumerate(check_w.vectors.items()):
+            if j == 0:
+                check_w_array = np.array(vector.reshape(1, len(vector)))
+            else:
+                check_w_array = \
+                    np.concatenate((check_w_array,
+                                    vector.reshape(1, len(vector))))
+
+        global_cuts_rhs = []
+        for cut in self.problem.block_model.cuts.global_cuts:
+            global_cuts_rhs.append(cut.rhs)
+        global_cuts_rhs = np.array(global_cuts_rhs)
+
+        # num_unfixed_nlp_problems_solved = \
+        #     self.result.cg_num_unfixed_nlp_problems
+        gamma_cg_plus = 1
+
+        # logger.info('{0: <15}'
+        #             .format('hat_t_set:'))
+        # logger.info(list(t_set))
+        i = 0
+        tilde_v, tilde_w, tilde_t_set = \
+            self.get_active_block(dir_im_space=direction, t_set=t_set)
+        # logger.info('{0: <15}'
+        #             .format('active block:'))
+        # active_block = {ti: self.problem.approx_data.inner_points.KT[ti]
+        #                 for ti in tilde_t_set}
+        # logger.info(active_block)
+        # v_plus <- tilde_v
+        for j, (index, vector) in enumerate(tilde_v.vectors.items()):
+            if j == 0:
+                v_plus_array = np.array(vector.reshape(1, len(vector)))
+            else:
+                v_plus_array = \
+                    np.concatenate((v_plus_array,
+                                    vector.reshape(1, len(vector))))
+
+        new_columns_generated = {t: 0 for t in t_set}
+        # generate_column_time_list = {}
+
+        while True:
+            i += 1
+            # solve sub-problems for t in tilde_t_set and add columns
+            for t in tilde_t_set:
+                if self.settings.cg_fast_approx:
+                    is_new_point = \
+                        self.fast_solve_atomic_sub_problem(block_id=t,
+                                                           dir_im_space=direction,
+                                                           w_k=tilde_w.get_block(
+                                                               t))
+                else:
+                    _, _, _, is_new_point, _ = \
+                        self.generate_column(t, direction)
+
+                if is_new_point:
+                    new_columns_generated[t] += is_new_point
+
+            if i == self.settings.cg_fast_fw_max_iter:
+                logger.info('{0: <30}{1: <15}'
+                            .format('reach max iteration:', i))
+                break
+
+            tilde_v, tilde_w, tilde_t_set = \
+                self.get_active_block(dir_im_space=direction, t_set=t_set)
+            # logger.info('{0: <15}'
+            #             .format('active block:'))
+            # active_block = {ti: self.problem.approx_data.inner_points.KT[ti]
+            #                 for ti in tilde_t_set}
+            # logger.info(active_block)
+            # logger.info(list(tilde_t_set))
+            # logger.info(list(new_columns_generated.values()))
+
+            # use column
+            for j, (index, vector) in enumerate(tilde_v.vectors.items()):
+                if j == 0:
+                    tilde_v_array = np.array(vector.reshape(1, len(vector)))
+                else:
+                    tilde_v_array = \
+                        np.concatenate((tilde_v_array,
+                                        vector.reshape(1, len(vector))))
+
+            # the operations add, substract and multiplication by scalar is
+            # implemented in BlockVector class. Maybe it is easier to use them
+            # The implementation of summing the components of BlockVector
+            # can implemented and added there
+
+            # determining the step size
+            coeff_w_r_array = tilde_v_array - check_w_array
+            coeff_a = np.multiply((np.sum(coeff_w_r_array[:, 1:], axis=0)
+                                   - global_cuts_rhs), sigma_cg)
+            coeff_a = \
+                2 * np.dot(coeff_a, np.sum(coeff_w_r_array[:, 1:], axis=0))
+            coeff_b = np.multiply(sigma_cg,
+                                  np.sum(check_w_array[:, 1:], axis=0))
+            coeff_b = 2 * np.dot(coeff_b,
+                                 np.sum(coeff_w_r_array[:, 1:], axis=0))
+            coeff_b += np.sum(coeff_w_r_array[:, 0], axis=0)
+
+            if coeff_a == 0:  # tilda_w equals nu_plus
+                logger.info('tilda_w equals nu_plus')
+                break
+            else:
+                theta_cg = - coeff_b / coeff_a
+            # logger.info('theta_cg: {0}'.format(theta_cg))
+            if theta_cg == 0:
+                break
+
+            # update step
+            add_term = theta_cg * (tilde_v_array - check_w_array)
+            v_array = copy.copy(v_plus_array)
+            v_plus_array = check_w_array + add_term
+            # fast FW step
+            gamma_cg = gamma_cg_plus
+            gamma_cg_plus = 0.5 * (1 + math.sqrt(4 * gamma_cg ** 2
+                                                 + 1))
+            check_w_array = v_plus_array + \
+                            (gamma_cg - 1) / gamma_cg_plus * \
+                            (v_plus_array - v_array)
+
+            gap = {}
+            for k in range(self.problem.block_model.num_blocks):
+                if self.problem.block_model.sub_models[k].linear is False:
+                    gap[k] = np.dot(direction, (check_w_array[k, :] -
+                                                tilde_v_array[k, :]))
+
+            # logger.info('Value of gap (g_k):')
+            # logger.info(gap)
+
+            # logger.info('Number of new columns in the current iteration:')
+            # logger.info(new_columns_generated)
+
+            # update direction
+            direction = 2 * np.multiply(sigma_cg, np.sum(check_w_array[:, 1:],
+                                                         axis=0) -
+                                        global_cuts_rhs)
+            direction = np.concatenate(([1], direction))
+
+        logger.info('hat_t_set:')
+        logger.info(list(t_set))
+        logger.info('New columns in FastCG:')
+        logger.info(list(new_columns_generated.values()))
+
+        # todo: refactor this, make use of BlockVector,
+        # if neccessary extend BlockVector class
+        check_w = BlockVector()
+        for k in range(self.problem.block_model.num_blocks):
+            check_w.set_block(k, check_w_array[k])
+
+        # # number of unfixed nlp subproblems during CG
+        # logger.info('number of unfixed nlp subproblems '
+        #             'solved during CG: {0}'
+        #             .format(self.result.cg_num_unfixed_nlp_problems -
+        #                     num_unfixed_nlp_problems_solved))
+        time_fast_cg = round(time.time() - tic_fast_cg, 2)
+        self.result.current_used_time += time_fast_cg
+        logger.info('Time used for solving subproblem'
+                    ': --{0}-- seconds'.
+                    format(time_fast_cg))
+        logger.info('---------------------------------------------------------')
+
+        return check_w
+
+    def get_active_block(self, dir_im_space, t_set=None):
+
+        tilde_v = BlockVector()
+        tilde_t_set = []
+        if t_set is None:
+            t_set = list(self.problem.approx_data.inner_points.points.keys())
+
+        t_set_enumerate = copy.copy(t_set)
+        hat_t_set = copy.copy(t_set)
+        for t in t_set_enumerate:
+            if t in range(self.problem.block_model.num_blocks):
+                # handle linear atomic block
+                if self.problem.block_model.sub_models[t].linear:
+                    if t in hat_t_set:
+                        hat_t_set.remove(t)
+            else:
+                # select hyper-blocks with empty column
+                if self.problem.approx_data.inner_points.get_size(t) == 0:
+                    tilde_t_set.append(t)
+                    hat_t_set.remove(t)
+
+        # set of atomic block indices from t_set
+        hat_k_set = []
+        for t in hat_t_set:
+            for k in self.problem.approx_data.inner_points.KT[t]:
+                # remove linear atomic block from hat_k_set
+                if self.problem.block_model.sub_models[k].linear is False:
+                    if k not in hat_k_set:
+                        hat_k_set.append(k)
+        # fill resources for linear atomic block and
+        # missing atomic blocks from hat_k_set
+        for k in range(self.problem.block_model.num_blocks):
+            if self.problem.block_model.sub_models[k].linear:
+                # solve the sub-problem of linear atomic block
+                dir_orig_space = \
+                    self.problem.block_model.trans_into_orig_space(
+                        k, dir_im_space)
+                feasible_point, _, _, _ = \
+                    self.problem.sub_problems[k].minlp_solve(
+                        solver_name='gurobi',
+                        direction=dir_orig_space)
+                column = \
+                    self.problem.block_model.trans_into_im_space(
+                        k, feasible_point)
+                tilde_v.set_block(k, column)
+            else:
+                if k not in hat_k_set:
+                    column, _ = \
+                        self.problem.get_min_column(k, dir_im_space)
+                    tilde_v.set_block(k, column)
+
+        # calculate minimum resources/column and select active blocks from
+        # blocks (with columns) in t_set
+        tilde_w = BlockVector()
+        tilde_t_k_set = {k: k for k in hat_k_set}
+        max_obj_val = {k: float('-inf') for k in hat_k_set}
+        for t in hat_t_set:
+            if t in range(self.problem.block_model.num_blocks):
+                column, obj_val = \
+                    self.problem.get_min_column(t, dir_im_space)
+                tilde_w.set_block(t, column)
+                # tilde_v.set_block(t, column)
+                if obj_val > max_obj_val[t]:
+                    max_obj_val[t] = obj_val
+                    tilde_t_k_set[t] = t
+            else:
+                column_2d_array, _ = \
+                    self.problem.get_min_column(t, dir_im_space)
+                tilde_w.set_block(t, column_2d_array)
+                for index, i in enumerate(
+                        self.problem.approx_data.inner_points.KT[t]):
+                    column = column_2d_array[index]
+                    obj_val = np.dot(dir_im_space, column)
+                    if self.problem.block_model.sub_models[i].linear is False:
+                        if obj_val >= max_obj_val[i]:
+                            max_obj_val[i] = obj_val
+                            tilde_t_k_set[i] = t
+
+        # select active blocks from blocks (with columns) in t_set
+        for k in hat_k_set:
+            t = tilde_t_k_set[k]
+            if t not in tilde_t_set:
+                tilde_t_set.append(t)
+            if t == k:
+                column = tilde_w.get_block(k)
+                tilde_v.set_block(k, column)
+            else:
+                column_2d_array = tilde_w.get_block(t)
+                index = self.problem.approx_data.inner_points.KT[t].index(k)
+                column = column_2d_array[index]
+                tilde_v.set_block(k, column)
+
+        return tilde_v, tilde_w, tilde_t_set
+
+    def fast_solve_atomic_sub_problem(self, block_id, dir_im_space, w_k):
+        """Solves MINLP subproblem approximately, adds inner point \
+        (either in compact form or in the original) and computes reduced cost
+        for the new inner point
+
+        :param block_id: Block identifier
+        :type block_id: int
+        :param dir_im_space: Direction in image space
+        :type dir_im_space: ndarray
+        :param w_k: given column
+        :type w_k: ndarray
+        :return: Inner point (feasible point), primal bound of the sub-problem, \
+        dual bound of the sub-problem, \
+        bool value indicating whether new inner point was generated, \
+        corresponding column to the inner point
+        :rtype: tuple
+        """
+
+        solver_options = self.settings.get_nlp_solver_options()
+
+        start_point, _, _ = \
+            self.problem.sub_problems[block_id].resource_proj_solve(
+                self.settings.nlp_solver, w_k)
+
+        # direction must be in the original space
+        dir_orig_space = self.problem.block_model.trans_into_orig_space(
+            block_id, dir_im_space)
+
+        # in order to solve NLP relaxation of MINLP problem it is not
+        # necessary explicitly to relax integer variables
+        # the NLP solver simply treats them as continuous variables
+        unfixed_tilde_y, new_point_obj_val, _, sol_is_feasible = \
+            self.problem.sub_problems[block_id].minlp_solve(
+                self.settings.nlp_solver, direction=dir_orig_space,
+                solver_options=solver_options, start_point=start_point)
+
+        if self.problem.block_model.sub_models[block_id].integer is True:
+
+            rounded_point = \
+                self.problem.block_model.sub_models[block_id].round(
+                    unfixed_tilde_y)
+            # start_point is used for fixing the integers
+            tilde_y, new_point_obj_val, _, sol_is_feasible = \
+                self.problem.sub_problems[block_id].fixed_minlp_solve(
+                    self.settings.nlp_solver,
+                    start_point=rounded_point,
+                    direction=dir_orig_space,
+                    solver_options=solver_options)
+
+        else:
+            tilde_y = unfixed_tilde_y
+
+        is_new_point = False
+        if sol_is_feasible is True:
+            is_new_point, _, column = \
+                self.problem.add_inner_point(
+                    block_id, tilde_y,
+                    min_inner_point_dist=
+                    self.settings.cg_min_inner_point_distance)
+            # add sub-problem data
+            if self.settings.generate_data is True:
+                self.result.add_sub_problem_data(block_id,
+                                                 dir_im_space,
+                                                 dir_orig_space,
+                                                 column, tilde_y)
+
+        return is_new_point
