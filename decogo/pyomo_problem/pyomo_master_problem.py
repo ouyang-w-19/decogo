@@ -43,7 +43,7 @@ class PyomoMasterProblems:
         """Constructor method"""
         # CG master problems
         self.strategy = strategy
-        if self.strategy == 'DynCG':
+        if self.strategy == 'DBCG':
             self.inner_problem = \
                 ExtendedInnerMasterProblem(block_model, approx_data)
             # mini master problem
@@ -86,7 +86,7 @@ class PyomoMasterProblems:
         else:
             # compute and set slack weights with default method
             self.inner_problem.compute_and_set_default_slack_weights()
-        if self.strategy == 'DynCG':
+        if self.strategy == 'DBCG':
             z_output, x, w, slacks, duals, obj_value, slack_hyper_max, \
                 slack_hyper = self.inner_problem.solve(solver_name)
 
@@ -535,7 +535,7 @@ class PyomoMasterProblems:
         self.inner_problem.add_column(block_id)
 
         # mini_inner_problem
-        if self.strategy == 'DynCG':
+        if self.strategy == 'DBCG':
             if block_id in \
                     range(self.mini_inner_problem.block_model.num_blocks):
                 self.mini_inner_problem.add_column(block_id)

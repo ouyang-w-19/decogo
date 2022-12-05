@@ -26,7 +26,7 @@ _setting_names_default_val = \
 
      # general
      'strategy': 'CG',  # strategy for solver; can be 'OA' or 'CG' or
-     # 'ADAPTCG' or 'DynCG'
+     # 'DBCG'
      'maxtime': 1e10,  # maximum running time for the solver in seconds
      'logger_level': 'info',  # 'debug' - detailed info about solution
      # process, 'info' - only important information
@@ -71,7 +71,7 @@ _setting_names_default_val = \
      'user_defined_input_model': False,  # switch on/off user-defined input
      # model
 
-     # Dyn-cg
+     # DBCG
      'block_agg_option': 'successive',  # select the strategy of block
      # aggregation; can be 'successive' or 'random'
      # or 'viol_copy_constr'
@@ -194,7 +194,7 @@ class Settings:
         """
         for key in settings:
             if key == 'strategy':
-                if settings[key] not in ['OA', 'CG', 'ADAPTCG', 'DynCG']:
+                if settings[key] not in ['OA', 'CG', 'DBCG']:
                     raise ValueError(
                         'Invalid value for setting \'{0}\'. '
                         'It must be a string.'.format(key))

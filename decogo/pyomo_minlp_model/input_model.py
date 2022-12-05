@@ -261,22 +261,25 @@ class PyomoInputModel(InputModelBase):
         :param model: Pyomo model
         :type model: ConcreteModel
         """
-        for block_obj in model.block_data_objects():
-            for port in block_obj.component_objects(Port):
-                block_obj.del_component(port)
-            for arc in block_obj.component_objects(Arc):
-                block_obj.del_component(arc)
+        try:
+            for block_obj in model.block_data_objects():
+                for port in block_obj.component_objects(Port):
+                    block_obj.del_component(port)
+                for arc in block_obj.component_objects(Arc):
+                    block_obj.del_component(arc)
 
-        for obj in model.component_objects(
-                [Objective, Constraint, Param, Block]):
-            obj._rule = None
-            obj.rule = None
+            for obj in model.component_objects(
+                    [Objective, Constraint, Param, Block]):
+                obj._rule = None
+                obj.rule = None
 
-        # if here some exceptions occur, then check whether attributes still
-        # exist
-        for obj in model.component_objects([Set]):
-            obj._init_values._init = None
-            obj.initialize = None
+            # if here some exceptions occur, then check whether attributes still
+            # exist
+            for obj in model.component_objects([Set]):
+                obj._init_values._init = None
+                obj.initialize = None
+        except AttributeError:
+            pass
 
 
 class PyomoOriginalProblem(OriginalProblemBase):

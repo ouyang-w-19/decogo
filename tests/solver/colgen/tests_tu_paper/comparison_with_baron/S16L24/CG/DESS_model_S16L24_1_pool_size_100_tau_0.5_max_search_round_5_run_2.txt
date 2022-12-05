@@ -1,0 +1,2230 @@
+Original model:
+Number of variables:                              3064                          
+Number of constraints:                            3914                          
+
+Block separable reformulation:
+Number of blocks:                                 97                            
+Number of nonlinear blocks:                       96                            
+Min size of blocks:                               3                             
+Max size of blocks (without linear blocks):       37                            
+Max size of blocks (including linear blocks):     1144                          
+Number of vars:                                   3144                          
+Number of global constraints:                     2288                          
+Number of nonzero resources per block:            86,88,88,86,86,88,88,86,86,88,88,86,86,88,88,86,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,31,31,31,31,11,37,37,37,37,13,37,37,37,37,13,37,37,37,37,13,37,37,37,37,13,937
+Number of equal./inequal. of global constraints:  1016/1272                     
+Total number of copy constraints:                 1016                          
+-----------------------------------------------------
+Used time: 984.7020556926727
+-----------------------------------------------------
+
+Initialization
+
+Subgradient steps
+Subgra.iter    Lagrange bound                alpha                         
+1              57374302.07373314             1                             
+2              9927212798.991798             1                             
+3              4937971798.991797             0.5                           
+
+Time used for SubGradient: --583.34-- seconds
+-----------------------------------------------------
+Used time: 1568.0420556926729
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: 57374302.07373314
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              57374302.07373314             9355.20225842433              541262.6188231166             
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -74197397.8179587             9042.726343537523             30007.13114720789             
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -48173875.38912562            8124.326485294065             13271.133413696381            
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -48209008.77076584            8061.400765938457             9735.78479524357              
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -48152453.042164415           7822.172073045029             8165.299026021004             
+Iteration limit
+New columns added: [5, 5, 5, 6, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 6, 6, 7, 6, 7, 6, 6, 6, 6, 7, 6, 7, 6, 6, 7, 6, 6, 6, 6, 7, 6, 6, 6, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --1153.39-- seconds
+-----------------------------------------------------
+Used time: --2721.43-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -48393329.0559 
+nlp_resource_proj average expr_int: 0.115 
+max round error: 0.4948 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --311.88-- seconds
+-----------------------------------------------------
+Used time: --3033.31-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -46621306.03477441
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -46621306.03477441            7139.400336040675             7575.226458823336             
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -48537407.58749067            5056.533223672723             6692.891854644119             
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -41883841.75449089            5133.111855029862             5217.8917432797025            
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -45561574.30282204            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -39062114.94711888            0.0                           0.0                           
+Iteration limit
+New columns added: [4, 3, 3, 4, 4, 4, 4, 4, 2, 0, 1, 1, 4, 1, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 5, 4, 5, 7, 5, 5, 5, 5, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 3, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --825.15-- seconds
+-----------------------------------------------------
+Used time: --3858.46-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46679399.7149 
+nlp_resource_proj average expr_int: 0.0856 
+max round error: 0.4045 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --273.79-- seconds
+-----------------------------------------------------
+Used time: --4132.25-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -36343639.971351705
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -36343639.971351705           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -35873875.409742944           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -35700742.19080199            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -35592175.20032522            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -35529860.37080994            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 2, 2, 2, 3, 1, 0, 1, 1, 0, 3, 0, 1, 2, 1, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 1, 5, 5, 5, 5, 0, 5, 1, 5, 3, 4, 5, 5, 5, 2, 3, 5, 4, 5, 5, 2, 5, 3, 5, 5, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --586.01-- seconds
+-----------------------------------------------------
+Used time: --4718.26-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46685467.0955 
+nlp_resource_proj average expr_int: 0.0851 
+max round error: 0.4046 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --250.05-- seconds
+-----------------------------------------------------
+Used time: --4968.31-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -35503332.421703845
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -35503332.421703845           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -35463611.13402884            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -35392095.017679654           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -35371679.99736344            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -35366616.80617025            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 1, 2, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 5, 5, 5, 5, 3, 5, 5, 5, 5, 2, 5, 5, 5, 5, 4, 5, 5, 5, 5, 2, 5, 5, 5, 5, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 1, 5, 3, 4, 4, 2, 5, 3, 4, 5, 1, 5, 4, 5, 5, 0, 5, 0, 5, 1, 1, 4, 4, 5, 1, 1, 5, 1, 5, 5, 4, 5, 4, 5, 4, 5, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.35-- seconds
+-----------------------------------------------------
+Used time: --5552.66-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46675673.9165 
+nlp_resource_proj average expr_int: 0.0861 
+max round error: 0.4047 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --259.79-- seconds
+-----------------------------------------------------
+Used time: --5812.45-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -35356290.88895931
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -35356290.88895931            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -35351457.415875174           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -35347587.96560416            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -35344797.444353186           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -35334679.30871639            0.0                           0.0                           
+Iteration limit
+New columns added: [1, 0, 0, 1, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 2, 5, 5, 5, 5, 1, 5, 5, 5, 4, 1, 5, 5, 5, 5, 2, 5, 5, 5, 5, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 0, 5, 4, 5, 5, 2, 5, 1, 4, 5, 0, 5, 2, 5, 2, 1, 5, 2, 4, 5, 1, 2, 0, 5, 1, 1, 0, 4, 4, 0, 0, 5, 0, 5, 3, 1, 3, 1, 5, 5, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --596.84-- seconds
+-----------------------------------------------------
+Used time: --6409.29-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46675534.3952 
+nlp_resource_proj average expr_int: 0.0861 
+max round error: 0.4047 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --253.32-- seconds
+-----------------------------------------------------
+Used time: --6662.61-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -35333292.78099458
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -35333292.78099458            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -35332849.84399814            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -35069491.08036996            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34879881.862137616           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34875132.01880894            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 1, 1, 1, 0, 0, 4, 5, 5, 5, 1, 5, 5, 5, 2, 1, 5, 5, 5, 2, 1, 3, 4, 5, 4, 1, 5, 5, 5, 5, 0, 4, 5, 5, 5, 0, 5, 5, 5, 5, 0, 4, 5, 5, 5, 0, 5, 2, 4, 3, 0, 5, 1, 4, 2, 0, 5, 2, 3, 3, 0, 5, 1, 2, 4, 1, 4, 4, 5, 1, 2, 2, 3, 5, 0, 0, 5, 0, 5, 3, 0, 2, 4, 5, 5, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --592.22-- seconds
+-----------------------------------------------------
+Used time: --7254.83-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677326.7198 
+nlp_resource_proj average expr_int: 0.0865 
+max round error: 0.4048 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --261.29-- seconds
+-----------------------------------------------------
+Used time: --7516.12-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34873971.08726833
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34873971.08726833            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34871296.922827385           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34870501.49272719            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34864895.190409616           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34864542.97409572            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 0, 0, 1, 3, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 5, 5, 5, 4, 0, 4, 5, 5, 0, 0, 3, 3, 5, 0, 0, 3, 4, 5, 0, 0, 5, 4, 4, 4, 0, 5, 5, 5, 5, 0, 5, 4, 5, 4, 0, 5, 4, 5, 5, 0, 5, 1, 2, 0, 1, 5, 0, 3, 0, 0, 5, 0, 2, 0, 1, 5, 0, 0, 3, 1, 3, 3, 3, 1, 3, 0, 3, 5, 0, 0, 5, 0, 5, 0, 0, 4, 5, 5, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --592.42-- seconds
+-----------------------------------------------------
+Used time: --8108.54-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46681748.985 
+nlp_resource_proj average expr_int: 0.0868 
+max round error: 0.3863 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.34-- seconds
+-----------------------------------------------------
+Used time: --8363.88-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34864537.96394077
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34864537.96394077            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34864526.77824332            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34864515.923065946           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34864515.70188222            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34811035.28834469            0.0                           0.0                           
+Iteration limit
+New columns added: [4, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 5, 3, 1, 1, 0, 1, 1, 1, 0, 0, 2, 0, 1, 0, 1, 2, 0, 1, 1, 0, 5, 1, 2, 1, 0, 5, 1, 4, 1, 0, 5, 1, 4, 3, 0, 5, 1, 5, 1, 0, 5, 0, 2, 2, 1, 5, 0, 1, 0, 1, 5, 0, 0, 3, 0, 5, 0, 0, 1, 1, 0, 4, 2, 1, 1, 0, 1, 4, 1, 2, 5, 0, 4, 1, 0, 2, 5, 5, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --585.69-- seconds
+-----------------------------------------------------
+Used time: --8949.57-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46678136.6403 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3855 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.0-- seconds
+-----------------------------------------------------
+Used time: --9204.57-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34810795.49417371
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34810795.49417371            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34810737.49161267            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34810726.936843924           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34810701.34849536            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34810700.97625017            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 3, 0, 0, 0, 0, 4, 1, 5, 0, 0, 0, 3, 5, 0, 0, 1, 1, 5, 1, 0, 0, 0, 5, 2, 0, 5, 1, 4, 1, 0, 4, 1, 2, 0, 0, 5, 0, 2, 0, 0, 5, 0, 2, 1, 0, 5, 0, 1, 1, 2, 5, 0, 1, 0, 1, 4, 0, 1, 1, 0, 5, 0, 1, 3, 1, 1, 0, 1, 3, 0, 0, 1, 1, 1, 2, 4, 2, 3, 1, 0, 0, 4, 3, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --585.73-- seconds
+-----------------------------------------------------
+Used time: --9790.3-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46675399.4905 
+nlp_resource_proj average expr_int: 0.0872 
+max round error: 0.4016 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.91-- seconds
+-----------------------------------------------------
+Used time: --10046.21-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34810699.08996662
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34810699.08996662            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34810697.783403136           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34810697.70154402            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34810697.68342487            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34810697.69542764            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 1, 0, 0, 1, 0, 1, 2, 1, 2, 1, 1, 1, 0, 2, 1, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 2, 5, 0, 0, 5, 0, 0, 0, 0, 4, 0, 0, 2, 0, 3, 1, 3, 0, 0, 4, 1, 2, 1, 0, 4, 0, 1, 0, 1, 5, 0, 1, 0, 3, 5, 0, 1, 1, 0, 5, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 1, 4, 1, 0, 1, 1, 0, 3, 3, 4, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --582.71-- seconds
+-----------------------------------------------------
+Used time: --10628.92-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46678075.4523 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --266.52-- seconds
+-----------------------------------------------------
+Used time: --10895.44-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34810697.71482589
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34810697.71482589            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34810697.675339796           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34810682.29274704            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34810678.26190517            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34809222.75565854            0.0                           0.0                           
+Iteration limit
+New columns added: [1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 3, 2, 0, 1, 1, 0, 3, 2, 4, 0, 0, 0, 2, 3, 0, 0, 0, 2, 5, 0, 0, 1, 0, 5, 2, 0, 4, 0, 1, 0, 0, 5, 0, 1, 0, 0, 4, 0, 2, 0, 0, 3, 1, 1, 1, 0, 4, 0, 0, 0, 1, 5, 0, 1, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 0, 1, 0, 0, 2, 0, 5, 2, 5, 2, 4, 0, 1, 2, 3, 2, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --583.9-- seconds
+-----------------------------------------------------
+Used time: --11479.34-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680764.0803 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3906 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.05-- seconds
+-----------------------------------------------------
+Used time: --11734.39-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34808761.01764657
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34808761.01764657            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34808761.00026883            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34808607.01623724            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34808606.983481936           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34808607.01411867            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 2, 0, 0, 0, 0, 1, 0, 2, 1, 0, 0, 0, 0, 4, 1, 1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 0, 0, 5, 0, 0, 5, 0, 2, 0, 0, 5, 0, 2, 0, 0, 4, 1, 1, 1, 0, 4, 0, 2, 0, 0, 3, 2, 1, 0, 1, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 4, 0, 0, 0, 4, 3, 3, 0, 0, 1, 2, 3, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --582.44-- seconds
+-----------------------------------------------------
+Used time: --12316.83-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46681089.7963 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --253.23-- seconds
+-----------------------------------------------------
+Used time: --12570.06-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34808607.0096255
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34808607.0096255             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34808606.98385466            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34808606.947812654           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34800038.964261815           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34800032.56470433            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 0, 0, 3, 0, 0, 0, 0, 1, 1, 2, 1, 1, 1, 0, 1, 0, 0, 2, 0, 0, 0, 1, 2, 0, 0, 0, 2, 2, 0, 0, 0, 1, 5, 0, 0, 4, 1, 3, 0, 0, 3, 0, 2, 1, 0, 2, 0, 2, 1, 0, 3, 0, 3, 0, 0, 2, 1, 1, 0, 3, 5, 0, 0, 0, 1, 4, 0, 1, 0, 1, 2, 0, 0, 0, 2, 0, 4, 0, 0, 1, 0, 4, 2, 1, 1, 4, 1, 4, 1, 1, 0, 2, 4, 5, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.76-- seconds
+-----------------------------------------------------
+Used time: --13154.82-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680901.0416 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --257.71-- seconds
+-----------------------------------------------------
+Used time: --13412.53-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34747138.69795086
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34747138.69795086            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34747138.681174956           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34747138.65439819            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34747138.51918446            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34747138.540981345           0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 3, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 4, 2, 0, 5, 1, 2, 0, 0, 5, 1, 1, 0, 0, 5, 0, 2, 0, 0, 5, 2, 1, 0, 0, 2, 1, 1, 0, 2, 5, 0, 0, 0, 0, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 4, 0, 2, 5, 2, 1, 0, 0, 1, 1, 3, 5, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --581.18-- seconds
+-----------------------------------------------------
+Used time: --13993.71-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680962.3537 
+nlp_resource_proj average expr_int: 0.0868 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --265.67-- seconds
+-----------------------------------------------------
+Used time: --14259.38-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34747138.540495664
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34747138.540495664           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34747138.54930562            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34747138.54149649            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34747138.54368059            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34747138.33233986            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 3, 2, 2, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 5, 1, 0, 1, 0, 4, 1, 0, 0, 0, 3, 1, 1, 0, 0, 4, 0, 0, 0, 0, 2, 1, 2, 1, 2, 5, 0, 1, 1, 0, 4, 1, 0, 1, 0, 2, 1, 1, 1, 0, 0, 3, 0, 0, 1, 0, 3, 5, 1, 0, 3, 1, 0, 0, 0, 0, 1, 3, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --585.09-- seconds
+-----------------------------------------------------
+Used time: --14844.47-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677506.5475 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.4078 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --264.31-- seconds
+-----------------------------------------------------
+Used time: --15108.78-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746602.93578828
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746602.93578828            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746602.97329686            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746602.9488265             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746602.92991497            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746602.92951179            0.0                           0.0                           
+Iteration limit
+New columns added: [4, 0, 0, 1, 0, 0, 0, 0, 2, 0, 1, 1, 1, 0, 0, 0, 1, 0, 3, 0, 0, 0, 0, 2, 0, 1, 0, 0, 3, 0, 0, 0, 0, 3, 1, 0, 4, 0, 1, 0, 0, 4, 1, 2, 0, 0, 3, 1, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 5, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 1, 0, 1, 3, 2, 1, 2, 2, 0, 1, 0, 0, 4, 4, 5, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --582.33-- seconds
+-----------------------------------------------------
+Used time: --15691.11-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677508.2633 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.4078 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --254.71-- seconds
+-----------------------------------------------------
+Used time: --15945.82-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746602.880671926
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746602.880671926           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746602.63685615            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746602.887785904           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746602.87438462            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746602.86943504            0.0                           0.0                           
+Iteration limit
+New columns added: [4, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 1, 0, 0, 1, 0, 0, 0, 2, 5, 0, 0, 0, 1, 4, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 3, 0, 3, 0, 0, 1, 4, 0, 2, 0, 2, 0, 0, 0, 0, 4, 5, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --582.24-- seconds
+-----------------------------------------------------
+Used time: --16528.06-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46683085.1008 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.4078 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --266.05-- seconds
+-----------------------------------------------------
+Used time: --16794.11-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746602.905635186
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746602.905635186           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746602.85220586            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746602.87688962            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746602.849099256           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746602.590384655           0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 0, 2, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1, 5, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4, 0, 1, 0, 3, 3, 0, 0, 1, 2, 1, 1, 1, 0, 1, 0, 4, 0, 0, 1, 0, 1, 1, 1, 3, 0, 4, 0, 0, 2, 0, 3, 3, 4, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --583.48-- seconds
+-----------------------------------------------------
+Used time: --17377.59-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680056.3227 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.4078 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.3-- seconds
+-----------------------------------------------------
+Used time: --17632.89-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746602.20279848
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746602.20279848            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746602.225514114           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746602.19700081            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746601.990983814           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746601.99355247            0.0                           0.0                           
+Iteration limit
+New columns added: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 3, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 0, 0, 0, 2, 3, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0, 3, 4, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.29-- seconds
+-----------------------------------------------------
+Used time: --18217.18-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677503.9484 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.4078 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --256.06-- seconds
+-----------------------------------------------------
+Used time: --18473.24-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746601.980528735
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746601.980528735           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746602.00295753            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746601.936157316           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746602.00604662            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746601.97747113            0.0                           0.0                           
+Iteration limit
+New columns added: [1, 1, 0, 1, 0, 0, 0, 0, 2, 0, 2, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 1, 0, 3, 0, 0, 1, 0, 2, 0, 0, 1, 0, 2, 0, 0, 1, 0, 5, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5, 0, 0, 0, 1, 3, 0, 0, 0, 2, 2, 0, 0, 0, 1, 0, 2, 0, 1, 1, 0, 1, 2, 0, 2, 2, 2, 0, 1, 0, 0, 3, 5, 5, 2, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --585.05-- seconds
+-----------------------------------------------------
+Used time: --19058.29-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46674443.6988 
+nlp_resource_proj average expr_int: 0.0873 
+max round error: 0.4011 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.61-- seconds
+-----------------------------------------------------
+Used time: --19313.9-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746601.59306466
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746601.59306466            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746552.42101744            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746552.50616957            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746552.222750396           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746552.468781486           0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 4, 1, 1, 4, 0, 0, 0, 0, 3, 0, 1, 0, 0, 2, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 1, 1, 2, 1, 5, 0, 0, 0, 1, 4, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 4, 0, 2, 2, 1, 3, 3, 1, 1, 0, 2, 0, 1, 0, 0, 3, 4, 4, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --583.91-- seconds
+-----------------------------------------------------
+Used time: --19897.81-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46679955.5385 
+nlp_resource_proj average expr_int: 0.087 
+max round error: 0.4165 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.43-- seconds
+-----------------------------------------------------
+Used time: --20153.24-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746552.46009055
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746552.46009055            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746552.498405136           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746552.43972929            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746552.393179595           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746552.40826089            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 1, 0, 0, 3, 0, 0, 0, 0, 1, 0, 1, 0, 1, 4, 0, 0, 0, 1, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 0, 2, 3, 0, 0, 0, 3, 0, 0, 0, 0, 3, 3, 5, 2, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --581.07-- seconds
+-----------------------------------------------------
+Used time: --20734.31-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677405.7573 
+nlp_resource_proj average expr_int: 0.087 
+max round error: 0.4165 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.9-- seconds
+-----------------------------------------------------
+Used time: --20990.21-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746552.44093275
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746552.44093275            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746552.430869065           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746552.454688504           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746552.432897106           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746552.46181333            0.0                           0.0                           
+Iteration limit
+New columns added: [1, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 0, 0, 1, 0, 0, 4, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --580.13-- seconds
+-----------------------------------------------------
+Used time: --21570.34-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680089.7172 
+nlp_resource_proj average expr_int: 0.087 
+max round error: 0.4165 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --257.2-- seconds
+-----------------------------------------------------
+Used time: --21827.54-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746552.47547565
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746552.47547565            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746552.4080217             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746551.71720974            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746551.556506045           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746499.54573496            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 1, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 0, 0, 0, 0, 2, 2, 1, 2, 2, 2, 2, 1, 2, 1, 2, 2, 0, 3, 1, 2, 2, 2, 2, 0, 4, 0, 1, 1, 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 2, 1, 2, 2, 4, 1, 2, 2, 0, 3, 1, 0, 0, 0, 2, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 3, 0, 0, 0, 0, 4, 2, 4, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.12-- seconds
+-----------------------------------------------------
+Used time: --22411.66-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46675165.5471 
+nlp_resource_proj average expr_int: 0.0873 
+max round error: 0.4381 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --262.52-- seconds
+-----------------------------------------------------
+Used time: --22674.18-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746499.571963124
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746499.571963124           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746499.546625026           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746499.575604565           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746499.40589974            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746499.51510056            0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 1, 0, 0, 2, 1, 0, 0, 2, 3, 0, 1, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 1, 2, 0, 0, 1, 1, 4, 4, 5, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --583.09-- seconds
+-----------------------------------------------------
+Used time: --23257.27-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46673658.4444 
+nlp_resource_proj average expr_int: 0.0876 
+max round error: 0.425 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --260.67-- seconds
+-----------------------------------------------------
+Used time: --23517.94-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746499.30751957
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746499.30751957            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746494.37640851            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746494.41652932            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746494.37004719            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746494.43827374            0.0                           0.0                           
+Iteration limit
+New columns added: [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 2, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 2, 0, 4, 0, 0, 0, 0, 4, 0, 0, 1, 0, 3, 0, 0, 1, 0, 5, 0, 0, 0, 0, 4, 0, 0, 1, 0, 4, 0, 0, 1, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 4, 2, 2, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --582.42-- seconds
+-----------------------------------------------------
+Used time: --24100.36-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46675172.1218 
+nlp_resource_proj average expr_int: 0.0873 
+max round error: 0.4381 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --256.43-- seconds
+-----------------------------------------------------
+Used time: --24356.79-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746494.39758687
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746494.39758687            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746494.165607534           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.434866              0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.4236951             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.406563394           0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 0, 1, 2, 0, 1, 1, 1, 1, 0, 3, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 3, 2, 2, 2, 4, 1, 0, 0, 0, 4, 1, 1, 1, 0, 0, 1, 1, 2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 0, 3, 2, 3, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --583.87-- seconds
+-----------------------------------------------------
+Used time: --24940.66-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46674935.4097 
+nlp_resource_proj average expr_int: 0.0873 
+max round error: 0.405 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --256.32-- seconds
+-----------------------------------------------------
+Used time: --25196.98-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.40269413
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.40269413            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.31200815            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.42587021            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.26137295            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.444239184           0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 4, 1, 0, 1, 0, 1, 2, 0, 3, 0, 0, 0, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2, 0, 2, 0, 0, 1, 0, 2, 0, 0, 1, 1, 3, 0, 0, 1, 1, 2, 0, 0, 1, 1, 1, 1, 1, 1, 2, 3, 0, 0, 0, 0, 5, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 2, 2, 0, 1, 0, 0, 4, 3, 4, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.1-- seconds
+-----------------------------------------------------
+Used time: --25781.08-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46671715.1859 
+nlp_resource_proj average expr_int: 0.0875 
+max round error: 0.4619 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --267.27-- seconds
+-----------------------------------------------------
+Used time: --26048.35-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.32643175
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.32643175            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.4442636             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.435418025           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.421772234           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.42551073            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 5, 0, 1, 0, 0, 3, 0, 0, 1, 0, 1, 0, 0, 1, 0, 2, 0, 0, 0, 0, 1, 0, 2, 1, 1, 4, 1, 0, 0, 0, 5, 1, 0, 2, 1, 2, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 2, 0, 0, 0, 0, 2, 3, 3, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.22-- seconds
+-----------------------------------------------------
+Used time: --26632.57-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680545.5007 
+nlp_resource_proj average expr_int: 0.0873 
+max round error: 0.405 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --259.35-- seconds
+-----------------------------------------------------
+Used time: --26891.92-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.45328765
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.45328765            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.41258886            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.42451975            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.38683992            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.44086766            0.0                           0.0                           
+Iteration limit
+New columns added: [4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 2, 2, 0, 0, 0, 1, 3, 0, 0, 0, 1, 2, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 4, 4, 2, 0, 1, 0, 0, 0, 1, 0, 2, 3, 2, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.26-- seconds
+-----------------------------------------------------
+Used time: --27476.18-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46672492.1405 
+nlp_resource_proj average expr_int: 0.0875 
+max round error: 0.462 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --260.11-- seconds
+-----------------------------------------------------
+Used time: --27736.29-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.437716834
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.437716834           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.4371823             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.29821744            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.38641676            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.41653045            0.0                           0.0                           
+Iteration limit
+New columns added: [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 2, 0, 0, 2, 1, 1, 0, 1, 1, 0, 2, 0, 0, 1, 1, 3, 0, 0, 0, 0, 3, 0, 0, 0, 1, 1, 0, 0, 0, 1, 2, 0, 0, 0, 0, 2, 1, 1, 1, 3, 3, 0, 1, 0, 1, 3, 0, 1, 0, 0, 3, 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 2, 0, 0, 1, 3, 0, 0, 0, 0, 3, 4, 4, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --585.66-- seconds
+-----------------------------------------------------
+Used time: --28321.95-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46675737.9283 
+nlp_resource_proj average expr_int: 0.0874 
+max round error: 0.405 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --263.61-- seconds
+-----------------------------------------------------
+Used time: --28585.56-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.410312995
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.410312995           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.43040085            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.44242291            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.38179894            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.433866836           0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4, 0, 0, 0, 0, 2, 0, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0, 2, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 2, 1, 0, 1, 1, 0, 0, 0, 0, 3, 3, 3, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --582.29-- seconds
+-----------------------------------------------------
+Used time: --29167.85-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677555.0459 
+nlp_resource_proj average expr_int: 0.0873 
+max round error: 0.405 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --258.79-- seconds
+-----------------------------------------------------
+Used time: --29426.64-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.41549931
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.41549931            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.43335323            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.43686046            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.43372557            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.40701631            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 0, 0, 0, 2, 4, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 3, 5, 2, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --582.1-- seconds
+-----------------------------------------------------
+Used time: --30008.74-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677894.2238 
+nlp_resource_proj average expr_int: 0.0874 
+max round error: 0.405 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --267.13-- seconds
+-----------------------------------------------------
+Used time: --30275.87-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.35133341
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.35133341            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.42640443            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.4285555             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.412405446           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746486.47287868            0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 0, 0, 0, 1, 2, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5, 1, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.41-- seconds
+-----------------------------------------------------
+Used time: --30860.28-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46677764.3408 
+nlp_resource_proj average expr_int: 0.0873 
+max round error: 0.405 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --258.57-- seconds
+-----------------------------------------------------
+Used time: --31118.85-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746486.45027728
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746486.45027728            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746486.40045299            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746486.39250573            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746486.028703064           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746484.14415822            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 2, 1, 1, 1, 0, 2, 0, 1, 0, 2, 1, 0, 2, 1, 1, 1, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 1, 0, 1, 0, 0, 2, 0, 1, 0, 0, 1, 1, 2, 0, 1, 3, 0, 0, 1, 1, 2, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 2, 0, 1, 3, 1, 2, 0, 1, 0, 0, 0, 0, 0, 4, 2, 2, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.17-- seconds
+-----------------------------------------------------
+Used time: --31703.02-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46679422.3979 
+nlp_resource_proj average expr_int: 0.0871 
+max round error: 0.4902 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --259.35-- seconds
+-----------------------------------------------------
+Used time: --31962.37-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746484.1920914
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746484.1920914             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746484.17840038            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746483.96018381            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746347.58847332            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746347.60313181            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 1, 1, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 0, 1, 1, 0, 1, 1, 2, 1, 5, 1, 0, 2, 1, 0, 2, 0, 3, 1, 0, 2, 1, 3, 1, 0, 1, 1, 3, 1, 0, 2, 0, 1, 1, 1, 1, 2, 3, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 3, 0, 0, 0, 0, 1, 2, 0, 1, 1, 1, 0, 3, 0, 0, 1, 4, 2, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --586.25-- seconds
+-----------------------------------------------------
+Used time: --32548.62-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46673348.1868 
+nlp_resource_proj average expr_int: 0.0874 
+max round error: 0.3967 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --262.58-- seconds
+-----------------------------------------------------
+Used time: --32811.2-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746272.44817446
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746272.44817446            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746272.6108358             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746272.611090176           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746272.62745581            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746272.439231895           0.0                           0.0                           
+Iteration limit
+New columns added: [1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 1, 2, 0, 2, 1, 3, 2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 1, 4, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2, 1, 4, 0, 1, 1, 0, 2, 1, 0, 1, 1, 1, 2, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 3, 1, 0, 2, 0, 0, 2, 4, 2, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --585.52-- seconds
+-----------------------------------------------------
+Used time: --33396.72-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46678486.4801 
+nlp_resource_proj average expr_int: 0.0867 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --257.48-- seconds
+-----------------------------------------------------
+Used time: --33654.2-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746269.25757321
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746269.25757321            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746269.278332904           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746268.99060477            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746269.203051366           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746269.28636452            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 3, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1, 1, 1, 2, 5, 0, 1, 0, 0, 5, 1, 1, 0, 1, 5, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 2, 1, 1, 0, 0, 2, 0, 0, 0, 0, 1, 4, 0, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --578.57-- seconds
+-----------------------------------------------------
+Used time: --34232.77-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46681130.22 
+nlp_resource_proj average expr_int: 0.0867 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.6-- seconds
+-----------------------------------------------------
+Used time: --34488.37-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746268.9924956
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746268.9924956             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746269.17434619            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746269.27682496            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746213.57033606            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746213.608776204           0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 4, 0, 1, 0, 0, 4, 0, 1, 0, 0, 2, 0, 1, 1, 0, 3, 0, 0, 1, 0, 4, 0, 0, 0, 1, 5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 0, 2, 1, 0, 1, 0, 0, 0, 3, 1, 0, 3, 4, 1, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --583.51-- seconds
+-----------------------------------------------------
+Used time: --35071.88-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46681096.9463 
+nlp_resource_proj average expr_int: 0.0868 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --258.35-- seconds
+-----------------------------------------------------
+Used time: --35330.23-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746166.13174687
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746166.13174687            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746166.067156605           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746166.08764741            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746166.12019307            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746062.04651839            0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 4, 0, 0, 3, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 2, 4, 0, 0, 0, 1, 4, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 2, 2, 1, 0, 1, 1, 0, 4, 0, 0, 3, 3, 1, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --585.88-- seconds
+-----------------------------------------------------
+Used time: --35916.11-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46675657.104 
+nlp_resource_proj average expr_int: 0.0872 
+max round error: 0.4017 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --253.29-- seconds
+-----------------------------------------------------
+Used time: --36169.4-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746061.0939333
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746061.0939333             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746061.071993865           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746061.07696099            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746061.09981128            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746061.118550435           0.0                           0.0                           
+Iteration limit
+New columns added: [2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 5, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 5, 1, 1, 2, 0, 1, 0, 0, 4, 0, 1, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 0, 1, 2, 0, 5, 1, 0, 1, 0, 5, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 3, 1, 0, 0, 2, 0, 0, 3, 3, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --584.89-- seconds
+-----------------------------------------------------
+Used time: --36754.29-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680692.4823 
+nlp_resource_proj average expr_int: 0.0868 
+max round error: 0.3907 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --255.68-- seconds
+-----------------------------------------------------
+Used time: --37009.97-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746061.13209347
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746061.13209347            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746061.041582696           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746061.14243601            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746061.14948888            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746061.03444015            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 1, 0, 1, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 4, 3, 0, 2, 2, 2, 1, 0, 2, 2, 2, 2, 0, 2, 1, 2, 0, 4, 2, 0, 3, 0, 1, 0, 0, 4, 0, 1, 1, 0, 3, 0, 1, 0, 0, 2, 0, 1, 1, 0, 1, 1, 1, 3, 3, 5, 1, 1, 1, 0, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 4, 1, 1, 0, 2, 1, 0, 0, 0, 0, 1, 3, 3, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --571.31-- seconds
+-----------------------------------------------------
+Used time: --37581.28-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680287.1438 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3914 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --252.81-- seconds
+-----------------------------------------------------
+Used time: --37834.09-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746061.03723196
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746061.03723196            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746061.065091945           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746061.04047191            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746061.042429715           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746061.05041469            0.0                           0.0                           
+Iteration limit
+New columns added: [4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 0, 2, 0, 0, 1, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 0, 2, 2, 5, 0, 0, 0, 1, 5, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 4, 1, 1, 0, 4, 1, 0, 0, 0, 0, 1, 4, 3, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --567.12-- seconds
+-----------------------------------------------------
+Used time: --38401.21-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46681034.5232 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3913 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --247.61-- seconds
+-----------------------------------------------------
+Used time: --38648.82-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746061.054941334
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746061.054941334           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746061.032996595           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746061.035545416           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746061.074708164           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746061.02545725            0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 3, 5, 0, 0, 0, 1, 4, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 3, 0, 0, 4, 0, 0, 0, 0, 0, 1, 4, 4, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --569.35-- seconds
+-----------------------------------------------------
+Used time: --39218.17-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46680725.692 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3914 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --254.2-- seconds
+-----------------------------------------------------
+Used time: --39472.37-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746060.9815444
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746060.9815444             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746061.05770131            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746061.060189635           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746061.05571095            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746061.020935744           0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 2, 0, 0, 1, 0, 1, 0, 0, 3, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 1, 1, 3, 5, 0, 0, 0, 1, 4, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 2, 0, 0, 2, 2, 0, 1, 2, 2, 0, 0, 0, 0, 2, 4, 0, 1, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --568.29-- seconds
+-----------------------------------------------------
+Used time: --40040.66-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46681056.2163 
+nlp_resource_proj average expr_int: 0.087 
+max round error: 0.3924 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --248.55-- seconds
+-----------------------------------------------------
+Used time: --40289.21-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -34746060.98379919
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -34746060.98379919            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -34746060.942148946           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -34746060.86711168            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -34746060.874557376           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -34746060.95498838            0.0                           0.0                           
+Iteration limit
+New columns added: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 3, 1, 0, 3, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 1, 0, 0, 1, 0, 1, 1, 1, 5, 0, 0, 1, 2, 5, 1, 0, 1, 1, 2, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 2, 1, 1, 0, 4, 2, 0, 0, 0, 0, 2, 3, 0, 0, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --568.56-- seconds
+-----------------------------------------------------
+Used time: --40857.77-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -46683640.5621 
+nlp_resource_proj average expr_int: 0.0869 
+max round error: 0.3907 
+-------------------------------------
+-------------------------------------
+solve_fixed_nlp_problem obj: -67985906.4906 
+-------------------------------------
+Gap (c_tilde_y and c_tilde_x):                    31.3333557322                 
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point improves
+Projection Gap (c(x_NLP_proj) and primal bound):  31.3333557322                 
+
+Feasible candidate obtained in iter 0: -67985906.49057578
+
+=======================================================
+Time used for init FindSol in iter 0: --297.06-- seconds
+-----------------------------------------------------
+Used time: --41154.83-- seconds
+-----------------------------------------------------
+Found the first feasible solution
+IA obj. val: -34746060.94918335
+Elapsed time: 41154.832055692656
+---------------------------------------------------------
+Fast column generation
+iter      IA obj. value                 slacks                        
+0         -34746060.93035018            0.0                           
+IA obj. val: -34746060.93035018
+Elapsed time: 41158.60395372389
+
+iter      IA obj. value                 slacks                        
+1         -34745962.26304654            0.0                           
+IA obj. val: -34745962.26304654
+Elapsed time: 41276.87038743971
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0]
+Cannot load a SolverResults object with bad status: error
+solve: max_iter = 8
+Cannot load a SolverResults object with bad status: error
+solve: max_iter = 6
+Cannot load a SolverResults object with bad status: error
+error: cannot solve
+
+iter      IA obj. value                 slacks                        
+2         -34745960.07611121            0.0                           
+IA obj. val: -34745960.07611121
+Elapsed time: 41396.29730308531
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+3         -34745957.22930301            0.0                           
+IA obj. val: -34745957.22930301
+Elapsed time: 41516.103956346495
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+4         -34745957.02681378            0.0                           
+IA obj. val: -34745957.02681378
+Elapsed time: 41635.84223521231
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+5         -34745956.49857551            0.0                           
+IA obj. val: -34745956.49857551
+Elapsed time: 41756.598560218794
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+6         -34745955.04264776            0.0                           
+IA obj. val: -34745955.04264776
+Elapsed time: 41877.88987839697
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+7         -34701899.071249135           0.0                           
+IA obj. val: -34701899.071249135
+Elapsed time: 41997.177817468626
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0]
+
+iter      IA obj. value                 slacks                        
+8         -34701899.02954726            0.0                           
+IA obj. val: -34701899.02954726
+Elapsed time: 42117.05862248419
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0]
+
+iter      IA obj. value                 slacks                        
+9         -34701898.987889335           0.0                           
+IA obj. val: -34701898.987889335
+Elapsed time: 42235.762857561094
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+
+iter      IA obj. value                 slacks                        
+10        -34701898.63185037            0.0                           
+IA obj. val: -34701898.63185037
+Elapsed time: 42353.93227565764
+Number of new columns in the current iteration:
+[0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0]
+
+New columns in FastCG:
+[9, 10, 10, 10, 8, 8, 8, 7, 9, 9, 9, 10, 2, 2, 2, 2, 10, 8, 10, 8, 5, 5, 9, 9, 9, 9, 9, 10, 10, 9, 10, 9, 9, 10, 9, 2, 10, 10, 8, 10, 10, 10, 10, 9, 10, 10, 10, 10, 10, 10, 10, 10, 9, 10, 10, 10, 10, 10, 10, 9, 9, 10, 10, 10, 9, 10, 10, 9, 10, 10, 10, 5, 2, 2, 9, 2, 7, 7, 5, 6, 5, 8, 8, 7, 5, 8, 9, 9, 4, 9, 4, 7, 6, 7, 6, 5]
+number of unfixed nlp subproblems solved during CG: 970
+Time used for solving subproblem: --1195.36-- seconds
+---------------------------------------------------------
+Time used for init cg fast fw in iter 1: --1199.13-- seconds
+-----------------------------------------------------
+Used time: --42353.96-- seconds
+-----------------------------------------------------
+---------------------------------------------------------
+Fast column generation
+iter      IA obj. value                 slacks                        
+0         -34701898.63185037            0.0                           
+IA obj. val: -34701898.63185037
+Elapsed time: 42357.95864821432
+
+iter      IA obj. value                 slacks                        
+1         -34701835.47465578            0.0                           
+IA obj. val: -34701835.47465578
+Elapsed time: 42475.397001514415
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+2         -34701835.108295806           0.0                           
+IA obj. val: -34701835.108295806
+Elapsed time: 42592.82148147581
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0]
+
+iter      IA obj. value                 slacks                        
+3         -34701835.02072738            0.0                           
+IA obj. val: -34701835.02072738
+Elapsed time: 42710.49237633703
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0]
+
+iter      IA obj. value                 slacks                        
+4         -34701834.95078218            0.0                           
+IA obj. val: -34701834.95078218
+Elapsed time: 42825.89046836851
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0]
+
+iter      IA obj. value                 slacks                        
+5         -34701835.012338094           0.0                           
+IA obj. val: -34701835.012338094
+Elapsed time: 42941.5071244335
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+
+iter      IA obj. value                 slacks                        
+6         -34701834.81798786            0.0                           
+IA obj. val: -34701834.81798786
+Elapsed time: 43058.05747438429
+Number of new columns in the current iteration:
+[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+7         -34701834.84289729            0.0                           
+IA obj. val: -34701834.84289729
+Elapsed time: 43175.016184101085
+Number of new columns in the current iteration:
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0]
+
+EXIT: timeout
+
+Total time:                                       43201.84620022774             
+
+Reformulation time:                               984.7020556926727             
+Decomposition time:                               0.9088428020477295            
+Containers time:                                  983.793212890625              
+
+Primal bound:                                     -67985906.49057578            
+
+Main iterations:                                  0                             
+Number of CG iterations:                          230                           
+CG relaxation obj. value:                         -34701834.84289729            
+Number of MINLP subproblems:                      291                           
+Number of unfixed NLP subproblems:                24425                         
+Number of fixed NLP subproblems:                  24406                         
+Number of solved sub-problems after CG:           0                             
+Number of columns after CG:                       0                             
+CG Gap (CG relaxation and primal bound):          48.9573109572                 
+Total number of columns:                          0                             

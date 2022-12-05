@@ -1,0 +1,49 @@
+Solver command line: ['C:\\Solver\\baron\\baron.exe', 'C:\\Users\\PUBLIC~1.THR\\AppData\\Local\\Temp\\tmp5tczvl2e.pyomo.bar']
+
+===========================================================================
+ BARON version 20.4.14. Built: WIN-64 Tue Apr 14 21:23:22 EDT 2020
+
+ BARON is a product of The Optimization Firm.
+ For information on BARON, see https://minlp.com/about-baron
+ Licensee: 
+ Peter Sahlmann at TU Berlin, Institute of Energy Technology, p.sahl@tu-berlin.d
+ e.
+
+ If you use this software, please cite publications from
+ https://minlp.com/baron-publications, such as: 
+
+ Kilinc, M. and N. V. Sahinidis, Exploiting integrality in the global
+ optimization of mixed-integer nonlinear programming problems in BARON,
+ Optimization Methods and Software, 33, 540-562, 2018.
+===========================================================================
+ This BARON run may utilize the following subsolver(s)
+ For LP/MIP/QP: ILOG CPLEX                                      
+ For NLP: IPOPT, FILTERSD, FILTERSQP
+===========================================================================
+ Doing local search
+ Solving bounding LP
+ Starting multi-start local search
+ Done with local search
+===========================================================================
+  Iteration    Open nodes         Time (s)    Lower bound      Upper bound
+*         1             1             4.34   -0.758084E+08    -0.204775E+08
+          1             1             4.88   -0.758084E+08    -0.536495E+08
+*         2             2             5.83   -0.596156E+08    -0.536495E+08
+         47             0            21.80   -0.596156E+08    -0.596156E+08
+
+ Cleaning up
+
+                         *** Normal completion ***            
+
+ Wall clock time:                    21.83
+ Total CPU time used:                21.80
+
+ Total no. of BaR iterations:      47
+ Best solution found at node:       2
+ Max. no. of nodes in memory:       6
+ 
+ All done
+===========================================================================
+
+Lower bound: -59615574.7783
+Upper bound: -59615574.7187

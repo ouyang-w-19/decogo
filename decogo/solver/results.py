@@ -98,7 +98,7 @@ class Results:
             self.print_oa_stats()
         elif self.strategy == 'CG':
             self.print_col_gen_stats()
-        elif self.strategy == 'DynCG':
+        elif self.strategy == 'DBCG':
             self.print_col_gen_stats()
 
     def print_decomp_time_and_total_time(self):

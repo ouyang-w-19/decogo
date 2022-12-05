@@ -84,7 +84,14 @@ class PyomoModelDecomposer:
         # construct graph for all variables
         G = nx.Graph()
         for var_name in self.model.component_map(Var):
-            G.add_node(var_name)
+            # if var is type IndexedVar, add its var elements as nodes.
+            var_type = \
+                type(self.model.find_component(var_name))
+            if var_type is IndexedVar:
+                for key in self.model.find_component(var_name):
+                    G.add_node(var_name+'[{0}]'.format(key))
+            else:
+                G.add_node(var_name)
 
         # store nonlinear variables in order later to create one common block
         # for linear variables

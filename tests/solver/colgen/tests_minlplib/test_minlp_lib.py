@@ -22,39 +22,40 @@ if __name__ == '__main__':
     pool_size = 100
     max_round = 5
 
-    with open('decogo.set', 'w') as file:
-        # file.write('strategy = ADAPTCG\n')  # static hyper-blocks (aggregating
-        # two nonlinear atomic blocks)
-        file.write('strategy = CG\n')
-        file.write('maxtime = 1000\n')
-        file.write('cg_max_iter = 5\n')
-        file.write('cg_sub_gradient_max_iter = 3\n')
-        file.write('decomp_estimate_var_bounds = False\n')
-        file.write('cg_normalize_duals = False\n')
-        file.write('cg_max_main_iter = 20\n')  # main iteration limit
-        # ========================= primal heuristics =========================
-        file.write('cg_find_solution = True\n')
-        file.write('cg_find_sol_mip_pool = ' + str(pool_size) + '\n')
-        file.write('cg_find_sol_mip_pool_tau = ' + str(tau) + '\n')
-        file.write('cg_find_sol_mip_pool_max_round = ' + str(max_round) + '\n')
-        # ===================================================================
-        file.write('cg_fast_fw = False\n')  # switch off fast CG
-        # file.write('cg_fast_fw = True\n')  # switch on fast CG
-        file.write('cg_fast_approx = True\n')  # using exact problem
-        # solving in fast CG
-
-        file.close()
-
-    # add tests to the test class
     for name in problem_names:
+        # create setting file
+        with open('decogo.set', 'w') as file:
+            # ========================= colgen =================================
+            file.write('strategy = CG\n')
+            file.write('user_defined_input_model = False\n')  # disable
+            # user-defined model
+            # ================== CG settings ===================================
+            file.write('maxtime = 1000\n')  # maximum computation/solving time
+            file.write('cg_max_iter = 5\n')
+            file.write('cg_sub_gradient_max_iter = 3\n')
+            file.write('decomp_estimate_var_bounds = False\n')
+            file.write('cg_normalize_duals = False\n')
+            file.write('cg_max_main_iter = 20\n')  # main iteration limit
+            file.write('cg_fast_fw = False\n')  # switch off fast CG
+            file.write('cg_fast_approx = True\n')  # disable exact problem
+            # solving in fast CG
+            # ========================= primal heuristics ======================
+            file.write('cg_find_solution = True\n')
+            file.write('cg_find_sol_mip_pool = ' + str(pool_size) + '\n')
+            file.write('cg_find_sol_mip_pool_tau = ' + str(tau) + '\n')
+            file.write(
+                'cg_find_sol_mip_pool_max_round = ' + str(max_round) + '\n')
+            # ==================================================================
+            file.close()
+
         module_obj = \
             importlib.import_module('tests.examples.minlplib.' + str(name))
         input_model = module_obj.model
         input_model.name = name
 
-        # solution with Decogo
         solver = DecogoSolver()
-        file_name='logs\\MINLPlib\\' + name + '.txt'
-        # solver.optimize(input_model, file_name=file_name)
+
+        # file_name='logs\\MINLPlib\\' + name + '.txt'
+        # solver.optimize(input_model, file_name=file_name)  # generate log file
         solver.optimize(input_model)
 

@@ -1,0 +1,1386 @@
+Original model:
+Number of variables:                              204                           
+Number of constraints:                            250                           
+
+Block separable reformulation:
+Number of blocks:                                 9                             
+Number of nonlinear blocks:                       8                             
+Min size of blocks:                               3                             
+Max size of blocks (without linear blocks):       37                            
+Max size of blocks (including linear blocks):     84                            
+Number of vars:                                   208                           
+Number of global constraints:                     130                           
+Number of nonzero resources per block:            20,20,20,20,31,31,31,37,55    
+Number of equal./inequal. of global constraints:  58/72                         
+Total number of copy constraints:                 58                            
+-----------------------------------------------------
+Used time: 7.826061725616455
+-----------------------------------------------------
+
+Initialization
+
+Subgradient steps
+Subgra.iter    Lagrange bound                alpha                         
+1              555725244.2054799             1                             
+2              4151124456.8531346            1                             
+3              2049899919.3531346            0.5                           
+
+Time used for SubGradient: --6.71-- seconds
+-----------------------------------------------------
+Used time: 14.536061725616456
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: 555725244.2054799
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              555725244.2054799             99406.25                      453552.2360506237             
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -58209183.25439957            7541.97815096109              23258.000052742515            
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -64078634.7968093             4977.591174578296             9334.97251544018              
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -65747512.01013085            3764.6883976789386            7840.133811340067             
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -76257086.70846052            2874.444035415877             4570.566842979899             
+Iteration limit
+New columns added: [7, 7, 5, 5, 10, 9, 7, 7, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --11.69-- seconds
+-----------------------------------------------------
+Used time: --26.23-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -74179147.9583 
+nlp_resource_proj average expr_int: 0.1318 
+max round error: 0.4843 
+-------------------------------------
+Master problem is infeasible: NLP master problem
+-------------------------------------
+solve_fixed_nlp_problem not feasible
+-------------------------------------
+
+No feasible candidate obtained in iter 0
+
+=======================================================
+Time used for init FindSol in iter 0: --2.2-- seconds
+-----------------------------------------------------
+Used time: --28.43-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation: approximated subproblem solving
+
+Initial CG objective value: -73510501.58610137
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -73510501.58610137            1832.9863888105792            2818.618688688798             
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -76901017.11591133            845.0112075922734             1492.4873221497082            
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -63809387.2649816             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -58126813.207063794           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -58012806.31601339            0.0                           0.0                           
+Iteration limit
+New columns added: [3, 3, 1, 4, 5, 5, 5, 5, 0]
+number of minlp subproblems solved during CG: 0
+
+=======================================================
+Time used for init CG in iter 0: --7.28-- seconds
+-----------------------------------------------------
+Used time: --35.71-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution
+-------------------------------------
+solve_nlp_resource_proj obj: -57495092.9569 
+nlp_resource_proj average expr_int: 0.1324 
+max round error: 0.4818 
+-------------------------------------
+-------------------------------------
+solve_fixed_nlp_problem obj: -60192720.7117 
+-------------------------------------
+Gap (c_tilde_y and c_tilde_x):                    4.4816511415                  
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point improves
+Projection Gap (c(x_NLP_proj) and primal bound):  4.4816511415                  
+
+Feasible candidate obtained in iter 0: -60192720.71171675
+
+=======================================================
+Time used for init FindSol in iter 0: --1.66-- seconds
+-----------------------------------------------------
+Used time: --37.37-- seconds
+-----------------------------------------------------
+Found the first feasible solution
+IA obj. val: -57425285.49205331
+Elapsed time: 37.36606172561645
+---------------------------------------------------------
+Fast column generation
+iter      IA obj. value                 slacks                        
+0         -55539958.18324962            0.0                           
+IA obj. val: -55539958.18324962
+Elapsed time: 37.537948169708244
+
+iter      IA obj. value                 slacks                        
+1         -55365879.00493024            0.0                           
+IA obj. val: -55365879.00493024
+Elapsed time: 38.83492425918578
+Number of new columns in the current iteration:
+[0, 1, 1, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+2         -55365879.00476042            0.0                           
+IA obj. val: -55365879.00476042
+Elapsed time: 40.116245307922355
+Number of new columns in the current iteration:
+[0, 1, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+3         -55362409.09009664            0.0                           
+IA obj. val: -55362409.09009664
+Elapsed time: 41.36633233070373
+Number of new columns in the current iteration:
+[1, 1, 0, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+4         -55362409.0843939             0.0                           
+IA obj. val: -55362409.0843939
+Elapsed time: 42.678931274414055
+Number of new columns in the current iteration:
+[1, 0, 1, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+5         -54999895.509499066           0.0                           
+IA obj. val: -54999895.509499066
+Elapsed time: 43.96025756835937
+Number of new columns in the current iteration:
+[1, 0, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+6         -53533571.847185224           0.0                           
+IA obj. val: -53533571.847185224
+Elapsed time: 45.19473556518554
+Number of new columns in the current iteration:
+[1, 0, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+7         -53533571.847185224           0.0                           
+IA obj. val: -53533571.847185224
+Elapsed time: 46.42917708396911
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 0, 0, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+8         -53514663.76883894            0.0                           
+IA obj. val: -53514663.76883894
+Elapsed time: 47.69488743782043
+Number of new columns in the current iteration:
+[1, 1, 0, 1, 0, 1, 0, 0, 0]
+
+iter      IA obj. value                 slacks                        
+9         -53514663.71192124            0.0                           
+IA obj. val: -53514663.71192124
+Elapsed time: 48.92935661315917
+Number of new columns in the current iteration:
+[1, 0, 0, 0, 1, 0, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+10        -53514663.71192124            0.0                           
+IA obj. val: -53514663.71192124
+Elapsed time: 50.21068600654601
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 0, 1, 1, 0, 0]
+
+New columns in FastCG:
+[6, 4, 4, 4, 7, 8, 9, 7]
+number of unfixed nlp subproblems solved during CG: 90
+Time used for solving subproblem: --12.67-- seconds
+---------------------------------------------------------
+Time used for init cg fast fw in iter 1: --12.84-- seconds
+-----------------------------------------------------
+Used time: --50.21-- seconds
+-----------------------------------------------------
+---------------------------------------------------------
+Fast column generation
+iter      IA obj. value                 slacks                        
+0         -53514663.71192124            0.0                           
+IA obj. val: -53514663.71192124
+Elapsed time: 50.39357436180114
+
+iter      IA obj. value                 slacks                        
+1         -53432490.8747635             0.0                           
+IA obj. val: -53432490.8747635
+Elapsed time: 51.62803233146667
+Number of new columns in the current iteration:
+[0, 1, 1, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+2         -53432490.8747635             0.0                           
+IA obj. val: -53432490.8747635
+Elapsed time: 52.87811649322509
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+3         -53432233.560545616           0.0                           
+IA obj. val: -53432233.560545616
+Elapsed time: 54.096959238052364
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 0, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+4         -53432233.560545616           0.0                           
+IA obj. val: -53432233.560545616
+Elapsed time: 55.37829030036926
+Number of new columns in the current iteration:
+[0, 1, 0, 1, 0, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+5         -53432233.0147612             0.0                           
+IA obj. val: -53432233.0147612
+Elapsed time: 56.59712183952331
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 1, 0, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+6         -53432233.01518056            0.0                           
+IA obj. val: -53432233.01518056
+Elapsed time: 57.909711246490474
+Number of new columns in the current iteration:
+[0, 1, 0, 1, 1, 0, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+7         -53432233.01476146            0.0                           
+IA obj. val: -53432233.01476146
+Elapsed time: 59.19104922294616
+Number of new columns in the current iteration:
+[0, 1, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+8         -53432233.01524549            0.0                           
+IA obj. val: -53432233.01524549
+Elapsed time: 60.45676005363464
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 0, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+9         -53432233.01524549            0.0                           
+IA obj. val: -53432233.01524549
+Elapsed time: 61.72246945381164
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+10        -53432233.01100212            0.0                           
+IA obj. val: -53432233.01100212
+Elapsed time: 62.956933383941646
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 0, 1, 1, 0]
+
+New columns in FastCG:
+[0, 4, 2, 3, 8, 6, 10, 8]
+number of unfixed nlp subproblems solved during CG: 90
+Time used for solving subproblem: --12.56-- seconds
+---------------------------------------------------------
+Time used for init cg fast fw in iter 2: --12.75-- seconds
+-----------------------------------------------------
+Used time: --62.96-- seconds
+-----------------------------------------------------
+---------------------------------------------------------
+Fast column generation
+iter      IA obj. value                 slacks                        
+0         -53432233.01100212            0.0                           
+IA obj. val: -53432233.01100212
+Elapsed time: 63.15919745445251
+
+iter      IA obj. value                 slacks                        
+1         -53422707.441638395           0.0                           
+IA obj. val: -53422707.441638395
+Elapsed time: 64.40928352355957
+Number of new columns in the current iteration:
+[1, 1, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+2         -53422707.44164518            0.0                           
+IA obj. val: -53422707.44164518
+Elapsed time: 65.7062460231781
+Number of new columns in the current iteration:
+[1, 1, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+3         -53415455.41162379            0.0                           
+IA obj. val: -53415455.41162379
+Elapsed time: 66.94070780754089
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 0, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+4         -53415455.41336447            0.0                           
+IA obj. val: -53415455.41336447
+Elapsed time: 68.19079053878784
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 0, 1, 0]
+
+iter      IA obj. value                 slacks                        
+5         -53415455.41336447            0.0                           
+IA obj. val: -53415455.41336447
+Elapsed time: 69.44087470054626
+Number of new columns in the current iteration:
+[0, 0, 0, 1, 0, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+6         -53405867.62611338            0.0                           
+IA obj. val: -53405867.62611338
+Elapsed time: 70.73784888267517
+Number of new columns in the current iteration:
+[1, 0, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+7         -53405867.624434486           0.0                           
+IA obj. val: -53405867.624434486
+Elapsed time: 72.0504409122467
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 0, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+8         -53405867.6261196             0.0                           
+IA obj. val: -53405867.6261196
+Elapsed time: 73.28488839149475
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 0, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+9         -53405867.624434486           0.0                           
+IA obj. val: -53405867.624434486
+Elapsed time: 74.55061281204223
+Number of new columns in the current iteration:
+[1, 0, 0, 0, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+10        -53393650.84994331            0.0                           
+IA obj. val: -53393650.84994331
+Elapsed time: 75.86318862915039
+Number of new columns in the current iteration:
+[0, 0, 1, 1, 0, 1, 1, 0, 0]
+
+New columns in FastCG:
+[4, 2, 3, 2, 5, 10, 9, 6]
+number of unfixed nlp subproblems solved during CG: 90
+Time used for solving subproblem: --12.72-- seconds
+---------------------------------------------------------
+Time used for init cg fast fw in iter 3: --12.91-- seconds
+-----------------------------------------------------
+Used time: --75.87-- seconds
+-----------------------------------------------------
+---------------------------------------------------------
+Fast column generation
+iter      IA obj. value                 slacks                        
+0         -53393650.84994331            0.0                           
+IA obj. val: -53393650.84994331
+Elapsed time: 76.06919912338256
+
+iter      IA obj. value                 slacks                        
+1         -53355376.23156699            0.0                           
+IA obj. val: -53355376.23156699
+Elapsed time: 77.31928590774535
+Number of new columns in the current iteration:
+[0, 1, 1, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+2         -53355376.23156579            0.0                           
+IA obj. val: -53355376.23156579
+Elapsed time: 78.63187626838683
+Number of new columns in the current iteration:
+[0, 1, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+3         -53323940.36626193            0.0                           
+IA obj. val: -53323940.36626193
+Elapsed time: 79.88196066856383
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+4         -53323940.3662621             0.0                           
+IA obj. val: -53323940.3662621
+Elapsed time: 81.19455055236816
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+5         -53323940.361097224           0.0                           
+IA obj. val: -53323940.361097224
+Elapsed time: 82.50713781356811
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+6         -53323940.36110265            0.0                           
+IA obj. val: -53323940.36110265
+Elapsed time: 83.74159983634948
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+7         -53323900.61365343            0.0                           
+IA obj. val: -53323900.61365343
+Elapsed time: 85.0541863822937
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+8         -53323900.613651544           0.0                           
+IA obj. val: -53323900.613651544
+Elapsed time: 86.31990007400512
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+9         -53323900.61275631            0.0                           
+IA obj. val: -53323900.61275631
+Elapsed time: 87.56998709678649
+Number of new columns in the current iteration:
+[0, 0, 0, 1, 1, 1, 1, 0, 0]
+
+iter      IA obj. value                 slacks                        
+10        -53323900.61275628            0.0                           
+IA obj. val: -53323900.61275628
+Elapsed time: 88.89820007324218
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 1, 0]
+
+New columns in FastCG:
+[0, 2, 4, 2, 10, 10, 10, 6]
+number of unfixed nlp subproblems solved during CG: 90
+Time used for solving subproblem: --12.84-- seconds
+---------------------------------------------------------
+Time used for init cg fast fw in iter 4: --13.03-- seconds
+-----------------------------------------------------
+Used time: --88.9-- seconds
+-----------------------------------------------------
+---------------------------------------------------------
+Fast column generation
+iter      IA obj. value                 slacks                        
+0         -53323900.61275628            0.0                           
+IA obj. val: -53323900.61275628
+Elapsed time: 89.09920126914977
+
+iter      IA obj. value                 slacks                        
+1         -53301218.45808202            0.0                           
+IA obj. val: -53301218.45808202
+Elapsed time: 90.38053757667541
+Number of new columns in the current iteration:
+[0, 1, 0, 1, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+2         -53301218.458081804           0.0                           
+IA obj. val: -53301218.458081804
+Elapsed time: 91.64624888420104
+Number of new columns in the current iteration:
+[0, 1, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+3         -53301218.45050258            0.0                           
+IA obj. val: -53301218.45050258
+Elapsed time: 92.91195947647094
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+4         -53301218.45800179            0.0                           
+IA obj. val: -53301218.45800179
+Elapsed time: 94.22454912185668
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 0, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+5         -53301218.45800179            0.0                           
+IA obj. val: -53301218.45800179
+Elapsed time: 95.52151329040527
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+6         -53301218.45050255            0.0                           
+IA obj. val: -53301218.45050255
+Elapsed time: 96.80284983634948
+Number of new columns in the current iteration:
+[1, 0, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+7         -53301218.45050255            0.0                           
+IA obj. val: -53301218.45050255
+Elapsed time: 98.05293685913085
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+8         -53301218.45800193            0.0                           
+IA obj. val: -53301218.45800193
+Elapsed time: 99.31864840507507
+Number of new columns in the current iteration:
+[0, 0, 1, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+9         -53301218.45800192            0.0                           
+IA obj. val: -53301218.45800192
+Elapsed time: 100.5999847126007
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 1, 0]
+
+iter      IA obj. value                 slacks                        
+10        -53301218.458001934           0.0                           
+IA obj. val: -53301218.458001934
+Elapsed time: 101.92820126533508
+Number of new columns in the current iteration:
+[0, 0, 0, 0, 1, 1, 1, 1, 0]
+
+New columns in FastCG:
+[1, 2, 3, 1, 9, 10, 10, 10]
+number of unfixed nlp subproblems solved during CG: 90
+Time used for solving subproblem: --12.83-- seconds
+---------------------------------------------------------
+Time used for init cg fast fw in iter 5: --13.03-- seconds
+-----------------------------------------------------
+Used time: --101.93-- seconds
+-----------------------------------------------------
+
+CG relaxation obj. value in iter 0: -53301218.458001934
+Time used for total init CG in iter 0: --87.4-- seconds
+-----------------------------------------------------
+Used time at CG iter 0: --101.93-- seconds
+-----------------------------------------------------
+
+=======================================================
+Column generation
+
+Initial CG objective value: -53301218.458001934
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -53301218.458001934           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -53291324.55180684            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -53289286.48492947            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -53287220.38797151            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -53285097.55495983            0.0                           0.0                           
+Iteration limit
+New columns added: [2, 1, 1, 1, 5, 5, 5, 1, 0]
+number of minlp subproblems solved during CG: 40
+
+=======================================================
+CG relaxation obj. value in iter 1: -53285097.55495983
+
+Time used for CG: --29.58-- seconds
+-------------------------------------------------
+Used time at CG iter 1: --131.51-- seconds
+-------------------------------------------------
+
+Num of MINLP subproblems solved in iter loop *1*   40
+Total number of minlp subproblems solved in iter 1: 67
+Total number of columns in iter 1: 350
+Columns in blocks in iter 1: [25, 27, 25, 24, 62, 66, 68, 53, 0]
+Time used for CG in iter 1: --29.58-- seconds
+------------------------------------
+CG regarding all blocks
+delta: [-0.0, 0.0, 0.0, 0.0, -149249.963, -96.249, -42323.426, 0.0]
+new points: [False, False, False, False, True, True, True, False]
+Time used for CG for all blocks: --6.22-- seconds
+-----------------------------------------------------
+Used time: --137.73-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution - projection from ia solution - local search
+
+---------------------------------------------------
+Local search iter 1
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 5
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 47273109.43099252
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 1: round 1: pool 1
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 47188465.98540063
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point improves
+Obj. value: -57610249.337891206
+Feasible candidate obtained in iter 1: round 1: pool 2: -57610249.337891206
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 47176419.19679603
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -60192720.711716734
+Feasible candidate obtained in iter 1: round 1: pool 3: -60192720.711716734
+
+Solution pool: solution 4
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 82914849.5340701
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 1: round 1: pool 4
+
+Solution pool: solution 5
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 1: round 1: pool 5
+
+---------------------------------------------------
+Best feasible candidate obtained in iter 1: -57610249.337891206
+Local search iter 2
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 3
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 52700747.87906079
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789227
+Feasible candidate obtained in iter 1: round 2: pool 1: -57610249.33789227
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 77934692.37194487
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 1: round 2: pool 2
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608738.55977475
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 1: round 2: pool 3
+New search does not find better local feasible solution
+Time used for FindSol in iter 1: --4.13-- seconds
+-------------------------------------------------
+Used time at FindSol iter 1: --141.86-- seconds
+-------------------------------------------------
+Total time used in iter 1: --39.93-- seconds
+
+=======================================================
+Column generation
+
+Initial CG objective value: -53280671.417977035
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -53280671.417977035           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -53280661.10668035            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -53280610.66189784            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -53280609.317724936           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -53280608.92558316            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 0, 0, 0, 5, 5, 5, 0, 0]
+number of minlp subproblems solved during CG: 15
+
+=======================================================
+CG relaxation obj. value in iter 2: -53280608.92558316
+
+Time used for CG: --13.61-- seconds
+-------------------------------------------------
+Used time at CG iter 2: --155.47-- seconds
+-------------------------------------------------
+
+Num of MINLP subproblems solved in iter loop *2*   15
+Total number of minlp subproblems solved in iter 2: 90
+Total number of columns in iter 2: 372
+Columns in blocks in iter 2: [25, 27, 26, 25, 68, 72, 75, 54, 0]
+Time used for CG in iter 2: --13.61-- seconds
+------------------------------------
+CG regarding all blocks
+delta: [0.0, 0.0, 0.0, 0.0, -0.009, -3.081, -0.053, -0.121]
+new points: [False, False, False, False, True, True, True, True]
+Time used for CG for all blocks: --7.16-- seconds
+-----------------------------------------------------
+Used time: --162.63-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution - projection from ia solution - local search
+
+---------------------------------------------------
+Local search iter 1
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 4
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608639.92843673
+c_hat_x: 47273051.61777127
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 2: round 1: pool 1
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608639.92843673
+c_hat_x: 47188345.153564006
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789228
+Feasible candidate obtained in iter 2: round 1: pool 2: -57610249.33789228
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608639.92843673
+c_hat_x: 82914803.10855253
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 2: round 1: pool 3
+
+Solution pool: solution 4
+---------------MIP-projection--------------------
+target value: 58608639.92843673
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 2: round 1: pool 4
+
+---------------------------------------------------
+Best feasible candidate obtained in iter 2: -57610249.33789228
+Local search iter 2
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 3
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608639.92843673
+c_hat_x: 52700450.97237602
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789228
+Feasible candidate obtained in iter 2: round 2: pool 1: -57610249.33789228
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608639.92843673
+c_hat_x: 77934889.72444873
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 2: round 2: pool 2
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608639.92843673
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 2: round 2: pool 3
+New search does not find better local feasible solution
+Time used for FindSol in iter 2: --3.58-- seconds
+-------------------------------------------------
+Used time at FindSol iter 2: --166.21-- seconds
+-------------------------------------------------
+Total time used in iter 2: --24.35-- seconds
+
+=======================================================
+Column generation
+
+Initial CG objective value: -53280581.7531243
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -53280581.7531243             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -53280581.73384082            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -53280080.77834362            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -53280080.778122276           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -53280080.77798402            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 0, 0, 0, 5, 4, 5, 5, 0]
+number of minlp subproblems solved during CG: 20
+
+=======================================================
+CG relaxation obj. value in iter 3: -53280080.77798402
+
+Time used for CG: --31.08-- seconds
+-------------------------------------------------
+Used time at CG iter 3: --197.29-- seconds
+-------------------------------------------------
+
+Num of MINLP subproblems solved in iter loop *3*   20
+Total number of minlp subproblems solved in iter 3: 118
+Total number of columns in iter 3: 395
+Columns in blocks in iter 3: [25, 27, 26, 25, 74, 77, 81, 60, 0]
+Time used for CG in iter 3: --31.08-- seconds
+------------------------------------
+CG regarding all blocks
+delta: [0.0, 0.0, 0.0, 0.0, -798.494, 0.0, -0.0, 0.0]
+new points: [False, False, False, False, True, False, True, False]
+Time used for CG for all blocks: --7.28-- seconds
+-----------------------------------------------------
+Used time: --204.57-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution - projection from ia solution - local search
+
+---------------------------------------------------
+Local search iter 1
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 6
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 47438113.59417301
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 3: round 1: pool 1
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 47207798.344666205
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789228
+Feasible candidate obtained in iter 3: round 1: pool 2: -57610249.33789228
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 47175871.99205715
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -60192720.71171676
+Feasible candidate obtained in iter 3: round 1: pool 3: -60192720.71171676
+
+Solution pool: solution 4
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 47175871.99205715
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 3: round 1: pool 4
+
+Solution pool: solution 5
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 82914302.32933123
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 3: round 1: pool 5
+
+Solution pool: solution 6
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 3: round 1: pool 6
+
+---------------------------------------------------
+Best feasible candidate obtained in iter 3: -57610249.33789228
+Local search iter 2
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 3
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 52700200.48480608
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789228
+Feasible candidate obtained in iter 3: round 2: pool 1: -57610249.33789228
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 77934639.33473656
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 3: round 2: pool 2
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.85578284
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 3: round 2: pool 3
+New search does not find better local feasible solution
+Time used for FindSol in iter 3: --4.55-- seconds
+-------------------------------------------------
+Used time at FindSol iter 3: --209.12-- seconds
+-------------------------------------------------
+Total time used in iter 3: --42.91-- seconds
+
+=======================================================
+Column generation
+
+Initial CG objective value: -53280080.777984396
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -53280080.777984396           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -53280080.77728954            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -53280080.77728954            0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+4              -53280080.777289525           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+5              -53280080.77683769            0.0                           0.0                           
+Iteration limit
+New columns added: [0, 0, 0, 0, 5, 0, 0, 0, 0]
+number of minlp subproblems solved during CG: 5
+
+=======================================================
+CG relaxation obj. value in iter 4: -53280080.77683769
+
+Time used for CG: --5.31-- seconds
+-------------------------------------------------
+Used time at CG iter 4: --214.43-- seconds
+-------------------------------------------------
+
+Num of MINLP subproblems solved in iter loop *4*   5
+Total number of minlp subproblems solved in iter 4: 131
+Total number of columns in iter 4: 402
+Columns in blocks in iter 4: [25, 27, 26, 25, 80, 77, 82, 60, 0]
+Time used for CG in iter 4: --5.31-- seconds
+------------------------------------
+CG regarding all blocks
+delta: [0.0, 0.0, 0.0, 0.0, -0.018, 0.0, -0.001, 0.0]
+new points: [False, False, False, False, True, False, True, False]
+Time used for CG for all blocks: --7.3-- seconds
+-----------------------------------------------------
+Used time: --221.73-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution - projection from ia solution - local search
+
+---------------------------------------------------
+Local search iter 1
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 6
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 47438113.61955305
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 1: pool 1
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 47207798.33283491
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789228
+Feasible candidate obtained in iter 4: round 1: pool 2: -57610249.33789228
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 47175871.988644935
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -60192720.71171675
+Feasible candidate obtained in iter 4: round 1: pool 3: -60192720.71171675
+
+Solution pool: solution 4
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 47175871.988644935
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 1: pool 4
+
+Solution pool: solution 5
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 82914302.32591902
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 1: pool 5
+
+Solution pool: solution 6
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 1: pool 6
+
+---------------------------------------------------
+Best feasible candidate obtained in iter 4: -57610249.33789228
+Local search iter 2
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 3
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 52700200.47162185
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.337891206
+Feasible candidate obtained in iter 4: round 2: pool 1: -57610249.337891206
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 77934639.3425701
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 2: pool 2
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 2: pool 3
+
+---------------------------------------------------
+Best feasible candidate obtained in iter 4: -57610249.337891206
+Local search iter 3
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 3
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 56043887.56835744
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789229
+Feasible candidate obtained in iter 4: round 3: pool 1: -57610249.33789229
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 76313774.60129488
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 3: pool 2
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.85076288
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 4: round 3: pool 3
+New search does not find better local feasible solution
+Time used for FindSol in iter 4: --5.84-- seconds
+-------------------------------------------------
+Used time at FindSol iter 4: --227.57-- seconds
+-------------------------------------------------
+Total time used in iter 4: --18.45-- seconds
+
+=======================================================
+Column generation
+
+Initial CG objective value: -53280080.7734208
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+1              -53280080.7734208             0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+2              -53280080.773420796           0.0                           0.0                           
+CG iter        IA obj. value                 max slack value IA            sum slack values IA           
+3              -53280080.77342078            0.0                           0.0                           
+Reduced costs greater than zero
+New columns added: [0, 0, 0, 0, 3, 0, 0, 0, 0]
+number of minlp subproblems solved during CG: 6
+
+=======================================================
+CG relaxation obj. value in iter 5: -53280080.77342078
+
+Time used for CG: --6.38-- seconds
+-------------------------------------------------
+Used time at CG iter 5: --233.95-- seconds
+-------------------------------------------------
+
+Num of MINLP subproblems solved in iter loop *5*   6
+Total number of minlp subproblems solved in iter 5: 145
+Total number of columns in iter 5: 407
+Columns in blocks in iter 5: [25, 27, 26, 25, 84, 77, 83, 60, 0]
+Time used for CG in iter 5: --6.38-- seconds
+------------------------------------
+CG regarding all blocks
+delta: [0.0, 0.0, 0.0, 0.0, -0.0, 0.0, 0.0, 0.0]
+new points: [False, False, False, False, True, False, False, False]
+Time used for CG for all blocks: --6.3-- seconds
+-----------------------------------------------------
+Used time: --240.25-- seconds
+-----------------------------------------------------
+
+=======================================================
+Find solution - projection from ia solution - local search
+
+---------------------------------------------------
+Local search iter 1
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 6
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 47438113.61952485
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 1: pool 1
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 47207798.33244392
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789228
+Feasible candidate obtained in iter 5: round 1: pool 2: -57610249.33789228
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 47175871.98864493
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -60192720.71171678
+Feasible candidate obtained in iter 5: round 1: pool 3: -60192720.71171678
+
+Solution pool: solution 4
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 47175871.98864493
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 1: pool 4
+
+Solution pool: solution 5
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 82914302.32591902
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 1: pool 5
+
+Solution pool: solution 6
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 1: pool 6
+
+---------------------------------------------------
+Best feasible candidate obtained in iter 5: -57610249.33789228
+Local search iter 2
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 3
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 52700200.471063524
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.337891206
+Feasible candidate obtained in iter 5: round 2: pool 1: -57610249.337891206
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 77934639.34304628
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 2: pool 2
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 2: pool 3
+
+---------------------------------------------------
+Best feasible candidate obtained in iter 5: -57610249.337891206
+Local search iter 3
+PoolSolutions = 100.0
+PoolSearchMode = 1
+Solution pool generated from solving MIP project problem: 3
+Solution pool: solution 1
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 56043887.56825962
+-------------------------------------------------
+
+After solving fixed NLP projection problem, the solution point is feasible
+the feasible solution point does not improve
+Obj. value: -57610249.33789228
+Feasible candidate obtained in iter 5: round 3: pool 1: -57610249.33789228
+
+Solution pool: solution 2
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 76313774.6016693
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 3: pool 2
+
+Solution pool: solution 3
+---------------MIP-projection--------------------
+target value: 58608088.850731865
+c_hat_x: 51324618.1468655
+-------------------------------------------------
+Master problem is infeasible: NLP master problem
+
+After solving fixed NLP the solution point is infeasible
+No feasible candidate obtained in iter 5: round 3: pool 3
+New search does not find better local feasible solution
+Time used for FindSol in iter 5: --6.09-- seconds
+-------------------------------------------------
+Used time at FindSol iter 5: --246.34-- seconds
+-------------------------------------------------
+Total time used in iter 5: --18.77-- seconds
+CG converged
+
+Total time:                                       246.33789253234863            
+
+Reformulation time:                               7.826061725616455             
+Decomposition time:                               0.031249046325683594          
+Containers time:                                  7.7948126792907715            
+
+Primal bound:                                     -57610249.337891206           
+
+Main iterations:                                  5                             
+Number of CG iterations:                          33                            
+CG relaxation obj. value:                         -53280080.77342078            
+Number of MINLP subproblems:                      153                           
+Number of unfixed NLP subproblems:                578                           
+Number of fixed NLP subproblems:                  528                           
+Number of solved sub-problems after CG:           1259                          
+Number of columns after CG:                       408                           
+CG Gap (CG relaxation and primal bound):          7.5163163052                  
+Total number of columns:                          408                           

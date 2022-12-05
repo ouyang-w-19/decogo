@@ -19,7 +19,7 @@ from decogo.problem.decomposed_problem import \
 from decogo.solver.colgen import ColGen
 from decogo.solver.refactory_colgen import RefactoryColGen
 from decogo.solver.oa import OaSolver
-from decogo.solver.dyn_colgen import DynColGen
+from decogo.solver.dyn_block_colgen import DynBlockColGen
 from decogo.solver.results import Results
 from decogo.solver.settings import Settings
 
@@ -208,7 +208,11 @@ class DecogoSolverManager:
         self.logger_handler = None
         self.settings = Settings()
         self.results = Results()
-        os.remove('decogo.set')
+
+        try:
+            os.remove('decogo.set')  # delete setting file
+        except FileNotFoundError:
+            pass
 
     def solve(self, input_model, file_name=None):
         """Performs basic operations of the solver: decomposition,
@@ -241,8 +245,10 @@ class DecogoSolverManager:
                                              self.results)
                 else:
                     solver = ColGen(self.problem, self.settings, self.results)
-            elif self.settings.strategy == 'DynCG':
-                solver = DynColGen(self.problem, self.settings, self.results)
+            elif self.settings.strategy == 'DBCG':
+                solver = DynBlockColGen(self.problem,
+                                        self.settings,
+                                        self.results)
             solver.solve()  # it's ok, the solver strategy is always provided
 
         except Exception:

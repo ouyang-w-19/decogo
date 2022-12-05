@@ -17,14 +17,14 @@ if __name__ == '__main__':
     # 'syn05h', 'syn10h', 'tls2', 'clay0305h'
     problem_names = ['batchdes']
 
-    # solver settings
-    with open( 'decogo.set', 'w') as file:
-        file.write("maxtime = 5400\n")
-        file.write('strategy = OA\n')
-        file.write('decomp_estimate_var_bounds = True')
-        file.close()
-
     for name in problem_names:
+        # solver settings
+        with open('decogo.set', 'w') as file:
+            file.write("maxtime = 5400\n")
+            file.write('strategy = OA\n')
+            file.write('decomp_estimate_var_bounds = True')
+            file.close()
+
         module_obj = \
             importlib.import_module('tests.examples.minlplib.' + str(name))
         input_model = module_obj.model
@@ -33,5 +33,6 @@ if __name__ == '__main__':
         # solution with Decogo
         solver = DecogoSolver()
         # file_name='logs\\convex_examples\\' + name + '.txt'
+        # solver.optimize(input_model, file_name=file_name)  # generate log file
         solver.optimize(input_model)
 
