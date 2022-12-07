@@ -10,7 +10,7 @@ while os.path.basename(path) != 'decogo':
 sys.path.insert(0, path)
 
 from decogo.solver.decogo import DecogoSolver
-from decogo.pyomo_minlp_model.input_model import PyomoInputModel
+from decogo.pyomo_input_model.input_model import PyomoInputModel
 
 if __name__ == '__main__':
 

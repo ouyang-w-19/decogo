@@ -7,8 +7,10 @@ file ``decogo/solver/settings.py``. The settings are grouped by usage:
 
 * Solver names and their settings
 * General settings
-* OA algorithm
-* CG settings
+* OA algorithm settings
+* CG algorithm settings
+* Refactory for decogo setting
+* DBCG algorithm settings
 
 In order to add/modify/remove the settings, simply modify the declaration of dictionary
 ``_setting_names_default_val`` in ``solver/settings.py``.
@@ -28,4 +30,4 @@ Here is the list of settings defined settings and their default values:
 
 .. literalinclude:: ../../decogo/solver/settings.py
     :language: python
-    :lines: 13-72
+    :lines: 13-96

@@ -6,8 +6,8 @@ from pyomo.core import ConstraintList, Param, RangeSet, Objective, \
     Var, Reals
 from pyomo.environ import SolverFactory, SolverStatus
 
-from decogo.pyomo_minlp_model.master_problem_base import MasterProblemBase
-from decogo.pyomo_minlp_model.nlp_master_problem import NlpProblem
+from decogo.pyomo_input_model.master_problem_base import MasterProblemBase
+from decogo.pyomo_input_model.nlp_master_problem import NlpProblem
 from decogo.util.block_vector import BlockVector
 
 logger = logging.getLogger('decogo')

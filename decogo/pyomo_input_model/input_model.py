@@ -1,5 +1,4 @@
 """Implements colgen for pyomo minlp input model """
-
 from pyomo.core.base import Expression
 from pyomo.core.expr.visitor import identify_variables
 from pyomo.environ import ConcreteModel, Objective, Set, Param, Block
@@ -14,16 +13,16 @@ from pyomo.core.expr.numeric_expr import NegationExpression, \
 from decogo.util.block_vector import BlockVector
 
 from decogo.model.constraints import LinearConstraint, ObjectiveFunction, \
-    VarDomain, NonLinearConstraint
+    VarDomain, NonLinearConstraint, CutPool
 from decogo.model.model_decomposer import PyomoModelDecomposer
 from decogo.model.input_model_base import InputModelBase, OriginalProblemBase, \
-    CutPoolCG, SubProblemsBase, SubModelBase
+    SubProblemsBase, SubModelBase
 
-from decogo.pyomo_minlp_model.subproblem import PyomoMinlpSubProblem, \
+from decogo.pyomo_input_model.subproblem import PyomoMinlpSubProblem, \
     PyomoLineSearchSubProblem, PyomoProjectionSubProblem, \
     PyomoResourceProjectionSubProblem
-from decogo.pyomo_minlp_model.nlp_master_problem import NlpProblem
-from decogo.pyomo_minlp_model.projection_master_problem import \
+from decogo.pyomo_input_model.nlp_master_problem import NlpProblem
+from decogo.pyomo_input_model.projection_master_problem import \
     NlpResourceProjectionProblem, \
     MipProjectionMasterProblem
 
@@ -51,7 +50,7 @@ class PyomoInputModel(InputModelBase):
     :param original_problem: container of original problem
     :type original_problem: PyomoOriginalProblem
     :param cuts: container of linear constraints
-    :type cuts: CutPoolCG
+    :type cuts: decogo.model.constraints.CutPool
     :param sub_models: list of containers for variables from a single \
     block and local nonlinear constraints blockwise
     :type sub_models: list
@@ -73,7 +72,7 @@ class PyomoInputModel(InputModelBase):
         # region construct cuts
         block_sizes, blocks, obj, global_cuts, local_cuts \
             = self._construct_cut_pool()
-        cuts = CutPoolCG(block_sizes, blocks, obj, global_cuts, local_cuts)
+        cuts = CutPool(block_sizes, blocks, obj, global_cuts, local_cuts)
         # endregion
 
         # region construct sub_problems, original_problem
@@ -287,7 +286,7 @@ class PyomoOriginalProblem(OriginalProblemBase):
 
     :param cuts: Container which stores all linear constraints \
     (global and local) and objective function
-    :type cuts: CutPoolCG
+    :type cuts: CutPool
     :param sub_models: List of sub-models
     :type sub_models: list
     :param nlp_problem: NLP master problem

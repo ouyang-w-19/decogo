@@ -1,23 +1,24 @@
 """Main module for storing model data"""
 
 import logging
-from abc import ABC
 
 import numpy as np
 import scipy.sparse as sp
 from pyomo.environ import ConcreteModel
 
-from decogo.model.constraints import CutPool
-from decogo.pyomo_minlp_model.input_model import PyomoSubModel
+from decogo.model.constraints import PyomoCutPool
+from decogo.pyomo_input_model.input_model import PyomoSubModel
 from decogo.util.block_vector import BlockVector
 
 logger = logging.getLogger('decogo')
 
 
-class BlockModelBase(ABC):
-    """Abstract base class which stores sub-models, cuts
+class BlockModel:
+    """Main container class which stores sub-models and cut pool. Sub-models
+    store the variables and nonlinear constraints block-wise. The cut pool
+    stores all linear constraints and objective function
 
-    :param blocks: List (blockwise) of original string names of variables
+    :param blocks: List (block-wise) of original string names of variables
     :type blocks: list
     :param num_blocks: Number of blocks (sub-models)
     :type num_blocks: int
@@ -28,17 +29,16 @@ class BlockModelBase(ABC):
     :type sense: int
     :param cuts: Container which stores all linear constraints \
     (global and local) and objective function
-    :type cuts: CutPool
+    :type cuts: PyomoCutPool
     :param sub_models: List of sub-models
     :type sub_models: list
-    :param non_zero_resources: Stores the indices (blockwise) of nonzero \
+    :param non_zero_resources: Stores the indices (block-wise) of nonzero \
     left-hand side of the coupling constraints, i.e. :math:`A_k \\neq 0`
     :type non_zero_resources: dict
     """
 
     def __init__(self, blocks, sense, cuts, sub_models):
         """Constructor method"""
-        super().__init__()
 
         self.blocks = blocks  # string names for the variables in the block
         self.num_blocks = len(blocks)
@@ -47,6 +47,7 @@ class BlockModelBase(ABC):
         self.cuts = cuts
         self.sub_models = sub_models
         self.non_zero_resources = self.get_non_zero_resources()
+        self.print_model_stats()
 
     def get_non_zero_resources(self):
         """Determines the indices of nonzero resources blockwise, i.e.
@@ -74,7 +75,7 @@ class BlockModelBase(ABC):
 
     def eval_viol_lin_global_constraints(self, point):
         """Evaluates the violation of global linear constraints, see
-        :meth:`model.constraints.CutPool.evaluate_violation_global_constraints`
+        :meth:`model.constraints.PyomoCutPool.evaluate_violation_global_constraints`
         """
         return self.cuts.evaluate_violation_global_constraints(point)
 
@@ -269,14 +270,15 @@ class BlockModelBase(ABC):
         return global_con_indices
 
 
-class PyomoBlockModel(BlockModelBase):
+class PyomoBlockModel(BlockModel):
     """Main container class which stores sub-models and cut pool. Sub-models
-    store the variables and nonlinear constraints blockwise. The cut pool
-    stores all linear constraints and objective function
+    store the variables and nonlinear constraints block-wise. The cut pool
+    stores all linear constraints and objective function. Taking Pyomo model as
+    argument
 
     :param model: Input Pyomo model
     :type model: ConcreteModel
-    :param blocks: List (blockwise) of original string names of variables
+    :param blocks: List (block-wise) of original string names of variables
     :type blocks: list
     :param sense: Indicates the the problem is minimization (1) or  \
     maximization (-1)
@@ -287,13 +289,12 @@ class PyomoBlockModel(BlockModelBase):
         """Constructor method"""
 
         self.model = model
-        cuts = CutPool(model, blocks)
+        cuts = PyomoCutPool(model, blocks)
         num_blocks = len(blocks)
         sub_models = [PyomoSubModel(model, blocks[block_id], block_id) for
                       block_id in range(num_blocks)]
 
         super().__init__(blocks, sense, cuts, sub_models)
-        self.print_model_stats()
 
     def compute_gradients(self):
         """Computes gradients for nonlinear constraints"""
@@ -344,19 +345,3 @@ class PyomoBlockModel(BlockModelBase):
         """
         return self.sub_models[block_id].round(point)
 
-
-class BlockModel(BlockModelBase):
-    """Main container class which stores sub-models and cut pool. Sub-models
-    store the variables and nonlinear constraints blockwise. The cut pool
-    stores all linear constraints and objective function
-
-    :param input_model: user_defined input model
-    :type input_model: subclass of InputModelBase
-    """
-
-    def __init__(self, input_model):
-        """Constructor method"""
-        super().__init__(input_model.blocks, input_model.sense,
-                         input_model.cuts, input_model.sub_models)
-
-        self.print_model_stats()

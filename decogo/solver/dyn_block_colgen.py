@@ -10,11 +10,12 @@ import numpy as np
 
 from decogo.solver.settings import Settings
 from decogo.util.block_vector import BlockVector
+from decogo.solver.colgen import AlgorithmBase
 
 logger = logging.getLogger('decogo')
 
 
-class DynBlockColGen:
+class DynBlockColGen(AlgorithmBase):
     """Class which implements Dynamic Block and Column Generation algorithm
 
     :param problem: Decomposed problem class, which stores all input data
@@ -27,9 +28,7 @@ class DynBlockColGen:
 
     def __init__(self, problem, settings, result):
         """Constructor method"""
-        self.problem = problem
-        self.result = result
-        self.settings = settings
+        super().__init__(problem, settings, result)
 
     def solve(self):
         """

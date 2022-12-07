@@ -67,7 +67,7 @@ _setting_names_default_val = \
      'cg_find_sol_mip_pool_max_round': 5,  # to set max iteration of
      # local search
 
-     # Refactory for FW/CG
+     # Refactory version of CG (and DBCG in a future version)
      'user_defined_input_model': False,  # switch on/off user-defined input
      # model
 
@@ -96,7 +96,7 @@ _setting_names_default_val = \
      'max_iter_standard_cg': 5,  # maximum iteration number for
      # fast cg for active blocks
 
-     # ml-based acceleration
+     # Store and export solving data for offline analytics
      'generate_data': False,  # enable saving sub_problem data if true
      'exact_solve_data': False,  # enable sub_problem data with exact solver
      # if true

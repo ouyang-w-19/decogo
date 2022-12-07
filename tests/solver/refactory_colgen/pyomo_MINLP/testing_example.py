@@ -10,7 +10,7 @@ while os.path.basename(path) != 'decogo':
 sys.path.insert(0, path)
 
 from decogo.solver.decogo import DecogoSolver
-from decogo.pyomo_minlp_model.input_model import PyomoInputModel
+from decogo.pyomo_input_model.input_model import PyomoInputModel
 
 if __name__ == '__main__':
     # region define Pyomo model
@@ -249,7 +249,7 @@ if __name__ == '__main__':
     with open('decogo.set', 'w') as file:
         # =========================refactory  colgen ===========================
         file.write('strategy = CG\n')
-        file.write('user_defined_input_model = True\n')  # disable
+        file.write('user_defined_input_model = True\n')  # enable
         # user-defined model
         # ================== CG settings ======================================
         file.write('maxtime = 1000\n')  # maximum computation/solving time

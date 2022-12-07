@@ -2,8 +2,8 @@
 Reference
 *********
 
-Here is the summary of Decogo modules grouped by packages. There are four
-packages: model, problem, solver and utility.
+Here is the summary of decogo modules grouped by packages. There are six
+packages: model, problem, pyomo_problem, solver, utility and pyomo_input_model.
 
 .. rubric:: Model
 
@@ -14,17 +14,6 @@ packages: model, problem, solver and utility.
     decogo.model.constraints
     decogo.model.model_decomposer
     decogo.model.input_model_base
-
-.. rubric:: Pyomo MINLP input model
-
-.. autosummary::
-    :toctree: generated
-
-    decogo.pyomo_minlp_model.input_model
-    decogo.pyomo_minlp_model.subproblem
-    decogo.pyomo_minlp_model.master_problem_base
-    decogo.pyomo_minlp_model.nlp_master_problem
-    decogo.pyomo_minlp_model.projection_master_problem
 
 .. rubric:: Problem
 
@@ -67,3 +56,14 @@ packages: model, problem, solver and utility.
     :toctree: generated
 
     decogo.util.block_vector
+
+.. rubric:: Pyomo MINLP input model
+
+.. autosummary::
+    :toctree: generated
+
+    decogo.pyomo_input_model.input_model
+    decogo.pyomo_input_model.subproblem
+    decogo.pyomo_input_model.master_problem_base
+    decogo.pyomo_input_model.nlp_master_problem
+    decogo.pyomo_input_model.projection_master_problem

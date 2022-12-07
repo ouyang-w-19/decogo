@@ -289,7 +289,10 @@ class DecogoSolverManager:
         else:
             self.results.containers_time = time.time()
             self.results.sense = input_model.sense
-            block_model = BlockModel(input_model)
+            block_model = BlockModel(input_model.blocks,
+                                     input_model.sense,
+                                     input_model.cuts,
+                                     input_model.sub_models)
             self.problem = DecomposedProblem(block_model,
                                              input_model.sub_problems,
                                              input_model.original_problem)

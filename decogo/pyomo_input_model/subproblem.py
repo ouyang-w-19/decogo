@@ -14,7 +14,7 @@ from pyomo.opt import SolverFactory
 logger = logging.getLogger('decogo')
 
 
-class PyomoSubProblemBase(ABC):
+class PyomoSubProblemBase:
     """Base class for construction of Pyomo model. Here are implemented
     methods for creating local linear and nonlinear constraints
 
@@ -28,7 +28,6 @@ class PyomoSubProblemBase(ABC):
 
     def __init__(self, sub_models, cuts, block_id):
         """Constructor method"""
-        super().__init__()
         self.block_id = block_id
         self.sub_model = sub_models[block_id]
         self.cuts = cuts

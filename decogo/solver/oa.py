@@ -6,11 +6,12 @@ import time
 
 from decogo.solver.settings import Settings
 from decogo.util.block_vector import BlockVector
+from decogo.solver.colgen import AlgorithmBase
 
 logger = logging.getLogger('decogo')
 
 
-class OaSolver:
+class OaSolver(AlgorithmBase):
     """Class which implements OA method for convex problems
 
     :param problem: Decomposed problem class, which stores all input data
@@ -38,10 +39,7 @@ class OaSolver:
 
     def __init__(self, problem, settings, result):
         """Constructor method"""
-        self.problem = problem
-        self.result = result
-        self.settings = settings
-
+        super().__init__(problem, settings, result)
         self.x_center = None  # the interior point
 
     def solve(self):

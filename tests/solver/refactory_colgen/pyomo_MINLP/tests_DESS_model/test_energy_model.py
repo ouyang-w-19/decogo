@@ -11,7 +11,7 @@ sys.path.insert(0, path)
 from decogo.solver.decogo import DecogoSolver
 from tests.examples.tu.DESSLib_testmodel.DESS_blockstructure import \
     generate_model
-from decogo.pyomo_minlp_model.input_model import PyomoInputModel
+from decogo.pyomo_input_model.input_model import PyomoInputModel
 
 limit = 10000000
 sys.setrecursionlimit(limit)
@@ -53,8 +53,8 @@ if __name__ == '__main__':
         # ===================================================================
         file.close()
 
-    model = PyomoInputModel(input_model)  # user-defined model with solvers for
-    # sub-problems and original problems (primal heuristics)
+    model = PyomoInputModel(input_model)  # user-defined input model with
+    # solvers for sub-problems and original problems (primal heuristics)
     for i in range(1, n_runs + 1):
         solver = DecogoSolver()
         # file_name = 'DESS_model_{0}{1}_{2}_pool_size_{3}_tau_{4}_' \

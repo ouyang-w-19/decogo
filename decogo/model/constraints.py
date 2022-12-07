@@ -291,8 +291,107 @@ class ObjectiveFunction:
 
 
 class CutPool:
-    """Container class for linear constraints. It contains both local and \
-     global linear constraints.
+    """A class for containing linear constraints.
+
+    This class contains both local and global linear constraints, obj function.
+
+    :param block_sizes: Number of variables in block
+    :type block_sizes: list
+    :param blocks: List of original variable names blockwise
+    :type blocks: list
+    :param obj: Objective function
+    :type obj: ObjectiveFunction
+    :param global_cuts: List of global constraints
+    :type global_cuts: list
+    :param local_cuts: Stores the list of local cuts blockwise
+    :type local_cuts: dict
+    """
+
+    def __init__(self, block_sizes=[], blocks=[], obj=None,
+                 global_cuts=[], local_cuts={}):
+        """Constructor method
+        """
+        self.block_sizes = block_sizes
+        self.blocks = blocks
+        self.obj = obj
+        self.global_cuts = global_cuts
+        self.local_cuts = local_cuts
+
+    def add_lin_local_constr(self, coeff, relation, b, block_sizes):
+        """Adds linear local constraint
+
+        :param coeff: Coefficients of left hand side
+        :type coeff: list
+        :param relation: Constraint relation
+        :type relation: str
+        :param b: Right hand side of the constraint
+        :type b: float
+        :param block_sizes: Number of variables blockwise
+        :type block_sizes: list
+        """
+        lin_con = LinearConstraint(coeff, relation, b, block_sizes)
+        self.local_cuts[lin_con.block_id].append(lin_con)
+
+    @property
+    def num_of_cuts(self):
+        """Gets total number of all linear constraints
+
+        :return: Number of all linear constraint
+        :rtype: int
+        """
+        num_cuts = len(self.global_cuts)
+        for k in self.local_cuts.keys():
+            num_cuts += len(self.local_cuts[k])
+
+        return num_cuts
+
+    @property
+    def num_blocks(self):
+        """Gets total number of blocks
+
+        :return: Number of blocks
+        :rtype: int
+        """
+        return len(self.block_sizes)
+
+    @property
+    def num_of_global_cuts(self):
+        """Gets the number of linear global constraints
+
+        :return: Number of global constraints only
+        :rtype: int
+        """
+        return len(self.global_cuts)
+
+    @property
+    def num_of_local_cuts(self):
+        """Gets the number of linear local constraints blockwise
+
+        :return: Number of local constraints blockwise
+        :rtype: int
+        """
+        return [len(self.local_cuts[k]) for k in range(len(self.block_sizes))]
+
+    def evaluate_violation_global_constraints(self, point):
+        """Evaluates violation of all global constraints
+
+        :param point: Given point to evaluate
+        :type point: BlockVector
+        :return: Violation vector, which corresponds to violation of each \
+        global constraint
+        :rtype: ndarray
+        """
+        violation = np.zeros(shape=self.num_of_global_cuts)
+
+        for i, cut in enumerate(self.global_cuts):
+            viol = cut.eval(point)
+            violation[i] = viol
+
+        return violation
+
+
+class PyomoCutPool(CutPool):
+    """Container class for linear constraints, takes Pyomo model as argument
 
     :param block_sizes: Number of variables in block
     :type block_sizes: list
@@ -315,10 +414,20 @@ class CutPool:
 
         :raise ValueError: If objective function is not linear
         """
-        self.block_sizes = [len(item) for item in blocks]
-        self.blocks = blocks
 
-        # region objective reading and initialization
+        block_sizes = [len(item) for item in blocks]
+
+        # region objective and linear constraints initialization
+        obj = None
+        global_cuts = []
+        local_cuts = {}
+        for k in range(len(block_sizes)):
+            local_cuts[k] = []
+
+        super().__init__(block_sizes, blocks, obj, global_cuts, local_cuts)
+        # endregion
+
+        # region objective and linear constraints reading
         obj_name, objective = next(model.component_map(Objective).items())
         obj_expr = objective.expr
         degree = obj_expr.polynomial_degree()
@@ -326,14 +435,7 @@ class CutPool:
             raise ValueError(
                 'Dev: Objective is not linear, check the reformulation')
         coef, obj_const = self._get_linear_term_data(obj_expr)
-        self.obj = ObjectiveFunction(coef, self.block_sizes, obj_const)
-        # endregion
-
-        # region linear constraints reading and initialization
-        self.global_cuts = []
-        self.local_cuts = {}
-        for k in range(len(self.block_sizes)):
-            self.local_cuts[k] = []
+        self.obj = ObjectiveFunction(coef, block_sizes, obj_const)
 
         for block_obj in model.block_data_objects():
             for con_name, con_obj in \
@@ -348,6 +450,8 @@ class CutPool:
                     raise ValueError(
                          'Dev: Found constraints object type which '
                          'was not considered')
+        # endregion
+
         # copy constraints
         self.copy_constraints = []
         self.blocks_copy_constraints = {}
@@ -471,69 +575,6 @@ class CutPool:
                 j += 1
         return k, i
 
-    def add_lin_local_constr(self, coeff, relation, b, block_sizes):
-        """Adds linear local constraint
-
-        :param coeff: Coefficients of left hand side
-        :type coeff: list
-        :param relation: Constraint relation
-        :type relation: str
-        :param b: Right hand side of the constraint
-        :type b: float
-        :param block_sizes: Number of variables blockwise
-        :type block_sizes: list
-        """
-        lin_con = LinearConstraint(coeff, relation, b, block_sizes)
-        self.local_cuts[lin_con.block_id].append(lin_con)
-
-    @property
-    def num_of_cuts(self):
-        """Gets total number of all linear constraints
-
-        :return: Number of all linear constraint
-        :rtype: int
-        """
-        num_cuts = len(self.global_cuts)
-        for k in self.local_cuts.keys():
-            num_cuts += len(self.local_cuts[k])
-
-        return num_cuts
-
-    @property
-    def num_of_global_cuts(self):
-        """Gets the number of linear global constraints
-
-        :return: Number of global constraints only
-        :rtype: int
-        """
-        return len(self.global_cuts)
-
-    @property
-    def num_of_local_cuts(self):
-        """Gets the number of linear local constraints blockwise
-
-        :return: Number of local constraints blockwise
-        :rtype: int
-        """
-        return [len(self.local_cuts[k]) for k in range(len(self.block_sizes))]
-
-    def evaluate_violation_global_constraints(self, point):
-        """Evaluates violation of all global constraints
-
-        :param point: Given point to evaluate
-        :type point: BlockVector
-        :return: Violation vector, which corresponds to violation of each \
-        global constraint
-        :rtype: ndarray
-        """
-        violation = np.zeros(shape=self.num_of_global_cuts)
-
-        for i, cut in enumerate(self.global_cuts):
-            viol = cut.eval(point)
-            violation[i] = viol
-
-        return violation
-
     def _add_copy_constraint(self, cut_index):
         """ Evaluate and add a global cut if it is a copy constraint
         :param cut_index: index of a global cut in global_cuts
@@ -571,3 +612,6 @@ class CutPool:
                 else:
                     self.blocks_copy_constraints[k1, k2] = 1
             self.copy_constraints.append(cut)
+
+
+

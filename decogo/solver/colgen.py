@@ -9,12 +9,13 @@ import numpy as np
 
 from decogo.solver.settings import Settings
 from decogo.util.block_vector import BlockVector
+from abc import ABC, abstractmethod
 
 logger = logging.getLogger('decogo')
 
 
-class ColGen:
-    """Class which implements Column Generation algorithm
+class AlgorithmBase(ABC):
+    """ Base class which implement an MINLP algorithm from decogo.
 
     :param problem: Decomposed problem class, which stores all input data
     :type problem: DecomposedProblem
@@ -29,6 +30,27 @@ class ColGen:
         self.problem = problem
         self.result = result
         self.settings = settings
+
+    @abstractmethod
+    def solve(self):
+        """ Base method for decogo MINLP algorithm
+        """
+
+
+class ColGen(AlgorithmBase):
+    """Class which implements Column Generation algorithm
+
+    :param problem: Decomposed problem class, which stores all input data
+    :type problem: DecomposedProblem
+    :param settings: Settings class
+    :type settings: Settings
+    :param result: Class which stores the results
+    :type result: Results
+    """
+
+    def __init__(self, problem, settings, result):
+        """Constructor method"""
+        super().__init__(problem, settings, result)
 
     def solve(self):
         """

@@ -3,7 +3,7 @@
 from pyomo.core import ConstraintList
 from pyomo.core.expr.visitor import identify_variables, replace_expressions
 
-from decogo.pyomo_minlp_model.master_problem_base import MasterProblemBase
+from decogo.pyomo_input_model.master_problem_base import MasterProblemBase
 from pyomo.environ import ConstraintList, Objective
 
 
