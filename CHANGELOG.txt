@@ -3,6 +3,53 @@ Decogo CHANGELOG
 ===============
 
 -------------------------------------------------------------------------------
+Decogo 2.0   Dec 2022
+-------------------------------------------------------------------------------
+
+Refactory of CG Algorithm:
+
+- Subpackage decogo.problem now only stores modules of IA master problem
+(based on Pyomo) and other general containers that manages any type of sub-problems,
+primal heuristics for the original problem and approximation data.
+
+- Pyomo-based problems related to sub-problems and primal heuristics are moved
+to Subpackage decogo.pyomo_problem to keep the old version of CG algorithm and a new
+algorithm called DBCG running
+
+- Added Module decogo.model.input_model_base containing abstract classes for
+implementing general input model that contains user-defined sub-problems and
+primal heuristics
+
+- Added Subpackage decogo.pyomo_input_model that constructs a Pyomo-based MINLP input model
+that includes Pyomo-based sub-problems and Pyomo-based primal heuristics.
+
+- Added Module decogo.solver.refactory_colgen that can take general input model and solve
+using CG algorithm; added testing examples in tests.solver.refactory_colgen.pyomo_MINLP
+that solves Pyomo-based MINLP problems with given Pyomo-based MINLP input model.
+
+
+Add DBCG Algorithm:
+
+- Added Module decogo.solver.dyn_block_colgen that implements dynamic block and
+column generation algorithm
+
+- Extended IA master problem: extended the IA master problem in the CG algorithm by
+adding inner approximation of newly generated hyper-blocks, converges to an overlapping
+convex hull relaxation of the original problem.
+
+- Sub-problem: added sub-problem solving for hyper-blocks, added hyper-block sub-problem
+instances in containers PyomoSubProblems and PyomoDecomposedProblem during the running
+of DBCG algorithm.
+
+- Approximation data: extended the data structure of columns and points to add new
+hyper-blocks and the corresponding extended (long) columns and points.
+
+- Decogo process and setting file: updated setting and decogo process module to include
+options and parameter settings for running DBCG Algorithm to solve Pyomo-based MINLP
+problems.
+
+
+-------------------------------------------------------------------------------
 Decogo 1.0   23 Nov 2020
 -------------------------------------------------------------------------------
 
