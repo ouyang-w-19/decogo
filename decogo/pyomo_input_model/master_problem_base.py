@@ -1,4 +1,5 @@
-"""Implements base class for master problems"""
+"""This module implements base class for Pyomo master problems used in MINLP
+primal heuristics."""
 
 import logging
 import math
@@ -14,8 +15,13 @@ logger = logging.getLogger('decogo')
 
 
 class MasterProblemBase:
-    """Base class for master problems in original space
+    """A base class for master problems in original space.
 
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
     """
 
     def __init__(self, sub_models, cuts):

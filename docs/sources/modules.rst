@@ -25,18 +25,16 @@ packages: model, problem, pyomo_problem, solver, utility and pyomo_input_model.
     decogo.problem.inner_master_problem
     decogo.problem.master_problem
 
-.. rubric:: Pyomo problem
+.. rubric:: Pyomo MINLP input model
 
 .. autosummary::
     :toctree: generated
 
-    decogo.pyomo_problem.master_problem_base
-    decogo.pyomo_problem.oa_master_problem
-    decogo.pyomo_problem.nlp_master_problem
-    decogo.pyomo_problem.projection_master_problem
-    decogo.pyomo_problem.pyomo_master_problem
-    decogo.pyomo_problem.pyomo_decomposed_problem
-    decogo.pyomo_problem.subproblem
+    decogo.pyomo_input_model.input_model
+    decogo.pyomo_input_model.subproblem
+    decogo.pyomo_input_model.master_problem_base
+    decogo.pyomo_input_model.nlp_master_problem
+    decogo.pyomo_input_model.projection_master_problem
 
 .. rubric:: Solver
 
@@ -57,13 +55,15 @@ packages: model, problem, pyomo_problem, solver, utility and pyomo_input_model.
 
     decogo.util.block_vector
 
-.. rubric:: Pyomo MINLP input model
+.. rubric:: Pyomo problem
 
 .. autosummary::
     :toctree: generated
 
-    decogo.pyomo_input_model.input_model
-    decogo.pyomo_input_model.subproblem
-    decogo.pyomo_input_model.master_problem_base
-    decogo.pyomo_input_model.nlp_master_problem
-    decogo.pyomo_input_model.projection_master_problem
+    decogo.pyomo_problem.master_problem_base
+    decogo.pyomo_problem.oa_master_problem
+    decogo.pyomo_problem.nlp_master_problem
+    decogo.pyomo_problem.projection_master_problem
+    decogo.pyomo_problem.pyomo_master_problem
+    decogo.pyomo_problem.pyomo_decomposed_problem
+    decogo.pyomo_problem.subproblem

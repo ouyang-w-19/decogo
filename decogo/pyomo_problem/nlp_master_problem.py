@@ -1,4 +1,4 @@
-"""Implements NLP master problem"""
+"""THis module implements NLP master problem"""
 
 from pyomo.core import ConstraintList
 from pyomo.core.expr.visitor import identify_variables, replace_expressions
@@ -7,7 +7,7 @@ from decogo.pyomo_problem.oa_master_problem import OaMasterProblem
 
 
 class NlpProblem(OaMasterProblem):
-    """Class for defining the NLP master problem. Used for obtaining solution
+    """A class for defining the NLP master problem. Used for obtaining solution
     with fixed or relaxed integer variables
 
     .. math::
@@ -17,6 +17,9 @@ class NlpProblem(OaMasterProblem):
             &x \\in P \\cap G
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
     """
 
     def __init__(self, block_model):

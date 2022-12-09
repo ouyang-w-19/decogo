@@ -1,4 +1,4 @@
-"""Main module for storing model data"""
+"""Main module for storing model data."""
 
 import logging
 
@@ -14,16 +14,10 @@ logger = logging.getLogger('decogo')
 
 
 class BlockModel:
-    """Main container class which stores sub-models and cut pool. Sub-models
-    store the variables and nonlinear constraints block-wise. The cut pool
-    stores all linear constraints and objective function
+    """This class stores sub-models and cut pool.
 
     :param blocks: List (block-wise) of original string names of variables
     :type blocks: list
-    :param num_blocks: Number of blocks (sub-models)
-    :type num_blocks: int
-    :param block_sizes: List of variable numbers per sub-model
-    :type block_sizes: list
     :param sense: Indicates the the problem is minimization (1) or  \
     maximization (-1)
     :type sense: int
@@ -32,21 +26,21 @@ class BlockModel:
     :type cuts: PyomoCutPool
     :param sub_models: List of sub-models
     :type sub_models: list
-    :param non_zero_resources: Stores the indices (block-wise) of nonzero \
-    left-hand side of the coupling constraints, i.e. :math:`A_k \\neq 0`
-    :type non_zero_resources: dict
     """
 
     def __init__(self, blocks, sense, cuts, sub_models):
         """Constructor method"""
 
         self.blocks = blocks  # string names for the variables in the block
-        self.num_blocks = len(blocks)
-        self.block_sizes = [len(item) for item in blocks]
+        self.num_blocks = len(blocks)  # Number of blocks (sub-models)
+        self.block_sizes = [len(item) for item in blocks]  # List of variable
+        # numbers per sub-model
         self.sense = sense
         self.cuts = cuts
         self.sub_models = sub_models
-        self.non_zero_resources = self.get_non_zero_resources()
+        self.non_zero_resources = self.get_non_zero_resources()  # Stores the
+        # indices (block-wise) of nonzero left-hand side of the coupling
+        # constraints
         self.print_model_stats()
 
     def get_non_zero_resources(self):
@@ -271,10 +265,8 @@ class BlockModel:
 
 
 class PyomoBlockModel(BlockModel):
-    """Main container class which stores sub-models and cut pool. Sub-models
-    store the variables and nonlinear constraints block-wise. The cut pool
-    stores all linear constraints and objective function. Taking Pyomo model as
-    argument
+    """This class takes Pyomo model and stores sub-models and cut pool derived
+    from the Pyomo model.
 
     :param model: Input Pyomo model
     :type model: ConcreteModel

@@ -1,7 +1,6 @@
-"""Implements and manages all sub-problems"""
+"""This module implements and manages all sub-problems"""
 
 import logging
-from abc import ABC
 
 import numpy as np
 from pyomo.core import ConcreteModel, Param, RangeSet, Var, ConstraintList, \
@@ -15,15 +14,16 @@ logger = logging.getLogger('decogo')
 
 
 class PyomoSubProblemBase:
-    """Base class for construction of Pyomo model. Here are implemented
+    """A base class for construction of Pyomo model. Here are implemented
     methods for creating local linear and nonlinear constraints
 
-    :param block_model: Block model
-    :type block_model: BlockModel
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
     :param block_id: Block identifier
     :type block_id: int
-    :param model: Pyomo model
-    :type model: ConcreteModel
     """
 
     def __init__(self, sub_models, cuts, block_id):
@@ -283,7 +283,7 @@ class PyomoSubProblemBase:
 
 
 class PyomoMinlpSubProblem(PyomoSubProblemBase):
-    """Class for defining the following sub-problem
+    """A class for defining the following sub-problem
 
     .. math::
         \\begin{equation}
@@ -292,6 +292,14 @@ class PyomoMinlpSubProblem(PyomoSubProblemBase):
             &y_k \\in X_k, d_k \\in \\mathbb{R}^{n_k}
         \\end{split}
         \\end{equation}
+
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, sub_models, cuts, block_id):
@@ -309,6 +317,14 @@ class PyomoProjectionSubProblem(PyomoSubProblemBase):
             &y_k \\in G_k, x_k \\text{ is fixed}
         \\end{split}
         \\end{equation}
+
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, sub_models, cuts, block_id):
@@ -344,7 +360,7 @@ class PyomoProjectionSubProblem(PyomoSubProblemBase):
 
 
 class PyomoResourceProjectionSubProblem(PyomoSubProblemBase):
-    """Class for defining a projection sub-problem
+    """A class for defining a projection sub-problem
 
     .. math::
         \\begin{equation}
@@ -353,6 +369,14 @@ class PyomoResourceProjectionSubProblem(PyomoSubProblemBase):
             &y_k \\in G_k, w_k \\text{ is fixed}
         \\end{split}
         \\end{equation}
+
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, sub_models, cuts, block_id):
@@ -398,7 +422,7 @@ class PyomoResourceProjectionSubProblem(PyomoSubProblemBase):
 
 
 class PyomoLineSearchSubProblem(PyomoSubProblemBase):
-    """Class defines line search sub-problem between exterior point
+    """This class defines line search sub-problem between exterior point
     :math:`x_k^{ext}` and interior point :math:`x_k^{int}`
 
     .. math::
@@ -409,9 +433,18 @@ class PyomoLineSearchSubProblem(PyomoSubProblemBase):
             &y_k \\in X_k
         \\end{split}
         \\end{equation}
+
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, sub_models, cuts, block_id):
+        """Constructor method"""
         super().__init__(sub_models, cuts, block_id)
 
         self.model.lin_con.deactivate()

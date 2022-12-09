@@ -1,4 +1,4 @@
-"""Implements inner master problem"""
+"""This module implements inner master problem."""
 
 import logging
 import numpy as np
@@ -12,8 +12,8 @@ logger = logging.getLogger('decogo')
 
 
 class InnerMasterProblem:
-    """Class for defining inner master problem which is solved over the convex
-    hull of inner points
+    """This class defines inner master problem which is solved over the convex
+    hull of inner points.
 
     .. math::
         \\begin{equation}
@@ -331,8 +331,9 @@ class InnerMasterProblem:
 
 
 class MiniInnerMasterProblem(InnerMasterProblem):
-    """ mini inner master problem for fast minlp subproblem solving; multiple
-    instances can be constructed for parallel computing of sub-problems.
+    """ mini inner master problem for fast minlp (hyper-block) sub-problem
+    solving. Multiple instances can be constructed for parallel computing
+    of sub-problems.
     """
     def __init__(self, block_model, approx_data):
         super().__init__(block_model, approx_data)
@@ -418,8 +419,9 @@ class MiniInnerMasterProblem(InnerMasterProblem):
 
 
 class ExtendedInnerMasterProblem:
-    """Class for defining inner master problem which is solved over the convex
-    hull of inner points
+    """This class defines extended inner master problem which is solved over the
+    convex hull of inner points regarding hyper-blocks (overlapping convex hull
+    relaxation).
 
     .. math::
         \\begin{equation}
@@ -427,14 +429,15 @@ class ExtendedInnerMasterProblem:
             \\min \\ & c^T x(z) + \\sum\\limits_{i \\in [m]} \\gamma_i s_i,
             \\newline
             &Ax(z) \\leq b + s, \\newline
-            &\\sum_{j \\in [S_k]} z_{kj}=1, \\newline
-            & x_k(z_k) = \\sum_{j \\in [S_k]} z_{kj} y_{kj}, \\newline
-            &z_{kj} \\geq 0, j \\in [S_k], k \\in K,
+            &\\sum_{j \\in [S_t]} z_{tj}=1, \\newline
+            & x_t(z_t) = \\sum_{j \\in [S_t]} z_{tj} y_{tj}, \\newline
+            &z_{tj} \\geq 0, j \\in [S_t], t \\in T,
             & s \\geq 0, \\gamma > 0
         \\end{split}
         \\end{equation}
 
-    where :math:`S_k \\subset \\mathbb{R}^{n_k}` is a set of inner points.
+    where :math:`S_t \\subset \\mathbb{R}^{n_t}` is a set of inner points;
+    :math:`T` is the set of hyper-blocks.
 
     The problem is constructed in the transformed space in the following way
 
@@ -443,14 +446,16 @@ class ExtendedInnerMasterProblem:
         \\begin{split}
             \\min &\\sum\\limits_{k \\in K} w_{k0}(z_k) +
             \\sum\\limits_{i \\in [m]} \\gamma_i s_i, \\newline
-            & \\sum\\limits_{k \\in K} w_{k}(z_k) \\leq b + s, \\newline
-            &\\sum_{j \\in [R_k]} z_{kj}=1, z_{kj} \\geq 0, \\newline
-            &w_k(z_k)=\\sum_{j \\in [R_k]} z_{kj}r_{kj}, \\newline
-            &j \\in [R_k], k \\in K, s \\geq 0,\\gamma > 0
+            & \\sum\\limits_{t \\in T} w_{t}(z_t) \\leq b + s, \\newline
+            &\\sum_{j \\in [R_t]} z_{tj}=1, z_{tj} \\geq 0, \\newline
+            &w_t(t_k)=\\sum_{j \\in [R_t]} z_{tj}r_{tj}, \\newline
+            &j \\in [R_t], t \\in T, s \\geq 0,\\gamma > 0
         \\end{split}
         \\end{equation}
 
-    where :math:`R_k \\subset \\mathbb{R}^{m + 1}` is a set of columns.
+    where :math:`R_t \\subset \\mathbb{R}^{m + 1}` is a set of columns.
+    :math:`T` is the set of hyper-blocks, and :math:`K` is a subset of
+    hyper-blocks that is non-overlapping.
 
     :param block_model: Block model
     :type block_model: BlockModel

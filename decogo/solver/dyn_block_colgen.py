@@ -1,4 +1,5 @@
-"""Class which implements Column Generation"""
+"""This module implements Dynamic Block and Column Generation (DBCG) algorithm.
+"""
 
 import copy
 import logging
@@ -16,7 +17,7 @@ logger = logging.getLogger('decogo')
 
 
 class DynBlockColGen(AlgorithmBase):
-    """Class which implements Dynamic Block and Column Generation algorithm
+    """This class implements Dynamic Block and Column Generation algorithm.
 
     :param problem: Decomposed problem class, which stores all input data
     :type problem: DecomposedProblem

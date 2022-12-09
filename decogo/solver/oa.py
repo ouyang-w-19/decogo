@@ -12,7 +12,7 @@ logger = logging.getLogger('decogo')
 
 
 class OaSolver(AlgorithmBase):
-    """Class which implements OA method for convex problems
+    """A class which implements OA method for convex problems
 
     :param problem: Decomposed problem class, which stores all input data
     :type problem: DecomposedProblem

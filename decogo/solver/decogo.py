@@ -29,7 +29,7 @@ logger = logging.getLogger('decogo')
 
 
 class DecogoSolver:
-    """Class which starts the solution process
+    """ A class which starts the solution process
     """
 
     @staticmethod
@@ -114,7 +114,7 @@ class DecogoSolver:
 
 
 class DecogoProcess(Process):
-    """Class which is responsible for solver process. The main idea of this
+    """A class which is responsible for solver process. The main idea of this
     class is reliable way to set maximum executation time of the whole solver.
 
     :param input_model: Pyomo model
@@ -184,7 +184,7 @@ class DecogoProcess(Process):
 
 
 class DecogoSolverManager:
-    """Class which manages algorithms of the solver. It performs the
+    """A class which manages algorithms of the solver. It performs the
     decomposition, creates the settings, calls the algorithms and stores
     the results
 
@@ -302,7 +302,7 @@ class DecogoSolverManager:
 
 
 class DecogoLogger:
-    """Class which is responsible for the logging of the solver. It sets up
+    """A class which is responsible for the logging of the solver. It sets up
     the logs of the solver
     """
 

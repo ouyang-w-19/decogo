@@ -1,4 +1,4 @@
-"""Performs automatic reformulation of the Pyomo model"""
+"""This module performs automatic reformulation of the Pyomo model."""
 
 import itertools
 import logging
@@ -28,19 +28,6 @@ class PyomoModelDecomposer:
     :type model: ConcreteModel
     :param settings: Settings
     :type settings: Settings
-    :param blocks: List of original names (strings) of variables collected \
-    blockwise
-    :type blocks: list
-    :param original_obj_sense: Indicates the sense of the objective \
-    (maximization or minimization)
-    :type original_obj_sense: int
-    :param number_defined_blocks: Number of defined blocks of the original \
-    model, defaults to 1
-    :type number_defined_blocks: int
-    :param nconstraints: Overall number of the constraints of the input model \
-    :type nconstraints: int
-    :param nvars: Number of variables of the input model
-    :type nvars: int
     """
 
     def __init__(self, model, settings):
@@ -48,11 +35,13 @@ class PyomoModelDecomposer:
         self.model = model
         self.settings = settings
         self.blocks = []  # only names of the variables
-        self.original_obj_sense = self.model.obj.sense
-        self.number_defined_blocks = 1  # by default is one block
+        self.original_obj_sense = self.model.obj.sense  # Indicates the sense
+        # of the objective (maximization or minimization)
+        self.number_defined_blocks = 1  # Number of defined blocks of the
+        # original model, defaults to 1
 
-        self.nconstraints = 0
-        self.nvars = 0
+        self.nconstraints = 0  # Number of the constraints of the input model
+        self.nvars = 0  # Number of variables of the input model
 
     def decompose(self):
         """The function which calls other functions for block detection and

@@ -1,4 +1,4 @@
-"""Class which implements Column Generation with user-defined input model"""
+"""Implements Column Generation with user-defined input model"""
 
 import copy
 import logging
@@ -15,8 +15,8 @@ logger = logging.getLogger('decogo')
 
 
 class RefactoryColGen(AlgorithmBase):
-    """Class which implements Column Generation algorithm with user-defined \
-    input model
+    """This class implements Column Generation (CG) algorithm with \
+    user-defined input model
 
     :param problem: Decomposed problem class, which stores all input data
     :type problem: DecomposedProblem

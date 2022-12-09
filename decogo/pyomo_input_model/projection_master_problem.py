@@ -14,8 +14,8 @@ logger = logging.getLogger('decogo')
 
 
 class NlpResourceProjectionProblem(NlpProblem):
-    """Class for defining NLP projection master problem (integer variables
-    are relaxed or fixed)
+    """A class for defining NLP projection master problem (integer variables
+    are relaxed or fixed).
 
     .. math::
         \\begin{equation}
@@ -25,6 +25,12 @@ class NlpResourceProjectionProblem(NlpProblem):
             &w_k \\in \\mathbb{R}^{m + 1} \\text{ and is fixed}
         \\end{split}
         \\end{equation}
+
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
     """
 
     def __init__(self, sub_models, cuts):

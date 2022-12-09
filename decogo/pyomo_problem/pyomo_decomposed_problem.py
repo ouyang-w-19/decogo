@@ -1,4 +1,5 @@
-"""Main module for managing block model and approximation data"""
+"""Main module for managing block model and approximation data for Pyomo models.
+"""
 
 import logging
 
@@ -12,7 +13,7 @@ logger = logging.getLogger('decogo')
 
 
 class PyomoDecomposedProblem:
-    """This class contains all subproblems, master problems and approximation
+    """This class contains all sub-problems, master problems and approximation
     data and methods for manipulating them (add, update etc.)
 
     :param block_model: Block model
@@ -20,10 +21,6 @@ class PyomoDecomposedProblem:
     :param approx_data: Approximation data class (Inner points, linearization \
     cuts, etc.)
     :type approx_data: ApproxData
-    :param sub_problems: Contains all necessary Pyomo subproblems
-    :type sub_problems: list
-    :param master_problems: Contains all necessary Pyomo master problems
-    :type master_problems: PyomoMasterProblems
     """
 
     def __init__(self, block_model, strategy):

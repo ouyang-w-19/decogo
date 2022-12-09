@@ -1,4 +1,5 @@
-"""Implement base class of general input model"""
+"""This modules implement abstract base classes of user-defined input models.
+"""
 
 from abc import ABC, abstractmethod
 from numpy import ndarray
@@ -7,7 +8,7 @@ from decogo.problem.decomposed_problem import DecomposedProblem
 
 
 class InputModelBase(ABC):
-    """ Base class which stores data of the input model and
+    """An abstract base class which stores data of the input model and
     solver of sub-problems and original problem (primal heuristics).
 
     :param sub_problems: list of SubProblems blockwise
@@ -29,7 +30,7 @@ class InputModelBase(ABC):
 
     @abstractmethod
     def _construct_cut_pool(self):
-        """ Base method for generating the parameters of cut_pool
+        """An abstract method for generating the parameters of cut_pool
 
         :return: block_sizes, blocks, obj, global_cuts, local_cuts
         :rtype: tuple
@@ -37,8 +38,8 @@ class InputModelBase(ABC):
 
 
 class OriginalProblemBase(ABC):
-    """ container class for original_problem with user-defined solver
-     """
+    """An abstract base class for original_problem with user-defined solver
+    """
 
     def __init__(self):
         """Constructor method"""
@@ -46,7 +47,7 @@ class OriginalProblemBase(ABC):
 
     @abstractmethod
     def local_solve(self, start_point, result, problem, iter=None):
-        """ Method for solving original problem
+        """ Abstract method for solving original problem
         non-optimal/heuristically/locally
 
         :param start_point: Starting point for the solver, defaults to ``None``
@@ -62,7 +63,7 @@ class OriginalProblemBase(ABC):
 
     @abstractmethod
     def local_solve_fast(self, start_point, result, problem, iter=None):
-        """ Method for fast solving original problem
+        """ Abstract method for fast solving original problem
         non-optimal/heuristically/locally
 
         :param start_point: Starting point for the solver, defaults to ``None``
@@ -78,7 +79,7 @@ class OriginalProblemBase(ABC):
 
 
 class SubModelBase(ABC):
-    """Abstract base class which stores the variables from the single
+    """An abstract base class which stores the variables from the single
     block and local nonlinear constraints.
 
     :param vars_in_block: List of original variable names from the model
@@ -112,8 +113,8 @@ class SubModelBase(ABC):
 
 
 class SubProblemsBase(ABC):
-    """ Base class for constructing a generalised model of sub-problems
-    with user-defined solvers.
+    """An abstract base class for constructing a generalised model of
+    sub-problems with user-defined solvers.
 
     :param block_id: Block identifier
     :type block_id: int
@@ -126,7 +127,7 @@ class SubProblemsBase(ABC):
 
     @abstractmethod
     def local_solve(self, result, direction, start_point=None):
-        """ Method for solving sub-problem
+        """An abstract method for solving sub-problem
         non-optimal/heuristically/locally
 
         :param result: stores and makes some manipulations with the CG results
@@ -143,7 +144,7 @@ class SubProblemsBase(ABC):
 
     @abstractmethod
     def global_solve(self, result, direction, start_point=None):
-        """ Method for solving
+        """An abstract method for solving
         sub-problem globally/near-optimal or calling an exact solver
 
         :param result: stores and makes some manipulations with the CG results

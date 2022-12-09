@@ -9,7 +9,7 @@ logger = logging.getLogger('decogo')
 
 
 class Results:
-    """Class which stores and makes some manipulations with the results.
+    """A class which stores and makes some manipulations with the results.
     The results are: primal/dual bound, primal solution point, timings, gap"""
 
     def __init__(self):
@@ -203,12 +203,7 @@ class Results:
 
 
 class SubProblemData:
-    """Class which stores direction and columns
-
-    :param block_model: Block model
-    :type block_model: BlockModel
-    :param data: Data stored blockwise as dictionary of lists
-    :type data: dict
+    """A class which stores direction and columns
     """
     def __init__(self):
         """Constructor method"""

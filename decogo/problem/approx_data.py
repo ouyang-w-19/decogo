@@ -1,4 +1,5 @@
-"""Stores approximation data generated during the solution process"""
+"""This module stores approximation data generated during the solution process.
+"""
 
 import copy
 import logging
@@ -12,7 +13,7 @@ logger = logging.getLogger('decogo')
 
 
 class ApproxData:
-    """Wrapper class for storing approximation data, i.e. inner points,
+    """A wrapper class for storing approximation data, i.e. inner points,
     linearization cuts, valid compact cuts and cells.
 
     :param block_model: Block model
@@ -69,12 +70,10 @@ class ApproxData:
 
 
 class InnerPoints:
-    """Class which stores inner points and corresponding columns
+    """This class stores inner points and corresponding columns
 
     :param block_model: Block model
     :type block_model: BlockModel
-    :param points: Points stored blockwise as dictionary of lists
-    :type points: dict
     """
 
     def __init__(self, block_model):
@@ -86,7 +85,7 @@ class InnerPoints:
         # we create the dictionary (k -> [list of tuples (hat_y_k, w_k)])
         # where k is block_id, hat_y_k is a point and w_k is a column defined
         # by w_k = (c_k*hat_y_k, A_k*hat_y_k)
-        self.points = {}
+        self.points = {}  # Points stored block-wise as dictionary of lists
         for k in range(self.block_model.num_blocks):
             self.points[k] = []
 
@@ -380,14 +379,13 @@ class LinearizationCuts:
 
     :param block_model: Block model
     :type block_model: BlockModel
-    :param cuts: List of linearization cuts
-    :type cuts: dict
     """
 
     def __init__(self, block_model):
         """Constructor method"""
         self.block_model = block_model
-        self.cuts = {k: [] for k in range(self.block_model.num_blocks)}
+        self.cuts = {k: [] for k in range(self.block_model.num_blocks)}  # List
+        # of linearization cuts
 
     def add_linearization_cuts(self, y, eps, x=None, block_id=None):
         """This method decides for which cases to compute linearization cuts.
@@ -528,20 +526,19 @@ class LinearizationCuts:
 
 
 class CompactCuts:
-    """Class that stores valid compact linear cuts got after solving the
+    """A class that stores valid compact linear cuts got after solving the
     subproblems. They are defined with :math:`a^Tw \\leq b`, where :math:`a,
     w \\in \\mathbb{R}^{m+1}, m` is the number of global linear constraints
 
     :param block_model: Block model
     :type block_model: BlockModel
-    :param cuts: Cuts stored blockwise as a dictionary with list as values
-    :type cuts: dict
     """
 
     def __init__(self, block_model):
         """Constructor method"""
         self.block_model = block_model
-        self.cuts = {k: [] for k in range(self.block_model.num_blocks)}
+        self.cuts = {k: [] for k in range(self.block_model.num_blocks)}  # Cuts
+        # stored blockwise as a dictionary with list as values
         self.rhs = {k: [] for k in range(self.block_model.num_blocks)}
 
     def add(self, block_id, lhs, relation, rhs):

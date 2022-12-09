@@ -1,4 +1,4 @@
-"""Implements and manages all sub-problems"""
+"""This module implements and manages all sub-problems of Pyomo models"""
 
 import logging
 from abc import ABC, abstractmethod
@@ -14,46 +14,20 @@ from pyomo.opt import SolverFactory
 logger = logging.getLogger('decogo')
 
 
-class SubProblemBase(ABC):
+class PyomoSubProblemBase:
+    """A base class for construction of Pyomo model. Here are implemented
+    methods for creating local linear and nonlinear constraints
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
+    :param block_id: Block identifier
+    :type block_id: int
+    """
 
     def __init__(self, block_model, block_id):
         """Constructor method"""
         self.block_id = block_id
         self.block_model = block_model
-        super().__init__()
-
-    @abstractmethod
-    def solve(self, solver_name, start_point=None, solver_options=None):
-        """Base method for calling the external solver to solve the model
-
-        :param solver_name: External solver name
-        :type solver_name: str
-        :param start_point: Starting point for the solver, defaults to ``None``
-        :type start_point: ndaray or None
-        :param solver_options: Options for external solver, defaults to ``None``
-        :type solver_options: list
-        :return: Solution point, primal bound, dual bound, flag if the primal \
-        bound is feasible
-        :rtype: tuple
-        """
-        pass
-
-
-class PyomoSubProblemBase(SubProblemBase):
-    """Base class for construction of Pyomo model. Here are implemented
-    methods for creating local linear and nonlinear constraints
-
-    :param block_model: Block model
-    :type block_model: BlockModel
-    :param block_id: Block identifier
-    :type block_id: int
-    :param model: Pyomo model
-    :type model: ConcreteModel
-    """
-
-    def __init__(self, block_model, block_id):
-        """Constructor method"""
-        super().__init__(block_model, block_id)
 
         self.model = ConcreteModel()
 
@@ -307,7 +281,7 @@ class PyomoSubProblemBase(SubProblemBase):
 
 
 class PyomoMinlpSubProblem(PyomoSubProblemBase):
-    """Class for defining the following sub-problem
+    """A class for defining the following sub-problem
 
     .. math::
         \\begin{equation}
@@ -316,6 +290,11 @@ class PyomoMinlpSubProblem(PyomoSubProblemBase):
             &y_k \\in X_k, d_k \\in \\mathbb{R}^{n_k}
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, block_model, block_id):
@@ -324,7 +303,7 @@ class PyomoMinlpSubProblem(PyomoSubProblemBase):
 
 
 class PyomoProjectionSubProblem(PyomoSubProblemBase):
-    """Class for defining a projection sub-problem
+    """A class for defining a projection sub-problem
 
     .. math::
         \\begin{equation}
@@ -333,6 +312,11 @@ class PyomoProjectionSubProblem(PyomoSubProblemBase):
             &y_k \\in G_k, x_k \\text{ is fixed}
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, block_model, block_id):
@@ -368,7 +352,7 @@ class PyomoProjectionSubProblem(PyomoSubProblemBase):
 
 
 class PyomoResourceProjectionSubProblem(PyomoSubProblemBase):
-    """Class for defining a projection sub-problem
+    """A class for defining a projection sub-problem
 
     .. math::
         \\begin{equation}
@@ -377,6 +361,11 @@ class PyomoResourceProjectionSubProblem(PyomoSubProblemBase):
             &y_k \\in G_k, w_k \\text{ is fixed}
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, block_model, block_id):
@@ -422,7 +411,7 @@ class PyomoResourceProjectionSubProblem(PyomoSubProblemBase):
 
 
 class PyomoLineSearchSubProblem(PyomoSubProblemBase):
-    """Class defines line search sub-problem between exterior point
+    """This class defines line search sub-problem between exterior point
     :math:`x_k^{ext}` and interior point :math:`x_k^{int}`
 
     .. math::
@@ -433,6 +422,11 @@ class PyomoLineSearchSubProblem(PyomoSubProblemBase):
             &y_k \\in X_k
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
+    :param block_id: Block identifier
+    :type block_id: int
     """
 
     def __init__(self, block_model, block_id):
@@ -485,107 +479,8 @@ class PyomoLineSearchSubProblem(PyomoSubProblemBase):
         return alpha, y_new
 
 
-class SubProblemsBase(ABC):
-    """
-    Sub-problems base class
-    """
-
-    def __init__(self):
-        """Constructor method"""
-        super().__init__()
-
-    @abstractmethod
-    def minlp_solve(self, solver_name, solver_options=None, start_point=None,
-                    direction=None, cell=None):
-        """Solves :class:`MinlpSubProblem`
-
-        :param solver_name: External solver name
-        :type solver_name: str
-        :param solver_options: External solver options, defaults to ``None``
-        :type solver_options: list or None
-        :param start_point: Staring point for the solver, defaults to ``None``
-        :type start_point: ndarray or None
-        :param direction: Direction for the objective, defaults to ``None``
-        :type direction: ndarray or None
-        :param cell: Cell, defaults to ``None``
-        :type cell: Cell or None
-        :return: Solution point, primal and dual bound
-        :rtype: tuple
-        """
-        pass
-
-    @abstractmethod
-    def fixed_minlp_solve(self, solver_name, start_point, solver_options=None,
-                          direction=None, cell=None):
-        """Solves :class:`MinlpSubProblem` with fixed integer variables
-
-        :param solver_name: External solver name
-        :type solver_name: str
-        :param start_point: Staring point for the solver, and point which is \
-        used for fixing the integers
-        :type start_point: ndarray or None
-        :param solver_options: External solver options, defaults to ``None``
-        :type solver_options: list or None
-        :param direction: Direction for the objective, defaults to ``None``
-        :type direction: ndarray or None
-        :param cell: Cell, defaults to ``None``
-        :type cell: Cell or None
-        :return: Solution point, primal and dual bound
-        :rtype: tuple
-        """
-        pass
-
-    @abstractmethod
-    def nlp_proj_solve(self, solver_name, point_to_project, start_point=None):
-        """Solves :class:`ProjSubProblem`
-
-        :param solver_name: External solver name
-        :type solver_name: str
-        :param point_to_project: Projection point
-        :type point_to_project: ndarray
-        :param start_point: Staring point for the solver, defaults to ``None``
-        :type start_point: ndarray or None
-        :return: Solution point, primal bound and flag indicating the \
-        feasibility of primal solution
-        :rtype: tuple
-        """
-        pass
-
-    @abstractmethod
-    def solve_line_search_subproblem(self, solver_name, exterior_point,
-                                     interior_point):
-        """Solves :class:`LineSearchSubProblem`
-
-        :param solver_name: External solver name
-        :type solver_name: str
-        :param exterior_point: Exterior point
-        :type exterior_point: ndarray
-        :param interior_point: Interior point
-        :type interior_point: ndarray
-        :return: value of parameter :math:`\\alpha` and solution point
-        :rtype: tuple
-        """
-        pass
-
-    @abstractmethod
-    def resource_proj_solve(self, solver_name, point_to_project, start_point=None):
-        """Solves :class:`ResourceProjSubProblem`
-
-        :param solver_name: External solver name
-        :type solver_name: str
-        :param point_to_project: Projection point
-        :type point_to_project: ndarray
-        :param start_point: Staring point for the solver, defaults to ``None``
-        :type start_point: ndarray or None
-        :return: Solution point, primal bound and flag indicating the \
-        feasibility of primal solution
-        :rtype: tuple
-        """
-        pass
-
-
-class PyomoSubProblems(SubProblemsBase):
-    """Container class for managing all sub-problems
+class PyomoSubProblems:
+    """A container class for managing all sub-problems
 
     :param minlp_sub_problem: Sub-probem with linear objective
     :type minlp_sub_problem: PyomoMinlpSubProblem
@@ -596,13 +491,15 @@ class PyomoSubProblems(SubProblemsBase):
     :type resource_constrained_sub_problem: PyomoResourceConstrainedSubProblem
     :param line_search_sub_problem: Line search sub-problem
     :type line_search_sub_problem: PyomoLineSearchSubProblem
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
+    :param block_id: Block identifier
+    :type block_id: int
+
     """
 
     def __init__(self, block_model, block_id):
-        """Constructor method
-        :param approx_data:
-        """
-        super().__init__()
+        """Constructor method"""
 
         self.minlp_sub_problem = PyomoMinlpSubProblem(block_model, block_id)
 

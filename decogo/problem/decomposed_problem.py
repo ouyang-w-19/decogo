@@ -1,4 +1,4 @@
-"""Main module for managing block model and approximation data"""
+"""This module manages block model, approximation data and all problems."""
 
 import logging
 
@@ -9,30 +9,27 @@ logger = logging.getLogger('decogo')
 
 
 class DecomposedProblem:
-    """This class contains all subproblems, master problems and approximation
+    """This class contains all sub-problems, master problems and approximation
     data and methods for manipulating them (add, update etc.)
 
     :param block_model: Block model
     :type block_model: BlockModel
-    :param approx_data: Approximation data class (Inner points, linearization \
-    cuts, etc.)
-    :type approx_data: ApproxData
-    :param sub_problems: Contains all necessary subproblems
+    :param sub_problems: Contains all necessary sub-problems
     :type sub_problems: list
     :param original_problem: Contains original problem
     :type original_problem: subclass of OriginalProblemBase
-    :param master_problems: Contains all necessary Pyomo (inner) master problems
-    :type master_problems: MasterProblems
     """
 
     def __init__(self, block_model, sub_problems, original_problem):
         """Constructor method"""
         self.block_model = block_model
-        self.approx_data = ApproxData(block_model)
+        self.approx_data = ApproxData(block_model)  # Approximation data class
+        # (Inner points, linearization cuts, etc.)
         self.sub_problems = sub_problems
         self.original_problem = original_problem
         self.master_problems = MasterProblems(self.block_model,
-                                              self.approx_data)
+                                              self.approx_data)  # Contains all
+        # necessary Pyomo (inner) master problems
         self.linear_block = [k for k in range(self.block_model.num_blocks)
                              if self.block_model.sub_models[k].linear is True]
 

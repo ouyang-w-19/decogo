@@ -1,4 +1,4 @@
-"""Implements OA master problems"""
+"""This module implements OA master problems"""
 
 import logging
 
@@ -14,7 +14,7 @@ logger = logging.getLogger('decogo')
 
 
 class OaMasterProblem(MasterProblemBase):
-    """Class for defining an outer master problem
+    """A class for defining an outer master problem
 
     .. math::
         \\begin{equation}
@@ -23,6 +23,9 @@ class OaMasterProblem(MasterProblemBase):
             &x \\in P \\cap Y
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
     """
 
     def __init__(self, block_model):
@@ -46,7 +49,7 @@ class OaMasterProblem(MasterProblemBase):
 
 
 class MipOaMasterProblem(OaMasterProblem):
-    """Class for defining MIP Outer Approximation master problem
+    """A class for defining MIP Outer Approximation master problem
 
     .. math::
         \\begin{equation}
@@ -59,6 +62,8 @@ class MipOaMasterProblem(OaMasterProblem):
     where :math:`\\hat{G}` is an Outer Approximation of nonlinear feasible
     set :math:`G`
 
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
     :param approx_data: Object where the linearization cuts are stored
     :type approx_data: ApproxData
     """
@@ -101,7 +106,7 @@ class MipOaMasterProblem(OaMasterProblem):
 
 
 class SlackMipOaMasterProblem(MipOaMasterProblem):
-    """Class for MIP Outer Approximation problem with slacks
+    """A class for MIP Outer Approximation problem with slacks
 
     .. math::
         \\begin{equation}
@@ -112,6 +117,11 @@ class SlackMipOaMasterProblem(MipOaMasterProblem):
             & x_{\ell} \\text{ is fixed}, \\ell \\in K\\setminus{k}, \\gamma > 0
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
+    :param approx_data: Object where the linearization cuts are stored
+    :type approx_data: ApproxData
     """
 
     def __init__(self, block_model, approx_data):
@@ -198,7 +208,7 @@ class SlackMipOaMasterProblem(MipOaMasterProblem):
 
 
 class CompactOaMasterProblem:
-    """Class for defining compact outer master problem
+    """A class for defining compact outer master problem
 
     .. math::
         \\begin{equation}
@@ -212,12 +222,10 @@ class CompactOaMasterProblem:
     where :math:`D_k` is an Outer Approximation
 
     :param block_model: Block model
-    :type block_model: BlockModel
+    :type block_model: PyomoBlockModel
     :param approx_data: Class that stores compact linear constraints, \
     generated during solving the sub-problems
     :type approx_data: ApproxData
-    :param model: Pyomo model
-    :type model: ConcreteModel
     """
 
     def __init__(self, block_model, approx_data):

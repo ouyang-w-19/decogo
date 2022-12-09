@@ -2,7 +2,7 @@
 Class inheritance diagram
 *************************
 
-The classes of six packages (model, problem, solver, utility, pyomo_problem, pyomo_input_layer) are presented here.
+The classes of six packages (model, problem, solver, utility, pyomo_problem, pyomo_input_model) are presented here.
 
 model
 =====
@@ -32,11 +32,23 @@ utility
     :parts: 1
 
 
+pyomo_input_model
+============================================
+Package pyomo_input_layer implements the user-defined Pyomo based input model for CG.
+
+.. inheritance-diagram:: decogo.pyomo_input_model.input_model
+    decogo.pyomo_input_model.master_problem_base
+    decogo.pyomo_input_model.subproblem
+    decogo.pyomo_input_model.nlp_master_problem
+    decogo.pyomo_input_model.projection_master_problem
+    :parts: 1
+
 pyomo_problem
 =============
 Package pyomo_problem implements the sub-problem solving, primal heuristics for
-colgen, oa, dyn_block_colgen, which are based on Pyomo model. The classes of
-this package are grouped as follows:
+CG, OA and DBCG algorithms, which are based on Pyomo model. The implementation
+parts of CG and DBCG will be integrated into Packages problem and pyomo_input_model
+after refactory. The classes of this package are grouped as follows:
 
 - Pyomo OA master problems
 
@@ -54,15 +66,7 @@ this package are grouped as follows:
 .. inheritance-diagram:: decogo.pyomo_problem.subproblem
     :parts: 1
 
-
-pyomo_input_model
-============================================
-Package pyomo_input_layer implements the user-defined Pyomo based input layer for refactory_colgen.
-
-.. inheritance-diagram:: decogo.pyomo_input_model.input_model
-    decogo.pyomo_input_model.master_problem_base
-    decogo.pyomo_input_model.subproblem
-    decogo.pyomo_input_model.nlp_master_problem
-    decogo.pyomo_input_model.projection_master_problem
+- Pyomo-based containers for master problems and decomposed problems
+.. inheritance-diagram:: decogo.pyomo_problem.pyomo_master_problem
+    decogo.pyomo_problem.pyomo_decomposed_problem
     :parts: 1
-

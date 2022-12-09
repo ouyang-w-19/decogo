@@ -1,4 +1,4 @@
-"""Class which implements Column Generation"""
+"""This module implements Column Generation"""
 
 import copy
 import logging
@@ -15,7 +15,7 @@ logger = logging.getLogger('decogo')
 
 
 class AlgorithmBase(ABC):
-    """ Base class which implement an MINLP algorithm from decogo.
+    """ An abstract base class which implement an MINLP algorithm from decogo.
 
     :param problem: Decomposed problem class, which stores all input data
     :type problem: DecomposedProblem
@@ -38,7 +38,7 @@ class AlgorithmBase(ABC):
 
 
 class ColGen(AlgorithmBase):
-    """Class which implements Column Generation algorithm
+    """This class implements Column Generation (CG) algorithm
 
     :param problem: Decomposed problem class, which stores all input data
     :type problem: DecomposedProblem

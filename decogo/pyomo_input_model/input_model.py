@@ -1,4 +1,7 @@
-"""Implements colgen for pyomo minlp input model """
+"""This modules construct user-defined Pyomo minlp input model for refactory CG
+ algorithm.
+"""
+
 from pyomo.core.base import Expression
 from pyomo.core.expr.visitor import identify_variables
 from pyomo.environ import ConcreteModel, Objective, Set, Param, Block
@@ -34,7 +37,7 @@ logger = logging.getLogger('decogo')
 
 
 class PyomoInputModel(InputModelBase):
-    """User-defined input model for pyomo MINLP problems
+    """This class implement user-defined input model for Pyomo MINLP problems.
 
     :param model: Input Pyomo model
     :type model: ConcreteModel
@@ -282,7 +285,8 @@ class PyomoInputModel(InputModelBase):
 
 
 class PyomoOriginalProblem(OriginalProblemBase):
-    """User-defined local solve for pyomo MINLP problems
+    """This class implement user-defined primal heuristis for pyomo MINLP
+    problems.
 
     :param cuts: Container which stores all linear constraints \
     (global and local) and objective function

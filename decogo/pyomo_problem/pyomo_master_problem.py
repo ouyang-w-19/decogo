@@ -1,4 +1,4 @@
-"""Manages all Pyomo master problems"""
+"""This module manages all Pyomo master problems"""
 
 import logging
 
@@ -17,7 +17,7 @@ logger = logging.getLogger('decogo')
 
 
 class PyomoMasterProblems:
-    """Container class for managing all master problems
+    """A container class for managing all master problems
 
     :param inner_master_problem: Inner Approximation master problem
     :type inner_problem: InnerMasterProblem
@@ -32,7 +32,7 @@ class PyomoMasterProblems:
     used for solving regarding fixed variables
     :type slack_mip_oa_problem: SlackMipOaMasterProblem
     :param nlp_problem: NLP master problem
-    :type nlp_problem: NlpProblem
+    :type nlp_problem: PyomoNlpProblem
     :param mip_projection_master_problem: MIP projection master problem
     :type mip_projection_problem: MipProjectionMasterProblem
     :param nlp_resource_projection_problem: NLP projection master problem

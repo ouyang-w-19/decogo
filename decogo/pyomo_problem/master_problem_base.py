@@ -1,4 +1,4 @@
-"""Implements base class for master problems"""
+"""This module implements base class for master problems."""
 
 import logging
 import math
@@ -14,10 +14,10 @@ logger = logging.getLogger('decogo')
 
 
 class MasterProblemBase:
-    """Base class for master problems in original space
+    """A base class for master problems in original space
 
     :param block_model: Block model
-    :type block_model: BlockModel
+    :type block_model: PyomoBlockModel
     :param model: Pyomo model
     :type model: ConcreteModel
     """

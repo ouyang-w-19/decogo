@@ -1,4 +1,4 @@
-"""Stores constraint data"""
+"""This module stores constraint data."""
 
 import numpy as np
 from pyomo.core.base.constraint import IndexedConstraint, \
@@ -10,7 +10,7 @@ from pyomo.core.expr.numeric_expr import NegationExpression, \
     MonomialTermExpression, ProductExpression, SumExpression, \
     ExpressionBase, LinearExpression
 from pyomo.core.expr.visitor import identify_variables
-from pyomo.environ import Objective
+from pyomo.environ import Objective, ConcreteModel
 
 from decogo.util.block_vector import SparseBlockVector
 
@@ -59,7 +59,7 @@ class VarDomain:
 
 
 class LinearConstraint:
-    """Class for storing the linear constraint
+    """A class for storing the linear constraint.
 
     :param lhs: Coefficients of right hand side of constraint
     :type lhs: SparseBlockVector
@@ -124,7 +124,7 @@ class LinearConstraint:
 
 
 class NonLinearConstraint:
-    """Class for nonlinear constraint. This class stores original nonlinear
+    """A class for nonlinear constraint. This class stores original nonlinear
     Pyomo expression
 
     :param expr: Original Pyomo expression of nonlinear constraint
@@ -291,19 +291,18 @@ class ObjectiveFunction:
 
 
 class CutPool:
-    """A class for containing linear constraints.
-
-    This class contains both local and global linear constraints, obj function.
+    """This class contains both local and global linear constraints,
+    obj function.
 
     :param block_sizes: Number of variables in block
     :type block_sizes: list
-    :param blocks: List of original variable names blockwise
+    :param blocks: List of original variable names block-wise
     :type blocks: list
     :param obj: Objective function
     :type obj: ObjectiveFunction
     :param global_cuts: List of global constraints
     :type global_cuts: list
-    :param local_cuts: Stores the list of local cuts blockwise
+    :param local_cuts: Stores the list of local cuts block-wise
     :type local_cuts: dict
     """
 
@@ -326,7 +325,7 @@ class CutPool:
         :type relation: str
         :param b: Right hand side of the constraint
         :type b: float
-        :param block_sizes: Number of variables blockwise
+        :param block_sizes: Number of variables block-wise
         :type block_sizes: list
         """
         lin_con = LinearConstraint(coeff, relation, b, block_sizes)
@@ -365,9 +364,9 @@ class CutPool:
 
     @property
     def num_of_local_cuts(self):
-        """Gets the number of linear local constraints blockwise
+        """Gets the number of linear local constraints block-wise
 
-        :return: Number of local constraints blockwise
+        :return: Number of local constraints block-wise
         :rtype: int
         """
         return [len(self.local_cuts[k]) for k in range(len(self.block_sizes))]
@@ -391,22 +390,12 @@ class CutPool:
 
 
 class PyomoCutPool(CutPool):
-    """Container class for linear constraints, takes Pyomo model as argument
+    """This class stores linear constraints from argument Pyomo model.
 
-    :param block_sizes: Number of variables in block
-    :type block_sizes: list
-    :param blocks: List of original variable names blockwise
+    :param model: Input Pyomo model
+    :type model: ConcreteModel
+    :param blocks: List of original variable names block-wise
     :type blocks: list
-    :param obj: Objective function
-    :type obj: ObjectiveFunction
-    :param global_cuts: List of global constraints
-    :type global_cuts: list
-    :param local_cuts: Stores the list of local cuts blockwise
-    :type local_cuts: dict
-    :param copy_constraints: Stores the list of copy_constraints
-    :type copy_constraints: list
-    :param blocks_copy_constraints: Stores num of copy_constraints in each pair of blocks
-    :type blocks_copy_constraints: dict
     """
 
     def __init__(self, model, blocks):
@@ -452,9 +441,11 @@ class PyomoCutPool(CutPool):
                          'was not considered')
         # endregion
 
-        # copy constraints
-        self.copy_constraints = []
-        self.blocks_copy_constraints = {}
+        # region copy constraints
+        self.copy_constraints = []  # Stores the list of copy_constraints
+        self.blocks_copy_constraints = {}  # Stores num of copy_constraints in
+        # each pair of blocks
+
         for cut_index in range(len(self.global_cuts)):
             self._add_copy_constraint(cut_index)
         # endregion

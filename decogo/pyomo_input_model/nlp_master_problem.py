@@ -1,6 +1,5 @@
-"""Implements NLP master problem"""
+"""This modules implements NLP master problem"""
 
-from pyomo.core import ConstraintList
 from pyomo.core.expr.visitor import identify_variables, replace_expressions
 
 from decogo.pyomo_input_model.master_problem_base import MasterProblemBase
@@ -8,8 +7,8 @@ from pyomo.environ import ConstraintList, Objective
 
 
 class NlpProblem(MasterProblemBase):
-    """Class for defining the NLP master problem. Used for obtaining solution
-    with fixed or relaxed integer variables
+    """A class for defining the NLP master problem. Used for obtaining solution
+    with fixed or relaxed integer variables.
 
     .. math::
         \\begin{equation}
@@ -18,6 +17,12 @@ class NlpProblem(MasterProblemBase):
             &x \\in P \\cap G
         \\end{split}
         \\end{equation}
+
+    :param sub_models: List of sub-models
+    :type sub_models: list
+    :param cuts: Container which stores all linear constraints \
+    (global and local) and objective function
+    :type cuts: CutPool
     """
 
     def __init__(self, sub_models, cuts):

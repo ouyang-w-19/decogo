@@ -1,4 +1,4 @@
-"""Implements projection master problems"""
+"""This module implements projection master problems"""
 
 import logging
 
@@ -14,7 +14,7 @@ logger = logging.getLogger('decogo')
 
 
 class NlpResourceProjectionProblem(NlpProblem):
-    """Class for defining NLP projection master problem (integer variables
+    """A class for defining NLP projection master problem (integer variables
     are relaxed or fixed)
 
     .. math::
@@ -25,6 +25,9 @@ class NlpResourceProjectionProblem(NlpProblem):
             &w_k \\in \\mathbb{R}^{m + 1} \\text{ and is fixed}
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
     """
 
     def __init__(self, block_model):
@@ -152,7 +155,7 @@ class NlpResourceProjectionProblem(NlpProblem):
 
 
 class MipProjectionMasterProblem(MasterProblemBase):
-    """Class for defining MIP projection master problem defined using
+    """A class for defining MIP projection master problem defined using
     infinity norm
 
     .. math::
@@ -173,6 +176,9 @@ class MipProjectionMasterProblem(MasterProblemBase):
             &x \\in P \\cap Y , y \\text{ is fixed}
         \\end{split}
         \\end{equation}
+
+    :param block_model: Block model
+    :type block_model: PyomoBlockModel
     """
 
     def __init__(self, block_model):
